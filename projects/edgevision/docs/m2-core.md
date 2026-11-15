@@ -26,6 +26,15 @@ uncommitted donor changes from the older published Git HEAD.
 - Logical task termination is separate from physical execution completion.
   EXPIRED/CANCELED/STALE work keeps the executor occupied until backend completion;
   a late successful backend result cannot overwrite that terminal result.
+- Typed `ControlRouter` validates bounded capture settings, canonicalizes
+  parameters and routes start/stop through the same TaskManager. Transport
+  threads submit/query/cancel; one owner polls and changes capture state.
+- STARTING becomes RUNNING only after STREAMON plus validated first-frame
+  metadata. Capture and model states remain separate. A start advances the
+  execution generation without changing the original idempotency request.
+- Stop during a no-frame STARTING cancels that start and requests cleanup
+  immediately. Stop/cancel/expiry retain physical execution until a backend
+  Stopped acknowledgement. A partial-start exception also requires cleanup.
 
 The completion interface deliberately does not declare GPU completion based on
 a timer. The CPU latch/fence fixtures test ownership contracts only. A CUDA event
@@ -50,8 +59,11 @@ ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 \
 
 Windows uses GCC 15.2.0/UCRT64 with CMake and Ninja selected explicitly; only the
 build process PATH is changed. Tests retain assertions even for a release build.
-Current result: Windows **4/4**, native Jetson with ASan/UBSan and LeakSanitizer
-enabled **4/4**. [Evidence](../evidence/2026-11-15-m2-core/).
+Current result: Windows **5/5**, including the new router contract;
+native Jetson with ASan/UBSan and LeakSanitizer enabled **4/4**, for the earlier
+core revision. [Core evidence](../evidence/2026-11-15-m2-core/) and
+[new Windows router evidence](../evidence/2026-11-15-m2-router/).
+The new router and TaskManager generation changes have not run on the Jetson.
 The native Jetson tests are CPU core tests: they do not open the camera or execute
 a GPU model. There is no silent mock capture backend.
 
@@ -59,10 +71,13 @@ Tests cover 20,000 concurrent admissions, multiple blocked queue consumers,
 resource destruction that reenters the queue, 1,000 old pool generations,
 completion-fenced release, READY-only freshness/generation checks, 16 concurrent
 duplicate requests, deadlines, queue budgets, cancellation and late results.
+Router tests add first-frame gating, no-frame stop, cleanup acknowledgement,
+canceling an active stop, stale events, partial-start/poll exceptions, backend
+status reentry without a held router lock and rejection of a second control owner.
 
 ## Explicit limits and next integration
 
-- Real V4L2 eventfd stop, first-valid-frame RUNNING semantics, reconnect, 100
+- Real V4L2 eventfd stop, device first-frame validation, reconnect, 100
   start/stop cycles and the upstream videoSource/DetectNet adapter are not yet
   ported. Enabling the V4L2 CMake option currently fails with an explicit message.
 - FramePool raw index APIs are retained from the donor. Only the producer may use
@@ -72,8 +87,13 @@ duplicate requests, deadlines, queue budgets, cancellation and late results.
 - Only READY frames enter FrameQueue. Completion-fence waiting can block its
   owning executor; capture and control threads must never own an in-flight lease
   whose destruction would wait for a GPU event.
-- Task parameters must be schema-validated and canonically serialized by the
-  future ControlRouter before submission. TaskManager does not execute text.
+- Router currently accepts typed start/stop only. Other commands return
+  UnsupportedCommand; JSON/ROS/Agent transports and named configuration IDs
+  are not connected. TaskManager does not execute text.
+- The backend is a mandatory non-owning interface with no production mock.
+  Real hardware calls belong to its worker, outside the router mutex. The
+  application must drain stop before destroying the router; backend RAII owns
+  final device cleanup. Backend Stopped must mean the physical cleanup finished.
 - IDs are local to one manager/run and records are not silently evicted. The
   default 256-record budget returns RecordBudget when full; production history
   and persistent idempotency require the M8 service/log policy.

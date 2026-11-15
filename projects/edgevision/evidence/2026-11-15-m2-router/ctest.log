@@ -1,0 +1,53 @@
+UpdateCTestConfiguration  from :C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/DartConfiguration.tcl
+Parse Config file:C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/DartConfiguration.tcl
+Test project C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: bounded_queue
+
+1: Test command: C:\Users\31542\Documents\ChatGPT\嵌入式日常实习-暑期实习-秋招\jetson-inference\projects\edgevision\build\host\test_bounded_queue.exe
+1: Working Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+1: Test timeout computed to be: 30
+1: [test_bounded_queue] PASS
+1/5 Test #1: bounded_queue ....................   Passed    0.37 sec
+test 2
+    Start 2: frame_lease
+
+2: Test command: C:\Users\31542\Documents\ChatGPT\嵌入式日常实习-暑期实习-秋招\jetson-inference\projects\edgevision\build\host\test_frame_lease.exe
+2: Working Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+2: Test timeout computed to be: 30
+2: [test_frame_lease] PASS
+2/5 Test #2: frame_lease ......................   Passed    0.20 sec
+test 3
+    Start 3: frame_queue
+
+3: Test command: C:\Users\31542\Documents\ChatGPT\嵌入式日常实习-暑期实习-秋招\jetson-inference\projects\edgevision\build\host\test_frame_queue.exe
+3: Working Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+3: Test timeout computed to be: 30
+3: PASS READY-only freshness queue, generation and in-flight exclusion; CPU fixtures only
+3/5 Test #3: frame_queue ......................   Passed    0.17 sec
+test 4
+    Start 4: task_manager
+
+4: Test command: C:\Users\31542\Documents\ChatGPT\嵌入式日常实习-暑期实习-秋招\jetson-inference\projects\edgevision\build\host\test_task_manager.exe
+4: Working Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+4: Test timeout computed to be: 30
+4: PASS task admission/idempotency/deadline/cancel/generation/budget; no hardware executed
+4/5 Test #4: task_manager .....................   Passed    0.17 sec
+test 5
+    Start 5: control_router
+
+5: Test command: C:\Users\31542\Documents\ChatGPT\嵌入式日常实习-暑期实习-秋招\jetson-inference\projects\edgevision\build\host\test_control_router.exe
+5: Working Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+5: Test timeout computed to be: 30
+5: PASS ControlRouter config/first-frame/stop/generation/cancel/exception/owner; CPU fixture only
+5/5 Test #5: control_router ...................   Passed    0.21 sec
+
+100% tests passed out of 5
+
+Total Test time (real) =   1.18 sec

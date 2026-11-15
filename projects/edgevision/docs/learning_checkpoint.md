@@ -8,6 +8,9 @@
 - Repaired upstream 30-minute baseline: 53,898 inference/output calls, exit 0,
   clean camera release; evidence copied and hash-verified on the Windows host.
 - Existing two repositories and their uncommitted work remain untouched.
+- Local continuation adds a typed ControlRouter; Windows 5/5. Its new generation
+  and control changes are target-unverified; do not reuse earlier 4/4 target
+  sanitizer results as proof for this revision.
 
 ## Board left at
 

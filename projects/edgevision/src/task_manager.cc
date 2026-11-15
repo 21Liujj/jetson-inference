@@ -44,6 +44,7 @@ TaskAdmission TaskManager::submit(TaskRequest request, uint64_t now, uint64_t ge
   TaskRecord record;
   record.id = next_id_++;
   record.request = std::move(request);
+  record.execution_generation = record.request.generation;
   record.accepted_mono_ns = now;
   by_request_.emplace(record.request.request_id, record.id);
   records_.emplace(record.id, record);
@@ -68,9 +69,9 @@ void TaskManager::tick_locked(uint64_t now, uint64_t generation) {
   }), queue_.end());
   if (active_) {
     auto& record = records_.at(*active_);
-    if (!terminal(record.state) && (record.request.generation != generation || now >= record.request.deadline_mono_ns)) {
-      record.state = record.request.generation != generation ? TaskState::Failed : TaskState::Expired;
-      record.error_code = record.request.generation != generation ? "STALE_GENERATION" : "DEADLINE_EXCEEDED";
+    if (!terminal(record.state) && (record.execution_generation != generation || now >= record.request.deadline_mono_ns)) {
+      record.state = record.execution_generation != generation ? TaskState::Failed : TaskState::Expired;
+      record.error_code = record.execution_generation != generation ? "STALE_GENERATION" : "DEADLINE_EXCEEDED";
       record.finished_mono_ns = now;
       // Preserve execution_pending/active_ until complete(): GPU may still run.
     }
@@ -127,6 +128,14 @@ bool TaskManager::complete(uint64_t id, bool success, std::string result, std::s
   }
   record.execution_pending = false;
   active_.reset();
+  return true;
+}
+bool TaskManager::retarget_running(uint64_t id, uint64_t expected, uint64_t next) {
+  std::lock_guard<std::mutex> lock(mu_);
+  if (!active_ || *active_ != id) return false;
+  auto& record = records_.at(id);
+  if (record.state != TaskState::Running || record.execution_generation != expected || next <= expected) return false;
+  record.execution_generation = next;
   return true;
 }
 void TaskManager::cancel_pending(uint64_t now) {

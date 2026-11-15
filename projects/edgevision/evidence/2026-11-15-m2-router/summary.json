@@ -1,0 +1,156 @@
+{
+  "scope": "Windows CPU core and typed ControlRouter contracts only; no camera/CUDA/SSH execution",
+  "timestamp_utc": "2026-11-15T14:59:24.486588+00:00",
+  "host": "Windows / GNU 15.2.0 UCRT64 / Ninja / Debug",
+  "tests_passed": 5,
+  "tests_total": 5,
+  "new_target_revision_verified": false,
+  "prior_target_evidence": "../2026-11-15-m2-core/summary.json applies only to the earlier four-test revision",
+  "commands": [
+    {
+      "log": "compiler.log",
+      "argv": [
+        "D:\\msys64\\ucrt64\\bin\\g++.exe",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "log": "build.log",
+      "argv": [
+        "C:\\Users\\31542\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\site-packages\\cmake\\data\\bin\\cmake.exe",
+        "--build",
+        "projects/edgevision/build/host",
+        "-j2",
+        "--verbose"
+      ],
+      "exit_code": 0
+    },
+    {
+      "log": "ctest.log",
+      "argv": [
+        "C:\\Users\\31542\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\site-packages\\cmake\\data\\bin\\ctest.exe",
+        "--test-dir",
+        "projects/edgevision/build/host",
+        "--output-on-failure",
+        "-V"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "projects/edgevision/CMakeLists.txt",
+      "git_blob": "89568a642aeb3fccd459ad266a769dfce1006381",
+      "canonical_sha256": "8343d85ff059e92ad5eb06accf2935eeb23fff460acd56984d754d234913ca9d",
+      "working_sha256": "8343d85ff059e92ad5eb06accf2935eeb23fff460acd56984d754d234913ca9d"
+    },
+    {
+      "path": "projects/edgevision/include/edgevision/bounded_queue.h",
+      "git_blob": "393316498009c893f7fa8fe175b9b0badec83754",
+      "canonical_sha256": "b9c32d6fd22e8aefa2bd6dee1a631577e455fe55c1ffceed3b7f4eb2908fd076",
+      "working_sha256": "1d9e3741f52b84c91cc13ded16a00e2ad203eb61b92edd1abf4c617db87285ce"
+    },
+    {
+      "path": "projects/edgevision/include/edgevision/control_router.h",
+      "git_blob": "7f40ebc77c6265b95b4f334882dad8854f349e62",
+      "canonical_sha256": "05bc025f184d5f4a2d838941960124e07699aa6766a72d9fce63ac05e036d5a6",
+      "working_sha256": "05bc025f184d5f4a2d838941960124e07699aa6766a72d9fce63ac05e036d5a6"
+    },
+    {
+      "path": "projects/edgevision/include/edgevision/frame.h",
+      "git_blob": "6c0138ca6c54cc7cddcfaffd5fe74c915ec8f752",
+      "canonical_sha256": "8988d4f1fcde4710d29c01e76e2ffb47233b003f3968898e66746d9ddc2fe2c9",
+      "working_sha256": "16429b37268e7dc13fffa885d4704149e44861fba9f47093dbcd5a4fb7bbe559"
+    },
+    {
+      "path": "projects/edgevision/include/edgevision/frame_lease.h",
+      "git_blob": "7c9163aaa6614dcc860dcf175c2debff2cd9ce16",
+      "canonical_sha256": "7f7e8bb311ef2e36b63c51941f82516a009b6f4b9ba1efbbbe61b1b9b41d75b2",
+      "working_sha256": "9ac904b8a6a32168b997853a395a1e1e6bf5fe8dec9745433716eb07a1770f16"
+    },
+    {
+      "path": "projects/edgevision/include/edgevision/frame_queue.h",
+      "git_blob": "e9c25c04e8c6ef11d3e19f40eae60b637b6feb15",
+      "canonical_sha256": "ac2675ba75ecd35e8df6319d7f35f9e3b6d090ba4a9e2b218cc137cf378d6f1f",
+      "working_sha256": "ac2675ba75ecd35e8df6319d7f35f9e3b6d090ba4a9e2b218cc137cf378d6f1f"
+    },
+    {
+      "path": "projects/edgevision/include/edgevision/task_manager.h",
+      "git_blob": "bb4caced5b208a0aa391b9f31700acaa227f43be",
+      "canonical_sha256": "5717b251354e7188c1331c95df1a8c45066a08206fffdc6f04d91e588c7b4ecc",
+      "working_sha256": "5717b251354e7188c1331c95df1a8c45066a08206fffdc6f04d91e588c7b4ecc"
+    },
+    {
+      "path": "projects/edgevision/src/control_router.cc",
+      "git_blob": "c910388de59df3a80602087d29d09c90da91d2b1",
+      "canonical_sha256": "5dc54a6b949d8fc4ba73f48ceae7b039bd299b8cd70a18ba2d670e44ac0e719e",
+      "working_sha256": "5dc54a6b949d8fc4ba73f48ceae7b039bd299b8cd70a18ba2d670e44ac0e719e"
+    },
+    {
+      "path": "projects/edgevision/src/frame/frame.cc",
+      "git_blob": "68081d3f86e25be24e9316e3b865b5a1ea879252",
+      "canonical_sha256": "9aaef9b6b0492ad214000b588f9e362c7e0cc2726fe17eb65126190ce5cd4425",
+      "working_sha256": "6f38a44e27e62d11e6067a9a6614ab0b344df78f650f69209660a9f56e4d32f7"
+    },
+    {
+      "path": "projects/edgevision/src/task_manager.cc",
+      "git_blob": "8e06af795d95302bdad82164291c1798fb647f17",
+      "canonical_sha256": "dfa59cba3c1726c290440b5e5ee9ed2817c6aad3208b9d2b9d536e12bf6c04fd",
+      "working_sha256": "dfa59cba3c1726c290440b5e5ee9ed2817c6aad3208b9d2b9d536e12bf6c04fd"
+    },
+    {
+      "path": "projects/edgevision/tests/test_bounded_queue.cc",
+      "git_blob": "791625e0c96c7773ea21411d0821de4562cbfd7f",
+      "canonical_sha256": "8fde1c61d99e5c32b00b9a5c070ac767e714058890ce11815d8c811b70bbf9fe",
+      "working_sha256": "601e75b72a59a0ae0f574f221c17af683a441a489a3a4e7f011c1fcca2b8bc31"
+    },
+    {
+      "path": "projects/edgevision/tests/test_control_router.cc",
+      "git_blob": "aa3a7eeff4a990b917a922f8d3c3b065e1811935",
+      "canonical_sha256": "31023961c8b5f0a1be58afb0c84b71729e041bf82676b71f97223aa6462e0ff2",
+      "working_sha256": "31023961c8b5f0a1be58afb0c84b71729e041bf82676b71f97223aa6462e0ff2"
+    },
+    {
+      "path": "projects/edgevision/tests/test_frame_lease.cc",
+      "git_blob": "7b7cd97e6cdb4e232608dfde25d9f572ac2bf8c5",
+      "canonical_sha256": "318cd97673b4e571104f846b48432af002465b53e681fe0cd9d72e3be228515e",
+      "working_sha256": "e65b5e9da72ef96cfdcd75ac1d670aa9f2da4d2474cee132ad6cea3a3a866762"
+    },
+    {
+      "path": "projects/edgevision/tests/test_frame_queue.cc",
+      "git_blob": "de195d14463fbda8bc1ceccdd821db0bff9a24c0",
+      "canonical_sha256": "4ed08233f78a8fe79ef39011d381b877fc77cf7b564f2cd4e5a1779d2bde2f57",
+      "working_sha256": "4ed08233f78a8fe79ef39011d381b877fc77cf7b564f2cd4e5a1779d2bde2f57"
+    },
+    {
+      "path": "projects/edgevision/tests/test_task_manager.cc",
+      "git_blob": "c116f95a336137aaa36417e8d25cc47a4aee7022",
+      "canonical_sha256": "916ccd3ab619840694a7adb6a801e42fa3fd56dc33457daf663494e6cf4f8fd3",
+      "working_sha256": "916ccd3ab619840694a7adb6a801e42fa3fd56dc33457daf663494e6cf4f8fd3"
+    }
+  ],
+  "source_note": "Archive contains staged canonical Git blobs. Working bytes differ only by scoped text eol conversion; both hashes recorded.",
+  "files": [
+    {
+      "path": "build.log",
+      "bytes": 3837,
+      "sha256": "be75ab9f1a91d6e4ae65eab93309bb3f8568d6285ed8a8fa10046ed57bfff041"
+    },
+    {
+      "path": "compiler.log",
+      "bytes": 253,
+      "sha256": "99a6fefddcc8799aa2922714d4ce3261f56a136905b69546fc116c3557ca641e"
+    },
+    {
+      "path": "ctest.log",
+      "bytes": 3310,
+      "sha256": "7f32f673d9b47ea58854a0d4f5e6de2b7ac26d3ddd9b4e2e1b6ca0471236cd69"
+    },
+    {
+      "path": "source-inputs.zip",
+      "bytes": 24662,
+      "sha256": "b8bbeb0e1dd67fa6f883e4dab679db29d82981134d34e2602367ba62e10807b1"
+    }
+  ]
+}

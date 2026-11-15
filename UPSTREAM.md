@@ -28,7 +28,8 @@ No submodule source has been intentionally modified in M0/M1.
 | Real GPU loader regression | new | `projects/edgevision/tools/trt_compat_probe.cpp`; commit `afee249` | Full and auxiliary-output scenarios execute on target GPU |
 | Bounded queue / shared frame storage | new (personal source port) | `projects/edgevision/include/edgevision`, `src/frame`; exact donor hashes in `docs/core-provenance.json` | Windows 4/4; native Jetson sanitizer CPU-core tests 4/4 |
 | READY-only frame queue and bounded TaskManager | new | `frame_queue.h`, `task_manager.h`, `src/task_manager.cc` | Generation, idempotency, logical timeout vs physical completion; no real camera/GPU executor claim |
-| Direct V4L2 and common control integration | planned | `projects/edgevision` | M2 core has passed; real capture/router integration remains |
+| Typed common ControlRouter | new | `control_router.h`, `src/control_router.cc`, `test_control_router.cc` | Windows 5/5 core suite; first-frame/stop/cancel/generation/exception contracts; no real backend or target test yet |
+| Direct V4L2 and common control integration | planned | `projects/edgevision` | Real capture and upstream adapter integration remain |
 | UVC frame trace extension | planned | Target-L4T kernel patch | M3/M4; no modified module claimed |
 | CUDA event pipeline | planned | Execution layer | M5; numerical regression + timeline required |
 | ROS2 + model-driven Agent | planned | ROS workspace + Agent adapter | M6/M7; real model/tool traces required |

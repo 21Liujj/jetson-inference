@@ -12,7 +12,7 @@ enum class TaskCommand { StartCapture, StopCapture, CaptureSnapshot, DetectSnaps
                          DescribeSnapshot, GetRecentMetrics, CreateReport, RunInspection };
 enum class TaskState { Queued, Running, Done, Failed, Expired, Canceled };
 enum class AdmissionError { None, InvalidRequest, Busy, RecordBudget, Conflict,
-                            StaleGeneration, DeadlineExceeded };
+                            StaleGeneration, DeadlineExceeded, UnsupportedCommand, InvalidParameters };
 
 struct TaskRequest {
   std::string request_id;
@@ -29,6 +29,7 @@ struct TaskRecord {
   TaskState state = TaskState::Queued;
   uint64_t accepted_mono_ns = 0, started_mono_ns = 0, finished_mono_ns = 0;
   bool execution_pending = false;
+  uint64_t execution_generation = 0;
   std::string error_code, result;
 };
 struct TaskAdmission {
@@ -52,6 +53,7 @@ class TaskManager {
   bool cancel(uint64_t id, uint64_t now_mono_ns);
   bool complete(uint64_t id, bool success, std::string result, std::string error_code,
                 uint64_t now_mono_ns);
+  bool retarget_running(uint64_t id, uint64_t expected_generation, uint64_t next_generation);
   void tick(uint64_t now_mono_ns, uint64_t current_generation);
   void cancel_pending(uint64_t now_mono_ns);
   std::size_t queued() const;

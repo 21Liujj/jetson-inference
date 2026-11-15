@@ -10,7 +10,7 @@ different definitions and are not carried over as completed stages.
 | M1-A unmodified upstream | board_verified (build/camera); blocked (inference) | Build succeeds after missing dev dependency installation; original TensorRT 10 loader crashes; raw failure retained |
 | M1-B compatibility repair | board_verified, short runs only | Fixed image, 60s USB inference, restart, negative tensor-name test, two real GPU probes pass |
 | M1 longer repaired baseline | board_verified | 1800.6016s process lifetime, 53,898 inference/output calls, normal shutdown; M1-A failure remains a failure |
-| M2 capture/task framework | host_verified / board_verified (core only) | FrameMeta, bounded queues, pool states/fences and TaskManager; Windows 4/4 and Jetson ASan/UBSan/LSan 4/4; real capture/router integration remains |
+| M2 capture/task framework | host_verified / board_verified (earlier core only) | Windows 5/5 includes typed ControlRouter start/stop, first-frame gate and cleanup contracts; Jetson ASan/UBSan/LSan 4/4 covers the earlier core revision; real capture integration and new target regression remain |
 | M3 model and kernel preparation | planned | 20-image regression, frozen annotated set, native module baseline |
 | M4 UVC extension | planned | Source patch, original/disabled/enabled trace comparisons, install and actual rollback |
 | M5 CUDA and async optimization | planned | Numerical regression, two memory paths, event pipeline, Nsight timeline |
@@ -37,7 +37,7 @@ execution but is not a model-accuracy or optimization benchmark.
 
 1. Port the audited V4L2 I/O seam and session; add eventfd stop, true negotiated
    metadata, first-valid-frame RUNNING and exact drop accounting.
-2. Connect the new core through one ControlRouter and upstream inference adapter;
+2. Connect the typed ControlRouter to a real backend and upstream inference adapter;
    validate actual camera ownership, slow consumers, failures and restart.
 3. Complete 100 start/stop cycles and direct-backend long capture, then begin
    M3 fixed-image numerical regression and matching kernel source preparation.

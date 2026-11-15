@@ -45,3 +45,10 @@ User was told normal shutdown is safe; assistant did not shut down the board.
 SSH is closed. Recheck connectivity, current power/software/device identity and
 camera owners on next entry; do not assume a managed Git HEAD in the board
 worktree (actual build input source hashes/archives are the authority there).
+
+Local-only continuation: typed ControlRouter implements start/stop contracts,
+first-frame gating, generation retargeting, no-frame stop preemption and cleanup
+acknowledgement. Windows suite 5/5; this revision has NOT run on Jetson. Earlier
+Jetson sanitizer 4/4 is not evidence for the new router/TaskManager changes.
+User reports power restored. Initial SSH retry times out; Tailscale peer is offline
+(last seen 22:33 local). Check actual network/device identity before target work.
