@@ -6,3 +6,5 @@
 /AGENTS.md text eol=lf
 /UPSTREAM.md text eol=lf
 /README.md text eol=lf
+/.agents/** text eol=lf
+/agent.md text eol=lf

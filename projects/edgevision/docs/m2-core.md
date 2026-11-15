@@ -35,6 +35,9 @@ uncommitted donor changes from the older published Git HEAD.
 - Stop during a no-frame STARTING cancels that start and requests cleanup
   immediately. Stop/cancel/expiry retain physical execution until a backend
   Stopped acknowledgement. A partial-start exception also requires cleanup.
+- Startup recovery has a two-retry budget and control-owner backoff. Physical
+  Stopped precedes each reopen; generation advances while request identity stays
+  fixed. Cancellation/expiry/stop can terminate backoff. Runtime recovery is pending.
 
 The completion interface deliberately does not declare GPU completion based on
 a timer. The CPU latch/fence fixtures test ownership contracts only. A CUDA event
@@ -59,13 +62,13 @@ ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 \
 
 Windows uses GCC 15.2.0/UCRT64 with CMake and Ninja selected explicitly; only the
 build process PATH is changed. Tests retain assertions even for a release build.
-Current result: Windows **5/5**, including the new router contract;
-native Jetson with ASan/UBSan and LeakSanitizer enabled **4/4**, for the earlier
-core revision. [Core evidence](../evidence/2026-11-15-m2-core/) and
-[new Windows router evidence](../evidence/2026-11-15-m2-router/).
-The new router and TaskManager generation changes have not run on the Jetson.
-The native Jetson tests are CPU core tests: they do not open the camera or execute
-a GPU model. There is no silent mock capture backend.
+Current result: Windows **5/5** core tests; Jetson **7/7** with ASan/UBSan and
+LeakSanitizer, including two Linux capture-worker/syscall-fixture tests.
+[Latest evidence](../evidence/2026-11-15-m2-capture/),
+[earlier core evidence](../evidence/2026-11-15-m2-core/) and
+[router-only checkpoint](../evidence/2026-11-15-m2-router/).
+CTest fixtures do not open the real camera or execute a GPU model. Separate
+[real USB capture and 100-cycle results](m2-capture.md) have their own evidence.
 
 Tests cover 20,000 concurrent admissions, multiple blocked queue consumers,
 resource destruction that reenters the queue, 1,000 old pool generations,
@@ -77,9 +80,9 @@ status reentry without a held router lock and rejection of a second control owne
 
 ## Explicit limits and next integration
 
-- Real V4L2 eventfd stop, device first-frame validation, reconnect, 100
-  start/stop cycles and the upstream videoSource/DetectNet adapter are not yet
-  ported. Enabling the V4L2 CMake option currently fails with an explicit message.
+- Linux V4L2/eventfd worker and real first-frame/100-cycle tests are implemented.
+  Enable with EDGEVISION_ENABLE_V4L2=ON on Linux. Runtime disconnect/reconnect,
+  HealthMonitor, new-backend 30min capture and the upstream DetectNet adapter remain.
 - FramePool raw index APIs are retained from the donor. Only the producer may use
   `slot_ref` before handoff; fabricating multiple leases for one slot or accessing
   a handed-off raw slot violates the owner contract. A fenced in-flight slot
@@ -100,5 +103,6 @@ status reentry without a held router lock and rejection of a second control owne
 - `query` is a snapshot. The control owner calls `tick` with current monotonic
   time/generation to advance expiration before publishing status.
 
-Next: port the existing V4L2 I/O seam and capture session, add eventfd cancellation
-and exact frame-drop counters, then connect CLI/ROS/Agent through one real router.
+Next: complete the remaining M2 capture/inference gates in m2-capture.md before
+declaring the stage complete. CLI probe already calls the real common router;
+JSON/ROS/Agent transports remain separate required integrations.

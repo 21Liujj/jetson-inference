@@ -1,0 +1,348 @@
+{
+  "scope": "M2 real capture/control short acceptance; no new-backend inference, runtime reconnect or endurance acceptance",
+  "host_tests_passed": 5,
+  "target_sanitizer_tests_passed": 7,
+  "raw_archive_file_count": 81,
+  "source_r3_sha256": "2e3fc65c63225cba073f822b0046e3f5f13aab4d860415cfa9b191e28d4a9684",
+  "original_failure": {
+    "run": "capture-acceptance-r2/cycles-100",
+    "completed_cycles": 37,
+    "failed_start": 38,
+    "error": "S_FMT: Input/output error",
+    "kernel_observation": "UVC probe control -75 (exp.26)",
+    "physical_root_cause_confirmed": false
+  },
+  "retest": {
+    "normal": {
+      "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+      "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+      "cycles_completed": 1,
+      "interrupted": false,
+      "consumed": 301,
+      "copied": 301,
+      "pool_drop": 0,
+      "queue_replaced": 0,
+      "sequence_gaps": 0,
+      "start_retries": 0,
+      "negotiated": {
+        "width": 640,
+        "height": 360,
+        "fourcc": 1448695129,
+        "stride": 1280,
+        "sizeimage": 460800,
+        "driver_buffers": 4,
+        "mapped_bytes": 1843200,
+        "pool_bytes": 1843200,
+        "interval_num": 1,
+        "interval_den": 30
+      },
+      "warning": "",
+      "metadata_rows": 301,
+      "driver_interval_ns_at_consumer": {
+        "count": 300,
+        "min": 31935000,
+        "median": 32028000.0,
+        "p95": 36001000,
+        "max": 36026000
+      },
+      "driver_to_host_ns": {
+        "count": 301,
+        "min": 31958807,
+        "median": 32049775,
+        "p95": 36028682,
+        "max": 36055094
+      },
+      "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+      "host_dequeue_to_consume_ns": {
+        "count": 301,
+        "min": 47648,
+        "median": 502694,
+        "p95": 948780,
+        "max": 1206126
+      },
+      "fd_after_stop": {
+        "count": 1,
+        "min": 6,
+        "median": 6,
+        "p95": 6,
+        "max": 6
+      },
+      "rss_kib_after_stop": {
+        "count": 1,
+        "min": 1684,
+        "median": 1684,
+        "p95": 1684,
+        "max": 1684
+      },
+      "video_maps_after_stop_max": 0,
+      "stop_ns": {
+        "count": 1,
+        "min": 2428446,
+        "median": 2428446,
+        "p95": 2428446,
+        "max": 2428446
+      },
+      "queue_high_water_max": 1
+    },
+    "slow-consumer": {
+      "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+      "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+      "cycles_completed": 1,
+      "interrupted": false,
+      "consumed": 67,
+      "copied": 301,
+      "pool_drop": 0,
+      "queue_replaced": 232,
+      "sequence_gaps": 0,
+      "start_retries": 0,
+      "negotiated": {
+        "width": 640,
+        "height": 360,
+        "fourcc": 1448695129,
+        "stride": 1280,
+        "sizeimage": 460800,
+        "driver_buffers": 4,
+        "mapped_bytes": 1843200,
+        "pool_bytes": 1843200,
+        "interval_num": 1,
+        "interval_den": 30
+      },
+      "warning": "",
+      "metadata_rows": 67,
+      "driver_interval_ns_at_consumer": {
+        "count": 66,
+        "min": 100038000,
+        "median": 163970500.0,
+        "p95": 168056000,
+        "max": 168057000
+      },
+      "driver_to_host_ns": {
+        "count": 67,
+        "min": 31964751,
+        "median": 32023415,
+        "p95": 32078587,
+        "max": 32088024
+      },
+      "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+      "host_dequeue_to_consume_ns": {
+        "count": 67,
+        "min": 254723,
+        "median": 50315044,
+        "p95": 64002538,
+        "max": 67740184
+      },
+      "fd_after_stop": {
+        "count": 1,
+        "min": 6,
+        "median": 6,
+        "p95": 6,
+        "max": 6
+      },
+      "rss_kib_after_stop": {
+        "count": 1,
+        "min": 1704,
+        "median": 1704,
+        "p95": 1704,
+        "max": 1704
+      },
+      "video_maps_after_stop_max": 0,
+      "stop_ns": {
+        "count": 1,
+        "min": 2402845,
+        "median": 2402845,
+        "p95": 2402845,
+        "max": 2402845
+      },
+      "queue_high_water_max": 2
+    },
+    "pool-exhaustion": {
+      "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+      "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+      "cycles_completed": 1,
+      "interrupted": false,
+      "consumed": 4,
+      "copied": 4,
+      "pool_drop": 147,
+      "queue_replaced": 0,
+      "sequence_gaps": 0,
+      "start_retries": 0,
+      "negotiated": {
+        "width": 640,
+        "height": 360,
+        "fourcc": 1448695129,
+        "stride": 1280,
+        "sizeimage": 460800,
+        "driver_buffers": 4,
+        "mapped_bytes": 1843200,
+        "pool_bytes": 1843200,
+        "interval_num": 1,
+        "interval_den": 30
+      },
+      "warning": "",
+      "metadata_rows": 4,
+      "driver_interval_ns_at_consumer": {
+        "count": 3,
+        "min": 31948000,
+        "median": 32056000,
+        "p95": 35998000,
+        "max": 35998000
+      },
+      "driver_to_host_ns": {
+        "count": 4,
+        "min": 31971709,
+        "median": 32028966.0,
+        "p95": 32086041,
+        "max": 32086041
+      },
+      "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+      "host_dequeue_to_consume_ns": {
+        "count": 4,
+        "min": 246691,
+        "median": 678872.0,
+        "p95": 1152270,
+        "max": 1152270
+      },
+      "fd_after_stop": {
+        "count": 1,
+        "min": 6,
+        "median": 6,
+        "p95": 6,
+        "max": 6
+      },
+      "rss_kib_after_stop": {
+        "count": 1,
+        "min": 1704,
+        "median": 1704,
+        "p95": 1704,
+        "max": 1704
+      },
+      "video_maps_after_stop_max": 0,
+      "stop_ns": {
+        "count": 1,
+        "min": 52922851,
+        "median": 52922851,
+        "p95": 52922851,
+        "max": 52922851
+      },
+      "queue_high_water_max": 1
+    },
+    "cycles-100": {
+      "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+      "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+      "cycles_completed": 100,
+      "interrupted": false,
+      "consumed": 300,
+      "copied": 300,
+      "pool_drop": 0,
+      "queue_replaced": 0,
+      "sequence_gaps": 0,
+      "start_retries": 3,
+      "negotiated": {
+        "width": 640,
+        "height": 360,
+        "fourcc": 1448695129,
+        "stride": 1280,
+        "sizeimage": 460800,
+        "driver_buffers": 4,
+        "mapped_bytes": 1843200,
+        "pool_bytes": 1843200,
+        "interval_num": 1,
+        "interval_den": 30
+      },
+      "warning": "",
+      "metadata_rows": 300,
+      "driver_interval_ns_at_consumer": {
+        "count": 200,
+        "min": 31938000,
+        "median": 32054500.0,
+        "p95": 36005000,
+        "max": 36052000
+      },
+      "driver_to_host_ns": {
+        "count": 300,
+        "min": 31963644,
+        "median": 32037117.0,
+        "p95": 36033082,
+        "max": 36081376
+      },
+      "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+      "host_dequeue_to_consume_ns": {
+        "count": 300,
+        "min": 47073,
+        "median": 637160.0,
+        "p95": 1031437,
+        "max": 1110989
+      },
+      "fd_after_stop": {
+        "count": 100,
+        "min": 6,
+        "median": 6.0,
+        "p95": 6,
+        "max": 6
+      },
+      "rss_kib_after_stop": {
+        "count": 100,
+        "min": 1688,
+        "median": 2608.0,
+        "p95": 4260,
+        "max": 4260
+      },
+      "video_maps_after_stop_max": 0,
+      "stop_ns": {
+        "count": 100,
+        "min": 2215130,
+        "median": 2314556.0,
+        "p95": 2356061,
+        "max": 2381373
+      },
+      "queue_high_water_max": 1
+    },
+    "missing-device": {
+      "exit_code": 1,
+      "expected_negative": true
+    },
+    "busy-device": {
+      "exit_code": 1,
+      "expected_negative": true
+    }
+  },
+  "pending": [
+    "new-backend 30-minute capture",
+    "runtime disconnect/reconnect",
+    "upstream DetectNet adapter",
+    "HealthMonitor",
+    "M3-M8 required work"
+  ],
+  "files": [
+    {
+      "path": "acceptance-r3.json",
+      "bytes": 14343,
+      "sha256": "90c0b734af0966a71752b5713981880dcf3c51750a46100ba2cba7caf2459ccd"
+    },
+    {
+      "path": "end-of-day-board-state.json",
+      "bytes": 411,
+      "sha256": "fd018e1ddba65d231e90e7d2accf5005a1bf1543eb68001256d9b6ba4c6a7786"
+    },
+    {
+      "path": "host-ctest.log",
+      "bytes": 4143,
+      "sha256": "dc729fa29a296726c2ad8d8a9e3a20b01f310576431885ce4d55f03e6067a5d4"
+    },
+    {
+      "path": "kernel-uvc.json",
+      "bytes": 1547,
+      "sha256": "8bd2c11807eb54c7ba115d70e87dd7a2878c02a60139c4d6a0c74d911b694e8f"
+    },
+    {
+      "path": "raw-capture-evidence.zip",
+      "bytes": 197215,
+      "sha256": "0f6995c5b313218d57dd0cbf73d7ef293997853c4e05652b3b16ab4c79936f2a"
+    },
+    {
+      "path": "skill-validation.json",
+      "bytes": 928,
+      "sha256": "73758d078d247db3dfbd6894ee342d0f628b1a0728e3fb046cac18abc48e031b"
+    }
+  ]
+}

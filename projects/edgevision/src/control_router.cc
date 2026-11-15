@@ -23,6 +23,7 @@ bool ControlRouter::valid_config(const CaptureConfig& c) {
   if (c.driver_buffers < 2 || c.driver_buffers > 32 || c.pool_slots < 3 || c.pool_slots > 64 ||
       !c.queue_capacity || c.queue_capacity > c.pool_slots - 2 || !c.memory_budget_bytes ||
       c.memory_budget_bytes > 256u * 1024 * 1024) return false;
+  if (c.start_retry_limit > 2 || c.retry_delay_ms < 10 || c.retry_delay_ms > 2000) return false;
   const uint64_t conservative_bytes = uint64_t(c.width) * c.height * 2 * (c.driver_buffers + c.pool_slots);
   return conservative_bytes <= c.memory_budget_bytes;
 }
@@ -30,7 +31,8 @@ std::string ControlRouter::canonical(const CaptureConfig& c) {
   std::ostringstream s;
   s << "capture-v1:" << c.device.size() << ':' << c.device << ':' << c.width << ':' << c.height << ':' << c.fourcc
     << ':' << c.fps_num << ':' << c.fps_den << ':' << c.driver_buffers << ':' << c.pool_slots << ':'
-    << c.queue_capacity << ':' << c.memory_budget_bytes << ':' << c.allow_unstable_device;
+    << c.queue_capacity << ':' << c.memory_budget_bytes << ':' << c.allow_unstable_device
+    << ':' << c.start_retry_limit << ':' << c.retry_delay_ms;
   return s.str();
 }
 bool ControlRouter::terminal(TaskState state) {
@@ -67,6 +69,7 @@ RouterStatus ControlRouter::status() const {
 void ControlRouter::finish_locked(bool success, const std::string& error, uint64_t now) {
   if (state_.active_task) {
     const auto result = "{\"generation\":" + std::to_string(state_.generation) +
+        ",\"start_retries\":" + std::to_string(state_.start_retries) +
         (state_.first_frame ? ",\"frame_id\":" + std::to_string(state_.first_frame->frame_id) : "") + "}";
     tasks_.complete(*state_.active_task, success, success ? result : "", error, now);
     configs_.erase(*state_.active_task);
@@ -89,6 +92,7 @@ std::optional<ControlRouter::Action> ControlRouter::dispatch_locked(const TaskRe
     }
     state_.generation = next;
     state_.capture = CaptureState::Starting;
+    state_.start_retries = 0; retry_pending_ = false;
     state_.first_frame.reset(); state_.last_error.clear(); error_after_cleanup_ = false;
     backend_live_ = true;
     return Action{Action::Kind::Start, next, task.id, configs_.at(task.id)};
@@ -110,11 +114,29 @@ std::optional<ControlRouter::Action> ControlRouter::stop_locked(std::string erro
 std::optional<ControlRouter::Action> ControlRouter::handle_event_locked(CaptureEvent event, uint64_t now) {
   if (event.generation != state_.generation) { ++state_.stale_events; return std::nullopt; }
   if (!backend_live_) return std::nullopt;
-  if (event.kind == CaptureEvent::Kind::Fault) return stop_locked(event.error_code.empty() ? "CAPTURE_FAILED" : event.error_code);
+  if (event.kind == CaptureEvent::Kind::Fault) {
+    if (state_.capture == CaptureState::Starting && state_.active_task && event.retryable) {
+      const auto task = tasks_.query(*state_.active_task);
+      const auto config = configs_.find(*state_.active_task);
+      retry_pending_ = task && task->state == TaskState::Running && config != configs_.end() &&
+          state_.start_retries < config->second.start_retry_limit;
+    } else retry_pending_ = false;
+    return stop_locked(event.error_code.empty() ? "CAPTURE_FAILED" : event.error_code);
+  }
   if (event.kind == CaptureEvent::Kind::Stopped) {
     if (!backend_live_) return std::nullopt;
     if (state_.capture != CaptureState::Stopping) { error_after_cleanup_ = true; state_.last_error = "UNEXPECTED_STOP"; }
     backend_live_ = false;
+    if (retry_pending_ && state_.active_task) {
+      const auto task = tasks_.query(*state_.active_task);
+      if (task && task->state == TaskState::Running) {
+        ++state_.start_retries;
+        retry_at_ = now + uint64_t(configs_.at(*state_.active_task).retry_delay_ms) * state_.start_retries * 1000000;
+        state_.capture = CaptureState::Recovering; retry_pending_ = false;
+        return std::nullopt;
+      }
+    }
+    retry_pending_ = false;
     state_.capture = error_after_cleanup_ ? CaptureState::Error : CaptureState::Idle;
     state_.first_frame.reset();
     finish_locked(!error_after_cleanup_, state_.last_error, now);
@@ -133,6 +155,7 @@ std::optional<ControlRouter::Action> ControlRouter::handle_event_locked(CaptureE
         frame.bytesused >= (uint64_t(frame.height) - 1) * frame.stride + uint64_t(frame.width) * 2;
   if (!valid) return stop_locked("INVALID_FIRST_FRAME");
   state_.first_frame = frame;
+  state_.last_error.clear();
   state_.capture = CaptureState::Running;
   finish_locked(true, "", now);
   return std::nullopt;
@@ -167,11 +190,11 @@ void ControlRouter::poll(uint64_t now) {
     if (pending_stop_) {
       const auto stop = tasks_.query(*pending_stop_);
       if (!stop || stop->state != TaskState::Queued) pending_stop_.reset();
-      else if (state_.capture == CaptureState::Starting && state_.active_task) {
+      else if ((state_.capture == CaptureState::Starting || state_.capture == CaptureState::Recovering) && state_.active_task) {
         // A user stop must wake a no-frame start immediately. The queued stop
         // still completes only after physical cleanup, through TaskManager.
         tasks_.cancel(*state_.active_task, now);
-        action = stop_locked("");
+        retry_pending_ = false; action = stop_locked("");
       }
     }
     // Expired/canceled queued configurations must not outlive their records.
@@ -182,6 +205,10 @@ void ControlRouter::poll(uint64_t now) {
     if (state_.active_task) {
       auto record = tasks_.query(*state_.active_task);
       if (record && terminal(record->state) && state_.capture == CaptureState::Starting) action = stop_locked("");
+      if (record && terminal(record->state) && state_.capture == CaptureState::Recovering && !backend_live_) {
+        retry_pending_ = false; state_.capture = CaptureState::Idle; state_.last_error.clear();
+        finish_locked(false, "", now);
+      }
     }
   }
   execute(std::move(action), now);
@@ -201,6 +228,19 @@ void ControlRouter::poll(uint64_t now) {
   }
   {
     std::lock_guard<std::mutex> lock(mu_);
+    if (state_.capture == CaptureState::Recovering && !backend_live_ && state_.active_task && now >= retry_at_) {
+      auto task = tasks_.query(*state_.active_task);
+      if (task && task->state == TaskState::Running) {
+        const auto before = state_.generation;
+        if (before == std::numeric_limits<uint64_t>::max() || !tasks_.retarget_running(task->id, before, before + 1)) {
+          state_.capture = CaptureState::Error; state_.last_error = "GENERATION_TRANSITION_FAILED";
+          finish_locked(false, state_.last_error, now);
+        } else {
+          ++state_.generation; state_.capture = CaptureState::Starting; backend_live_ = true; error_after_cleanup_ = false;
+          action = Action{Action::Kind::Start, state_.generation, task->id, configs_.at(task->id)};
+        }
+      }
+    }
     if (!state_.active_task && !tasks_.execution_busy()) {
       auto next = tasks_.take(now, state_.generation);
       if (next) action = dispatch_locked(*next, now);

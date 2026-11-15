@@ -21,6 +21,7 @@ class FrameQueue {
   void close() { queue_.shutdown(Queue::StopMode::Abort); }
   std::size_t depth() const { return queue_.size(); }
   uint64_t replaced_oldest() const { return queue_.replaced_oldest(); }
+  auto snapshot() const { return queue_.snapshot(); }
  private:
   using Queue = BoundedQueue<FrameLease>;
   const uint64_t generation_;

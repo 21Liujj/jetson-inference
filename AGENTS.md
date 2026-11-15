@@ -1,54 +1,41 @@
-# EdgeVision development contract
+# EdgeVision · Agent 开发入口
 
-- User's V3.1 specifications are archived in `projects/edgevision/docs/spec/`.
-- `projects/edgevision/docs/progress.md` is the current acceptance ledger. Historical
-  EdgeVisionRT/MCU milestones do not imply these new milestones passed.
-- Freeze upstream 45da40a8f3c180191b269f57f736caaa025b8a69 and its gitlinks.
-  Preserve `README.upstream.md`, upstream layout and license.
-- First establish an unmodified fixed-image and USB inference baseline. No new
-  capture/backend framework before that gate. Record failures without mock fallbacks.
-- Personal code goes in `projects/edgevision`; new C++ uses C++17 without changing
-  the upstream global standard. Explicitly enable hardware dependencies.
-- Record reused/modified/new contributions in `UPSTREAM.md`; commit submodule
-  modifications in a personal fork before updating the gitlink.
-- Never commit credentials, weights, engines, private camera images or full bags.
-  Curated evidence must keep original errors, command arguments and artifact hashes.
-- A single owner opens the camera. GPU work retains memory until actual completion.
-  Queue capacity, stop wakeups, generation and terminal task states are contracts.
-- ROS2, local VLM/Agent, UVC source extension, RTSP and endurance remain required.
-  Do not mark them complete based on schemas, source-only builds or old projects.
-- Preserve the original two local repositories and their uncommitted work.
-- Add meaningful debugging and interview explanations at each verified checkpoint.
+本仓库是 `dusty-nv/jetson-inference` 的个人 fork，按 V3.1 施工。先读本文件，
+再按任务加载下表的一个领域技能和必要源码；不要为普通修改全量扫描仓库或读取所有技能。
+这里的 SKILL 服务于开发 Agent，不代表产品运行时 VLM/工具已经实现。
 
-## 2026-11-15 checkpoint
+## 真相与续施工
 
-M0 evidence collected; unmodified M1 inference SIGSEGV retained. Commit afee249
-repairs TRT10 local-context binding, I/O addresses and batch/remaining dimensions.
-Final fixed image and 60s USB plus restart pass; full/auxiliary real-GPU probes
-pass. No 100-cycle/kernel/ROS2/Agent acceptance. vision_msgs missing.
-User requests a plain system-tool dashboard and may apply for jobs tomorrow;
-prioritize honest, traceable publication without shrinking the required scope.
+- 验收状态：[progress](projects/edgevision/docs/progress.md)，只读相关阶段。
+- 当前现场与下一步：[learning_checkpoint](projects/edgevision/docs/learning_checkpoint.md)。
+- 工程问题唯一正文：[debugging_journal](projects/edgevision/docs/debugging_journal.md)，按 ID/关键词查阅。
+- 复用、修改、新增：[UPSTREAM.md](UPSTREAM.md)；用户规范在 `projects/edgevision/docs/spec/`，按领域选读。
 
-M2 core now ports the exact hashed personal J11/J12 storage/queue implementation,
-adds FrameMeta, explicit slot/fence states, READY-only generation queue and bounded
-TaskManager. Windows 4/4 and Jetson ASan/UBSan/LSan CPU-core 4/4; these tests do
-not open a camera or implement a CUDA fence. See docs/m2-core.md for raw API and
-record-retention limits. The user intends to power down after the 30min baseline;
-finish and retrieve its evidence first, start no new long board test, and leave
-normal shutdown to the user unless explicitly requested.
+## 按任务选技能
 
-Final 2026-11-15 board checkpoint: repaired upstream 30min completed, 53,898 real
-inference/output calls, exit0, camera released, legacy daemon IDLE. Raw 31MB log
-and resource CSV are archived separately and hash-verified locally. RSS rose
-early and was flat in the last20min; no zero-leak/formal-FPS/multi-hour claim.
-User was told normal shutdown is safe; assistant did not shut down the board.
-SSH is closed. Recheck connectivity, current power/software/device identity and
-camera owners on next entry; do not assume a managed Git HEAD in the board
-worktree (actual build input source hashes/archives are the authority there).
+| 领域 | 只在相关任务时读取 |
+|---|---|
+| 帧池、队列、任务与状态机 | [core-control](.agents/skills/edgevision-core-control/SKILL.md) |
+| USB / V4L2 / MMAP / 启停恢复 | [capture](.agents/skills/edgevision-capture/SKILL.md) |
+| L4T / UVC / 内核追踪与回退 | [kernel-trace](.agents/skills/edgevision-kernel-trace/SKILL.md) |
+| TensorRT / CUDA / 推理适配与优化 | [gpu-inference](.agents/skills/edgevision-gpu-inference/SKILL.md) |
+| ROS2 / 服务 / Action / QoS | [ros2](.agents/skills/edgevision-ros2/SKILL.md) |
+| 本地 VLM / Agent / 真实工具 | [vlm-agent](.agents/skills/edgevision-vlm-agent/SKILL.md) |
+| Web / RTSP / 部署 / 长稳 | [delivery](.agents/skills/edgevision-delivery/SKILL.md) |
+| 故障沉淀 / 证据 / 贡献与简历 | [evidence](.agents/skills/edgevision-evidence/SKILL.md) |
 
-Local-only continuation: typed ControlRouter implements start/stop contracts,
-first-frame gating, generation retargeting, no-frame stop preemption and cleanup
-acknowledgement. Windows suite 5/5; this revision has NOT run on Jetson. Earlier
-Jetson sanitizer 4/4 is not evidence for the new router/TaskManager changes.
-User reports power restored. Initial SSH retry times out; Tailscale peer is offline
-(last seen 22:33 local). Check actual network/device identity before target work.
+## 跨领域约束
+
+- 保留上游布局、许可证和 `README.upstream.md`。冻结上游 `45da40a8` 及 gitlinks；
+  主线个人代码在 `projects/edgevision`，C++17 按 target 启用，不改上游全局标准。
+  修改子模块须先提交个人 fork，再更新 gitlink。
+- 一个相机 owner；控制入口统一。GPU 物理完成前保留在途内存；逻辑超时不归还 slot。
+  host fixture、真实硬件、性能和长稳分别验收。M0–M8 范围不因投递时间缩减。
+- 原来的 EdgeVisionRT、jetson-stm32F407 及未提交成果保留；迁移记录精确 donor hash。
+  板端工作区可能是固定 HEAD 加 SFTP 源码，以实际构建输入和哈希为准，禁止 blanket clean/reset。
+- 不提交凭据、权重、engine、私有照片或完整 bag。原始失败不覆盖；问题正文只写固定 journal。
+  改动完成后按实际结果更新 progress、checkpoint、贡献记录和相关技能，不在本文件堆历史日志。
+- 当前 Windows checkout 有上游大小写碰撞噪声（`docs/html/XML_8h*`、Python Jetson 路径、utils）。
+  不暂存、不反转这些噪声；精确暂存个人改动。真实问题和未完成项必须如实记录。
+
+用户当前指令与已有授权优先；领域技能不扩大授权、不凭空增加确认流程。

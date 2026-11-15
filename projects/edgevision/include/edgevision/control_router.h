@@ -18,6 +18,7 @@ struct CaptureConfig {
   uint32_t fps_num = 30, fps_den = 1;
   uint32_t driver_buffers = 4, pool_slots = 4, queue_capacity = 2;
   uint64_t memory_budget_bytes = 64u * 1024 * 1024;
+  uint32_t start_retry_limit = 2, retry_delay_ms = 250;
   bool allow_unstable_device = false;
 };
 struct ControlRequest {
@@ -33,6 +34,7 @@ struct CaptureEvent {
   Kind kind = Kind::Fault;
   uint64_t generation = 0;
   bool stream_on = false;
+  bool retryable = false;
   FrameMeta frame;
   std::string error_code;
 };
@@ -53,6 +55,7 @@ struct RouterStatus {
   CaptureState capture = CaptureState::Idle;
   ModelState model = ModelState::Unloaded;
   uint64_t generation = 0, stale_events = 0;
+  uint32_t start_retries = 0;
   std::optional<uint64_t> active_task;
   std::optional<FrameMeta> first_frame;
   std::size_t queued_tasks = 0;
@@ -90,6 +93,8 @@ class ControlRouter {
   RouterStatus state_;
   std::optional<std::thread::id> owner_;
   bool backend_live_ = false, error_after_cleanup_ = false;
+  bool retry_pending_ = false;
+  uint64_t retry_at_ = 0;
   std::optional<uint64_t> pending_stop_;
   // One queued and one active command: configuration storage is bounded too.
   std::unordered_map<uint64_t, CaptureConfig> configs_;

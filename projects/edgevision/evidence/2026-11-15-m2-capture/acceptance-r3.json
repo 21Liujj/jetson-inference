@@ -1,0 +1,490 @@
+{
+  "scope": "Real camera short capture/control acceptance, no GPU inference or reconnect acceptance",
+  "binary_sha256": "438852b3810e6da3bc6750df6965defa3c710854b7657a215e719159107cdf3c",
+  "runner_sha256": "68146f87509743698c7ad9e562b83ed071727b122d21047aa571fcc725aed7fe",
+  "runs": [
+    {
+      "name": "normal",
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_capture_probe",
+        "--device",
+        "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "--seconds",
+        "10",
+        "--out",
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/capture-acceptance-r3/normal"
+      ],
+      "expected_exit": 0,
+      "start_mono_ns": 2757013539342,
+      "pid": 6454,
+      "exit_code": 0,
+      "elapsed_ns": 10629649828,
+      "passed": true,
+      "analysis": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 1,
+        "interrupted": false,
+        "consumed": 301,
+        "copied": 301,
+        "pool_drop": 0,
+        "queue_replaced": 0,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": "",
+        "metadata_rows": 301,
+        "driver_interval_ns_at_consumer": {
+          "count": 300,
+          "min": 31935000,
+          "median": 32028000.0,
+          "p95": 36001000,
+          "max": 36026000
+        },
+        "driver_to_host_ns": {
+          "count": 301,
+          "min": 31958807,
+          "median": 32049775,
+          "p95": 36028682,
+          "max": 36055094
+        },
+        "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+        "host_dequeue_to_consume_ns": {
+          "count": 301,
+          "min": 47648,
+          "median": 502694,
+          "p95": 948780,
+          "max": 1206126
+        },
+        "fd_after_stop": {
+          "count": 1,
+          "min": 6,
+          "median": 6,
+          "p95": 6,
+          "max": 6
+        },
+        "rss_kib_after_stop": {
+          "count": 1,
+          "min": 1684,
+          "median": 1684,
+          "p95": 1684,
+          "max": 1684
+        },
+        "video_maps_after_stop_max": 0,
+        "stop_ns": {
+          "count": 1,
+          "min": 2428446,
+          "median": 2428446,
+          "p95": 2428446,
+          "max": 2428446
+        },
+        "queue_high_water_max": 1
+      }
+    },
+    {
+      "name": "slow-consumer",
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_capture_probe",
+        "--device",
+        "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "--seconds",
+        "10",
+        "--consumer-ms",
+        "150",
+        "--out",
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/capture-acceptance-r3/slow-consumer"
+      ],
+      "expected_exit": 0,
+      "start_mono_ns": 2767646803294,
+      "pid": 6456,
+      "exit_code": 0,
+      "elapsed_ns": 10380361182,
+      "passed": true,
+      "analysis": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 1,
+        "interrupted": false,
+        "consumed": 67,
+        "copied": 301,
+        "pool_drop": 0,
+        "queue_replaced": 232,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": "",
+        "metadata_rows": 67,
+        "driver_interval_ns_at_consumer": {
+          "count": 66,
+          "min": 100038000,
+          "median": 163970500.0,
+          "p95": 168056000,
+          "max": 168057000
+        },
+        "driver_to_host_ns": {
+          "count": 67,
+          "min": 31964751,
+          "median": 32023415,
+          "p95": 32078587,
+          "max": 32088024
+        },
+        "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+        "host_dequeue_to_consume_ns": {
+          "count": 67,
+          "min": 254723,
+          "median": 50315044,
+          "p95": 64002538,
+          "max": 67740184
+        },
+        "fd_after_stop": {
+          "count": 1,
+          "min": 6,
+          "median": 6,
+          "p95": 6,
+          "max": 6
+        },
+        "rss_kib_after_stop": {
+          "count": 1,
+          "min": 1704,
+          "median": 1704,
+          "p95": 1704,
+          "max": 1704
+        },
+        "video_maps_after_stop_max": 0,
+        "stop_ns": {
+          "count": 1,
+          "min": 2402845,
+          "median": 2402845,
+          "p95": 2402845,
+          "max": 2402845
+        },
+        "queue_high_water_max": 2
+      }
+    },
+    {
+      "name": "pool-exhaustion",
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_capture_probe",
+        "--device",
+        "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "--seconds",
+        "5",
+        "--hold-slots",
+        "4",
+        "--out",
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/capture-acceptance-r3/pool-exhaustion"
+      ],
+      "expected_exit": 0,
+      "start_mono_ns": 2778028999762,
+      "pid": 6458,
+      "exit_code": 0,
+      "elapsed_ns": 5529279819,
+      "passed": true,
+      "analysis": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 1,
+        "interrupted": false,
+        "consumed": 4,
+        "copied": 4,
+        "pool_drop": 147,
+        "queue_replaced": 0,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": "",
+        "metadata_rows": 4,
+        "driver_interval_ns_at_consumer": {
+          "count": 3,
+          "min": 31948000,
+          "median": 32056000,
+          "p95": 35998000,
+          "max": 35998000
+        },
+        "driver_to_host_ns": {
+          "count": 4,
+          "min": 31971709,
+          "median": 32028966.0,
+          "p95": 32086041,
+          "max": 32086041
+        },
+        "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+        "host_dequeue_to_consume_ns": {
+          "count": 4,
+          "min": 246691,
+          "median": 678872.0,
+          "p95": 1152270,
+          "max": 1152270
+        },
+        "fd_after_stop": {
+          "count": 1,
+          "min": 6,
+          "median": 6,
+          "p95": 6,
+          "max": 6
+        },
+        "rss_kib_after_stop": {
+          "count": 1,
+          "min": 1704,
+          "median": 1704,
+          "p95": 1704,
+          "max": 1704
+        },
+        "video_maps_after_stop_max": 0,
+        "stop_ns": {
+          "count": 1,
+          "min": 52922851,
+          "median": 52922851,
+          "p95": 52922851,
+          "max": 52922851
+        },
+        "queue_high_water_max": 1
+      }
+    },
+    {
+      "name": "cycles-100",
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_capture_probe",
+        "--device",
+        "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "--cycles",
+        "100",
+        "--seconds",
+        "3",
+        "--frames",
+        "3",
+        "--out",
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/capture-acceptance-r3/cycles-100"
+      ],
+      "expected_exit": 0,
+      "start_mono_ns": 2783559764751,
+      "pid": 6460,
+      "exit_code": 0,
+      "elapsed_ns": 53291683465,
+      "passed": true,
+      "analysis": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 100,
+        "interrupted": false,
+        "consumed": 300,
+        "copied": 300,
+        "pool_drop": 0,
+        "queue_replaced": 0,
+        "sequence_gaps": 0,
+        "start_retries": 3,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": "",
+        "metadata_rows": 300,
+        "driver_interval_ns_at_consumer": {
+          "count": 200,
+          "min": 31938000,
+          "median": 32054500.0,
+          "p95": 36005000,
+          "max": 36052000
+        },
+        "driver_to_host_ns": {
+          "count": 300,
+          "min": 31963644,
+          "median": 32037117.0,
+          "p95": 36033082,
+          "max": 36081376
+        },
+        "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+        "host_dequeue_to_consume_ns": {
+          "count": 300,
+          "min": 47073,
+          "median": 637160.0,
+          "p95": 1031437,
+          "max": 1110989
+        },
+        "fd_after_stop": {
+          "count": 100,
+          "min": 6,
+          "median": 6.0,
+          "p95": 6,
+          "max": 6
+        },
+        "rss_kib_after_stop": {
+          "count": 100,
+          "min": 1688,
+          "median": 2608.0,
+          "p95": 4260,
+          "max": 4260
+        },
+        "video_maps_after_stop_max": 0,
+        "stop_ns": {
+          "count": 100,
+          "min": 2215130,
+          "median": 2314556.0,
+          "p95": 2356061,
+          "max": 2381373
+        },
+        "queue_high_water_max": 1
+      }
+    },
+    {
+      "name": "missing-device",
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_capture_probe",
+        "--device",
+        "/dev/v4l/by-id/edgevision-missing-2836855972687",
+        "--seconds",
+        "1",
+        "--out",
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/capture-acceptance-r3/missing-device"
+      ],
+      "expected_exit": 1,
+      "start_mono_ns": 2836855994831,
+      "pid": 6462,
+      "exit_code": 1,
+      "elapsed_ns": 8593064,
+      "passed": true
+    },
+    {
+      "name": "busy-device",
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_capture_probe",
+        "--device",
+        "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "--seconds",
+        "1",
+        "--out",
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/capture-acceptance-r3/busy-device"
+      ],
+      "expected_exit": 1,
+      "start_mono_ns": 2839842380146,
+      "pid": 6466,
+      "exit_code": 1,
+      "elapsed_ns": 9010605,
+      "passed": true
+    }
+  ],
+  "complete": true,
+  "busy_owner": {
+    "argv": [
+      "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_capture_probe",
+      "--device",
+      "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+      "--seconds",
+      "6",
+      "--out",
+      "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/capture-acceptance-r3/busy-owner"
+    ],
+    "analysis": {
+      "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+      "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+      "cycles_completed": 1,
+      "interrupted": false,
+      "consumed": 181,
+      "copied": 181,
+      "pool_drop": 0,
+      "queue_replaced": 0,
+      "sequence_gaps": 0,
+      "start_retries": 0,
+      "negotiated": {
+        "width": 640,
+        "height": 360,
+        "fourcc": 1448695129,
+        "stride": 1280,
+        "sizeimage": 460800,
+        "driver_buffers": 4,
+        "mapped_bytes": 1843200,
+        "pool_bytes": 1843200,
+        "interval_num": 1,
+        "interval_den": 30
+      },
+      "warning": "",
+      "metadata_rows": 181,
+      "driver_interval_ns_at_consumer": {
+        "count": 180,
+        "min": 31939000,
+        "median": 32006000.0,
+        "p95": 36001000,
+        "max": 36026000
+      },
+      "driver_to_host_ns": {
+        "count": 181,
+        "min": 31966518,
+        "median": 32033729,
+        "p95": 36031080,
+        "max": 36058956
+      },
+      "driver_to_host_note": "Only MONOTONIC driver timestamps; SOE includes exposure/USB transfer. Not inference latency.",
+      "host_dequeue_to_consume_ns": {
+        "count": 181,
+        "min": 49473,
+        "median": 369828,
+        "p95": 960139,
+        "max": 1281135
+      },
+      "fd_after_stop": {
+        "count": 1,
+        "min": 6,
+        "median": 6,
+        "p95": 6,
+        "max": 6
+      },
+      "rss_kib_after_stop": {
+        "count": 1,
+        "min": 1704,
+        "median": 1704,
+        "p95": 1704,
+        "max": 1704
+      },
+      "video_maps_after_stop_max": 0,
+      "stop_ns": {
+        "count": 1,
+        "min": 2434174,
+        "median": 2434174,
+        "p95": 2434174,
+        "max": 2434174
+      },
+      "queue_high_water_max": 1
+    }
+  }
+}

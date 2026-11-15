@@ -1,4 +1,4 @@
-# 明日投递：当前可用表述
+# 当前投递：已验证表述
 
 核验日期：2026-11-15。面向用户提供的 Linux 嵌入式开发实习岗位截图。
 本页按当前证据写，不能复制施工方案中的最终目标作为已完成工作。
@@ -14,9 +14,10 @@
   tensor 绑定及显式 batch 维度处理；通过固定图、60 秒实时推理、退出后重启和真实
   GPU 绑定回归，保存模型哈希、原始失败与恢复日志；进一步完成 30 分钟实际相机
   推理基线，处理 53,898 帧后正常退出。
-- 复用并扩展 C++ 有界队列和共享帧池租约，增加 generation 隔离、READY 帧淘汰与
-  任务幂等/超时/取消核心；通过 Windows 与 Jetson sanitizer 各 4/4 项 CPU 核心
-  回归。真实 V4L2 后端接入与 CUDA event 适配仍在开发。
+- 新增 C++ V4L2/MMAP 输入与有界帧池，统一启停、首帧状态、generation 和任务
+  幂等/取消，使用 eventfd 唤醒停止；通过 Windows core 5/5、Jetson sanitizer 7/7
+  回归及 100 次真实启停（包含 3 次受限启动重试）。区分 pool drop 与 READY 淘汰，
+  保留一次 UVC 控制失败及恢复证据；运行中重连、推理适配与 CUDA event 尚未验收。
 
 GitHub: https://github.com/21Liujj/jetson-inference
 

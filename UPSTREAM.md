@@ -28,8 +28,9 @@ No submodule source has been intentionally modified in M0/M1.
 | Real GPU loader regression | new | `projects/edgevision/tools/trt_compat_probe.cpp`; commit `afee249` | Full and auxiliary-output scenarios execute on target GPU |
 | Bounded queue / shared frame storage | new (personal source port) | `projects/edgevision/include/edgevision`, `src/frame`; exact donor hashes in `docs/core-provenance.json` | Windows 4/4; native Jetson sanitizer CPU-core tests 4/4 |
 | READY-only frame queue and bounded TaskManager | new | `frame_queue.h`, `task_manager.h`, `src/task_manager.cc` | Generation, idempotency, logical timeout vs physical completion; no real camera/GPU executor claim |
-| Typed common ControlRouter | new | `control_router.h`, `src/control_router.cc`, `test_control_router.cc` | Windows 5/5 core suite; first-frame/stop/cancel/generation/exception contracts; no real backend or target test yet |
-| Direct V4L2 and common control integration | planned | `projects/edgevision` | Real capture and upstream adapter integration remain |
+| Typed common ControlRouter | new | `control_router.h`, `src/control_router.cc`, `test_control_router.cc` | Windows core 5/5, Jetson sanitizer suite 7/7; first-frame, stop/cancel, bounded startup recovery and generation contracts |
+| Direct V4L2 and common control integration | new (personal source port + extensions) | `src/camera`, `v4l2_*.h`, `capture_probe.cpp`; donor hashes in `docs/capture-provenance.json` | Real short capture, slow/held consumers, missing/busy device; R2 37-cycle failure preserved, R3 100 cycles with 3 retries; runtime reconnect/inference adapter/long capture pending |
+| Agent repository routing and domain skills | new | `AGENTS.md`, `agent.md`, `.agents/skills` | Eight scoped development skills; not a completed runtime VLM/Agent |
 | UVC frame trace extension | planned | Target-L4T kernel patch | M3/M4; no modified module claimed |
 | CUDA event pipeline | planned | Execution layer | M5; numerical regression + timeline required |
 | ROS2 + model-driven Agent | planned | ROS workspace + Agent adapter | M6/M7; real model/tool traces required |

@@ -154,5 +154,63 @@ int main() {
     auto other = std::async(std::launch::async, [&] { try { router.poll(2); return false; } catch (const std::logic_error&) { return true; } });
     assert(other.get());
   }
+  // A retryable startup fault cannot reuse the old generation or retry before
+  // Stopped. Original request identity survives all physical reopen attempts.
+  {
+    Fixture backend; ControlRouter router(backend); auto r = start("retry", 0, 1000000000);
+    r.capture->retry_delay_ms = 10;
+    auto a = router.submit(r, 1); router.poll(2);
+    auto fault = [&](uint64_t generation) {
+      CaptureEvent e; e.kind = CaptureEvent::Kind::Fault; e.generation = generation;
+      e.error_code = "S_FMT: EIO"; e.retryable = true; backend.events.push_back(e);
+    };
+    fault(1); router.poll(3);
+    assert(router.status().capture == CaptureState::Stopping && backend.starts == 1);
+    router.poll(100); assert(backend.starts == 1); // still no physical cleanup acknowledgement
+    backend.stopped(1); router.poll(101);
+    assert(router.status().capture == CaptureState::Recovering && !router.status().backend_resources_live);
+    router.poll(10000100); assert(backend.starts == 1);
+    router.poll(10000101); assert(backend.starts == 2 && router.status().generation == 2);
+    assert(router.query(a.task_id)->request.generation == 0 && router.query(a.task_id)->execution_generation == 2);
+    assert(router.submit(r, 10000102).duplicate);
+    backend.first(1); backend.first(2); router.poll(10000103);
+    assert(router.status().capture == CaptureState::Running && router.status().start_retries == 1);
+    assert(router.query(a.task_id)->state == TaskState::Done && router.status().stale_events == 1);
+  }
+  for (bool cancel_backoff : {false, true}) {
+    Fixture backend; ControlRouter router(backend); auto r = start("retry", 0, 1000000000); r.capture->retry_delay_ms = 10;
+    auto a = router.submit(r, 1); router.poll(2);
+    CaptureEvent e; e.kind = CaptureEvent::Kind::Fault; e.generation = 1; e.retryable = true; e.error_code = "EIO";
+    backend.events.push_back(e); backend.stopped(1); router.poll(3);
+    assert(router.status().capture == CaptureState::Recovering);
+    if (cancel_backoff) assert(router.cancel(a.task_id, 4));
+    router.poll(cancel_backoff ? 5 : 1000000001);
+    assert(router.status().capture == CaptureState::Idle && backend.starts == 1);
+    assert(!router.query(a.task_id)->execution_pending);
+    assert(router.query(a.task_id)->state == (cancel_backoff ? TaskState::Canceled : TaskState::Expired));
+  }
+  {
+    Fixture backend; ControlRouter router(backend); auto r = start("retry", 0, 1000000000); r.capture->retry_delay_ms = 10;
+    auto a = router.submit(r, 1); router.poll(2);
+    CaptureEvent e; e.kind = CaptureEvent::Kind::Fault; e.generation = 1; e.retryable = true; e.error_code = "EIO";
+    backend.events.push_back(e); backend.stopped(1); router.poll(3);
+    auto s = stop("stop-backoff", 1); s.deadline_mono_ns = 1000000000;
+    auto b = router.submit(s, 4); assert(b.accepted); router.poll(5);
+    assert(router.status().capture == CaptureState::Idle && backend.starts == 1);
+    assert(router.query(a.task_id)->state == TaskState::Canceled && router.query(b.task_id)->state == TaskState::Done);
+  }
+  {
+    Fixture backend; ControlRouter router(backend); auto r = start("exhaust", 0, 1000000000); r.capture->retry_delay_ms = 10;
+    auto a = router.submit(r, 1); router.poll(2);
+    uint64_t t = 3;
+    for (uint64_t generation = 1; generation <= 3; ++generation) {
+      CaptureEvent e; e.kind = CaptureEvent::Kind::Fault; e.generation = generation; e.retryable = true; e.error_code = "EIO";
+      backend.events.push_back(e); backend.stopped(generation); router.poll(t);
+      if (generation < 3) { t += generation * 10000000; router.poll(t); }
+      ++t;
+    }
+    assert(router.status().capture == CaptureState::Error && backend.starts == 3 && router.status().start_retries == 2);
+    assert(router.query(a.task_id)->state == TaskState::Failed && !router.query(a.task_id)->execution_pending);
+  }
   std::puts("PASS ControlRouter config/first-frame/stop/generation/cancel/exception/owner; CPU fixture only");
 }

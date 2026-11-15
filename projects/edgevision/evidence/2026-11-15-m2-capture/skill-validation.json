@@ -1,0 +1,47 @@
+{
+  "skills": [
+    {
+      "skill": "edgevision-capture",
+      "valid": true,
+      "bytes": 1758
+    },
+    {
+      "skill": "edgevision-core-control",
+      "valid": true,
+      "bytes": 1593
+    },
+    {
+      "skill": "edgevision-delivery",
+      "valid": true,
+      "bytes": 1505
+    },
+    {
+      "skill": "edgevision-evidence",
+      "valid": true,
+      "bytes": 1860
+    },
+    {
+      "skill": "edgevision-gpu-inference",
+      "valid": true,
+      "bytes": 1672
+    },
+    {
+      "skill": "edgevision-kernel-trace",
+      "valid": true,
+      "bytes": 1454
+    },
+    {
+      "skill": "edgevision-ros2",
+      "valid": true,
+      "bytes": 1437
+    },
+    {
+      "skill": "edgevision-vlm-agent",
+      "valid": true,
+      "bytes": 1538
+    }
+  ],
+  "local_markdown_link_files_checked": 20,
+  "missing_links": [],
+  "note": "Schema/link validation only; not behavioral proof of future runtime Agent features"
+}

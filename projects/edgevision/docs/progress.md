@@ -1,6 +1,6 @@
 # V3.1 acceptance ledger
 
-Last updated: 2026-11-15, Asia/Shanghai. This ledger applies to the new
+Last updated: 2026-11-16, Asia/Shanghai (closing the Nov 15 session). This ledger applies to the new
 jetson-inference fork. Old M/J/F milestones in the two legacy repositories have
 different definitions and are not carried over as completed stages.
 
@@ -10,7 +10,7 @@ different definitions and are not carried over as completed stages.
 | M1-A unmodified upstream | board_verified (build/camera); blocked (inference) | Build succeeds after missing dev dependency installation; original TensorRT 10 loader crashes; raw failure retained |
 | M1-B compatibility repair | board_verified, short runs only | Fixed image, 60s USB inference, restart, negative tensor-name test, two real GPU probes pass |
 | M1 longer repaired baseline | board_verified | 1800.6016s process lifetime, 53,898 inference/output calls, normal shutdown; M1-A failure remains a failure |
-| M2 capture/task framework | host_verified / board_verified (earlier core only) | Windows 5/5 includes typed ControlRouter start/stop, first-frame gate and cleanup contracts; Jetson ASan/UBSan/LSan 4/4 covers the earlier core revision; real capture integration and new target regression remain |
+| M2 capture/task framework | board_verified (short capture), partial overall | Windows core 5/5; Jetson sanitizer 7/7; real V4L2/MMAP + router, slow/held consumers and negative cases; 100 cycles pass with 3 bounded startup retries. Runtime reconnect, new-backend 30min capture, HealthMonitor and upstream inference adapter remain |
 | M3 model and kernel preparation | planned | 20-image regression, frozen annotated set, native module baseline |
 | M4 UVC extension | planned | Source patch, original/disabled/enabled trace comparisons, install and actual rollback |
 | M5 CUDA and async optimization | planned | Numerical regression, two memory paths, event pipeline, Nsight timeline |
@@ -30,17 +30,22 @@ execution but is not a model-accuracy or optimization benchmark.
 - Commands, results and restrictions: [baseline.md](baseline.md).
 - Existing work preserved: [repo-audit.md](repo-audit.md).
 - M2 core implementation and limits: [m2-core.md](m2-core.md).
+- M2 real capture and original failure/retest: [m2-capture.md](m2-capture.md).
 - 30-minute repaired baseline: [summary and raw evidence](../evidence/2026-11-15-30min/summary.json).
 - Failure/root-cause record: [debugging_journal.md](debugging_journal.md).
 
 ## Next three engineering steps
 
-1. Port the audited V4L2 I/O seam and session; add eventfd stop, true negotiated
-   metadata, first-valid-frame RUNNING and exact drop accounting.
-2. Connect the typed ControlRouter to a real backend and upstream inference adapter;
-   validate actual camera ownership, slow consumers, failures and restart.
-3. Complete 100 start/stop cycles and direct-backend long capture, then begin
+1. Complete direct-backend 30min capture and runtime disconnect/reconnect;
+   retain the R2 UVC control failure and R3 bounded-startup-retry evidence.
+2. Add HealthMonitor and connect this real input to upstream inference; keep
+   GStreamer as the comparison path and preserve ownership/completion contracts.
+3. Close the remaining M2 gates, then begin
    M3 fixed-image numerical regression and matching kernel source preparation.
+
+User requested to stop after GitHub synchronization tonight. No new long run is
+started. Resume tomorrow from learning_checkpoint.md; do not continue merely
+because the board remains reachable.
 
 First interview checkpoint is the real TensorRT 10 loader failure and repair.
 It does not assert that the learner has already mastered the remaining stages.

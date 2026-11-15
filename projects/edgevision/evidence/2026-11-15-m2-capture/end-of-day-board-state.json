@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "2026-11-15T23:58:17+08:00\n{\"ok\":true,\"state\":\"IDLE\",\"frames\":0,\"decode_fail\":0,\"infer_fail\":0,\"timeouts\":0,\"pool_drop\":0,\"queue_drop\":0,\"session\":\"\",\"active_model\":\"yolo\",\"rule_reason\":\"default: yolo everyday\",\"low_conf_frames\":0,\"low_conf_streak\":0,\"last_max_conf\":0.000,\"reviews_written\":0,\"worker\":\"idle\"}\n\n",
+  "stderr": ""
+}

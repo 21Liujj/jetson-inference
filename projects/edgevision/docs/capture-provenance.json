@@ -1,0 +1,31 @@
+{
+  "source_repository": "https://github.com/21Liujj/jetson-stm32F407",
+  "tracked_head": "666a3a1d33d4637e267dd858c9af91ff83827d57",
+  "source_worktree": "J11/J12 local personal source; donor worktree preserved",
+  "files": [
+    {
+      "path": "include/edgevision/v4l2_capture.h",
+      "sha256": "61b00380fd9e5a68e95197dfa171956bd382c43928032a38b520183795738461"
+    },
+    {
+      "path": "include/edgevision/v4l2_io.h",
+      "sha256": "80614b6413951e75da926d5065a31da76394a1009363f4c5f8247663ca8842c2"
+    },
+    {
+      "path": "src/camera/v4l2_capture.cc",
+      "sha256": "4539ec373a78351caabbb61a32134eb13569717519f05dc55d449674d6c299ab"
+    },
+    {
+      "path": "tests/unit/test_v4l2_capture.cc",
+      "sha256": "fc5bb3727b573defb334efb6c17224f6910096317eee21780479d762beefb55f"
+    }
+  ],
+  "changes": [
+    "eventfd wakeup and sole worker ownership",
+    "S_FMT/G_FMT and S_PARM/G_PARM request/readback",
+    "actual driver mapping plus owned-pool memory budget",
+    "reserved-slot copy and immediate QBUF",
+    "distinct invalid/pool/sequence counters including uint32 wrap",
+    "explicit cleanup state; no silent mock capture"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "Native Jetson CPU core and router; explicit CPU event fixtures; no real camera/CUDA execution",
+  "source_commit": "b2f310c",
+  "target": "aarch64 Linux 5.15.148-tegra / GNU 11 / ASan+UBSan+LSan",
+  "tests_passed": 5,
+  "tests_total": 5,
+  "raw_archive_sha256": "edbf47704bb6757d7af783865079a51a949257eba6085837e3c252531162be3e",
+  "source_archive_sha256": "b8bbeb0e1dd67fa6f883e4dab679db29d82981134d34e2602367ba62e10807b1"
+}

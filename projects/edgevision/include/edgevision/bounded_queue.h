@@ -21,7 +21,7 @@ class BoundedQueue {
  public:
   enum class StopMode { Drain, Abort };
   struct Snapshot {
-    uint64_t enqueued,dequeued,dropped_full,rejected_stopped,aborted;
+    uint64_t enqueued,dequeued,dropped_full,rejected_stopped,aborted,replaced_oldest;
     std::size_t depth,high_water;
     bool stopped;
   };
@@ -101,7 +101,7 @@ class BoundedQueue {
   }
   Snapshot snapshot() const {
     std::lock_guard<std::mutex> lk(mu_);
-    return {enqueued_,dequeued_,dropped_,rejected_stopped_,aborted_,q_.size(),high_water_,shutdown_};
+    return {enqueued_,dequeued_,dropped_,rejected_stopped_,aborted_,replaced_oldest_,q_.size(),high_water_,shutdown_};
   }
 
   std::size_t size() const {
