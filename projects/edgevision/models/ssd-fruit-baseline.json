@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "purpose": "M1 upstream compatibility baseline; not the final detector or an accuracy benchmark",
+  "source_document": "https://github.com/dusty-nv/jetson-inference/blob/45da40a8f3c180191b269f57f736caaa025b8a69/docs/pytorch-ssd.md",
+  "archive_url": "https://nvidia.box.com/shared/static/gq0zlf0g2r258g3ldabl9o7vch18cxmi.gz",
+  "archive_sha256": "88ed0965a4e487ba17a797cf7599891689d00c4170fbf056c8e608758775e483",
+  "onnx_sha256": "926c60bc19e61a6f54a806cbb47acd3c890862f2907a465736362696d5b38c6c",
+  "labels_sha256": "9513d407a6f5e94efaf69ca6ee1e17b0b5f1f3653b7d7ef502c5927c72b8549e",
+  "export": {"origin": "pre-exported upstream model", "producer": "pytorch", "producer_version": "1.2", "opset": 9, "original_export_command": null},
+  "input": {"name": "input_0", "shape": [1, 3, 300, 300], "dtype": "float32", "layout": "NCHW", "color": "RGB", "resize": "upstream stretch; no letterbox", "normalization": "(x / 255 - 0.5) / 0.5"},
+  "outputs": [{"name": "scores", "shape": [1, 3000, 9], "dtype": "float32"}, {"name": "boxes", "shape": [1, 3000, 4], "dtype": "float32"}],
+  "classes": ["BACKGROUND", "Apple", "Banana", "Grape", "Orange", "Pear", "Pineapple", "Strawberry", "Watermelon"],
+  "postprocess": {"implementation": "c/detectNet.cpp postProcessSSD_ONNX and upstream clustering", "confidence_threshold": 0.5, "custom_nms": false},
+  "engine": {"build_location": "target Jetson", "tensorrt": "10.3.0.30", "cuda": "12.6.68", "device": "Orin Nano", "precision": "FP16 compute; FP32 I/O", "batch": 1, "workspace_bytes": 2147483648, "sha256": "3cb11235bc6338895bca58e710383dd36c7ecfded68ee3491ec20ddd7eab2fc4", "tracked": false},
+  "accuracy_validation": "pending M3; one fixed image and finite-score probes are not mAP regression"
+}

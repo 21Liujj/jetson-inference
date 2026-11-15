@@ -1,0 +1,891 @@
+{
+  "schema_version": 1,
+  "simulated": false,
+  "scope": "M0 environment and M1 upstream / compatibility experiments",
+  "files": [
+    {
+      "path": "capture-summary.json",
+      "bytes": 808,
+      "sha256": "b151ee27f0cf5397d0e8d92e427c3a67c4e71fb79be39789061c3aa977c5f6af"
+    },
+    {
+      "path": "m0-20261115/camera_caps.json",
+      "bytes": 3488,
+      "sha256": "157d5a2459e0e18fab57c562df38d30932781e2e9bb4375341afd2be5d224fdf"
+    },
+    {
+      "path": "m0-20261115/camera_formats.json",
+      "bytes": 1083,
+      "sha256": "d5f15b446bea04f2bf16ff26350c6a28d4e52ce1f56fa167baed6d9256e00cce"
+    },
+    {
+      "path": "m0-20261115/camera_owners.json",
+      "bytes": 181,
+      "sha256": "ac74653e16964ae9afa8e6dec73040bc63343ad32994508e9a12d0771523f5ff"
+    },
+    {
+      "path": "m0-20261115/cmake.json",
+      "bytes": 219,
+      "sha256": "c6352701692cbe40e05d7ffd9f635d5608589f2b65960f7984e1285a1f9ed482"
+    },
+    {
+      "path": "m0-20261115/compiler.json",
+      "bytes": 371,
+      "sha256": "bc47774cb402cd56d82188dccd7c96d471cb61e72d990d8bfdd38886c939a90d"
+    },
+    {
+      "path": "m0-20261115/cuda.json",
+      "bytes": 356,
+      "sha256": "ec01b1a3721a1cfc88938aa13452ab9de14e58fdd58712e6a3a714e96027cb9c"
+    },
+    {
+      "path": "m0-20261115/disk.json",
+      "bytes": 253,
+      "sha256": "182f78bcae494ac9098136ce2bffd7572a345e97b361b9f2bbf1782df7019b78"
+    },
+    {
+      "path": "m0-20261115/env.json",
+      "bytes": 4357,
+      "sha256": "2c3e5c09f1705e6ff814093950c1e3bed3795daf7fcc7389db2c3c905acd8a84"
+    },
+    {
+      "path": "m0-20261115/git_head.json",
+      "bytes": 234,
+      "sha256": "8480db7efa1afac501239460b71dbb3c37537c74b3429a75a7c282e2a1799124"
+    },
+    {
+      "path": "m0-20261115/git_remotes.json",
+      "bytes": 310,
+      "sha256": "f68e8646274c41753290fc40de6963fb43e011418658df0deac4665d24a898c9"
+    },
+    {
+      "path": "m0-20261115/git_status.json",
+      "bytes": 264,
+      "sha256": "f4572526ea8f75d4a53d29ee067f82a7254df845f7bb2a00614e7c976adf390d"
+    },
+    {
+      "path": "m0-20261115/git_submodules.json",
+      "bytes": 758,
+      "sha256": "9187e585b0388e86ecf7400922d4816186ff3629e2aa9a725a9609197118f66c"
+    },
+    {
+      "path": "m0-20261115/l4t.json",
+      "bytes": 369,
+      "sha256": "3df0a209136380181e3756564ff90dafa0f48dffd71d7d1d3c34a1780209cc10"
+    },
+    {
+      "path": "m0-20261115/memory.json",
+      "bytes": 326,
+      "sha256": "4847fa66dd49fb3437938e22e6791e42ba67fd35576c3ea13850004cd2e0b36f"
+    },
+    {
+      "path": "m0-20261115/nsys.json",
+      "bytes": 182,
+      "sha256": "f9468e6c624ef1819620e57e1b8074e5f1e34c93ca1124511845a8acf016d180"
+    },
+    {
+      "path": "m0-20261115/os.json",
+      "bytes": 542,
+      "sha256": "a6e98717297a4f4b8cfbc4b06755f7cb3a6ab8be9378227b925620b907a02292"
+    },
+    {
+      "path": "m0-20261115/packages.json",
+      "bytes": 4293,
+      "sha256": "e478c842bd82838ca7d199fe56d8c79d71a9d1237c2415c57a3fb07929b7ae5a"
+    },
+    {
+      "path": "m0-20261115/power_mode.json",
+      "bytes": 160,
+      "sha256": "e6e4808a6cf9bd0556115bc8d1050265ce2255cb9ef1174a67d34c1d5c07cd3c"
+    },
+    {
+      "path": "m0-20261115/service_state.json",
+      "bytes": 242,
+      "sha256": "e6a95e5bb637faf76251815cbd4e7a4c0c2648fe2b3beb9b750f5267c6ed865a"
+    },
+    {
+      "path": "m0-20261115/tensorrt.json",
+      "bytes": 26990,
+      "sha256": "7ec98f0b4313dc173dea4c0178c60f40bd19afedd95a1aa61705da53107b3ebf"
+    },
+    {
+      "path": "m0-20261115/uname.json",
+      "bytes": 231,
+      "sha256": "ad672d7ca9c6782fc43e5449901b514bc1811d855384470010f10921e011ed0b"
+    },
+    {
+      "path": "m0-20261115/usb.json",
+      "bytes": 513,
+      "sha256": "3a4d94539bfc3b3f6e5bd83dde556169fa577dab9fc69d37db0a41872db27c25"
+    },
+    {
+      "path": "m0-20261115/usb_topology.json",
+      "bytes": 805,
+      "sha256": "c032d1479ef2cbaac9161095f3a0cb25489efba89c7040dbafc58c5dd2c9e341"
+    },
+    {
+      "path": "m0-20261115/uvc_module.json",
+      "bytes": 6493,
+      "sha256": "258ba0a596910d71dc5c69279e22e768b8eedc5d95b8ca956ba0c9b09debe85c"
+    },
+    {
+      "path": "m0-20261115/video_devices.json",
+      "bytes": 306,
+      "sha256": "9fb5c386822e798293493684abc8c34046417b56a975a27ed813c8ba5f37aa85"
+    },
+    {
+      "path": "m0-after-dependencies/camera_caps.json",
+      "bytes": 3482,
+      "sha256": "9ae33ad94a990e5679f36ea6aea04c809b90df1878d29098e10756710b211060"
+    },
+    {
+      "path": "m0-after-dependencies/camera_formats.json",
+      "bytes": 1083,
+      "sha256": "35a4a2ade86c75f4066fed122cbfa800f2a499dac90136c4742ce58b63529410"
+    },
+    {
+      "path": "m0-after-dependencies/camera_owners.json",
+      "bytes": 181,
+      "sha256": "8855af7a9092d784994f96d50b08fc67b9b16d88a65c24533f5b7a395850cf93"
+    },
+    {
+      "path": "m0-after-dependencies/cmake.json",
+      "bytes": 219,
+      "sha256": "1a713f60f423f659c20554fe0483ca1ec553db375d017b30bd578a4893550c5d"
+    },
+    {
+      "path": "m0-after-dependencies/compiler.json",
+      "bytes": 371,
+      "sha256": "c598bfa9c06ae453986b3db86d05a2043afd3e9c9c85f5f29fc1d1caa44d6983"
+    },
+    {
+      "path": "m0-after-dependencies/cuda.json",
+      "bytes": 356,
+      "sha256": "4ff183ec6989a621bae10a6ab79f3653c6edc60d06908bd0747ba31e74829911"
+    },
+    {
+      "path": "m0-after-dependencies/disk.json",
+      "bytes": 253,
+      "sha256": "f7e4b83109210bf5529a93f56db7f3a39738edd4e422597c966095dd40a2a8b5"
+    },
+    {
+      "path": "m0-after-dependencies/env.json",
+      "bytes": 4510,
+      "sha256": "8c579aed16b01d7218217bf97f7dbdb62de7b68d82063f8063db18703421f6ae"
+    },
+    {
+      "path": "m0-after-dependencies/git_head.json",
+      "bytes": 234,
+      "sha256": "23f41a09dac4b5d19c8aa262eb93358fe26ba1fc5826c674b9f4f9f185a5552a"
+    },
+    {
+      "path": "m0-after-dependencies/git_remotes.json",
+      "bytes": 310,
+      "sha256": "f0cbd83aece6145188e12a9b6f951828ab80cbf80c15c7672e089cce62509804"
+    },
+    {
+      "path": "m0-after-dependencies/git_status.json",
+      "bytes": 283,
+      "sha256": "a1cf9b46240ecf379ee423943b2805b2dbbc0bbee2ddc4b16fe0151091298ea4"
+    },
+    {
+      "path": "m0-after-dependencies/git_submodules.json",
+      "bytes": 758,
+      "sha256": "ffffb85d066363f1835128192ab0cd3b8e63f7842a986a266fa43b1f4f4959cc"
+    },
+    {
+      "path": "m0-after-dependencies/l4t.json",
+      "bytes": 369,
+      "sha256": "2224f7479b9644d8200b03902afa7e2ab3b961a4b9f5f9c7764075905f991812"
+    },
+    {
+      "path": "m0-after-dependencies/memory.json",
+      "bytes": 326,
+      "sha256": "7dd5a86d16ce7e715afba9a50d6c1d01a46f187a37b045b9d24516e83f29c6e6"
+    },
+    {
+      "path": "m0-after-dependencies/nsys.json",
+      "bytes": 182,
+      "sha256": "04dadb14570309403edfdeb2485bdbe9262be8873b13bbaa6a6b00d243eee5e6"
+    },
+    {
+      "path": "m0-after-dependencies/os.json",
+      "bytes": 542,
+      "sha256": "2e014f83cb5ca8e385010e4d5c26acf91185c78fe7cbb43f4758e94969bb4f19"
+    },
+    {
+      "path": "m0-after-dependencies/packages.json",
+      "bytes": 4293,
+      "sha256": "7083c4e5cb1c74709ad297c63099af11dc728a1f85fe9b42733790d63b515d00"
+    },
+    {
+      "path": "m0-after-dependencies/power_mode.json",
+      "bytes": 160,
+      "sha256": "c6d7c39e5b5541d94f4d74f6c476cb9c6b533d9429ab6f30e874ba4a52ceead9"
+    },
+    {
+      "path": "m0-after-dependencies/ros2.json",
+      "bytes": 1695,
+      "sha256": "b4a0178c9f14bedb26ff19159120bdc6f2162e5b6e71f2cdf4f0dc837908367c"
+    },
+    {
+      "path": "m0-after-dependencies/service_state.json",
+      "bytes": 242,
+      "sha256": "b78e9568b36189172da258b17b7c8b077dd9b16795f3fe9c882b1fd0332b2ed6"
+    },
+    {
+      "path": "m0-after-dependencies/tensorrt.json",
+      "bytes": 26827,
+      "sha256": "aaa70ff8dce5b33a3e093457b1e101667ef8ce5f773b9a252968dfe7b6bae680"
+    },
+    {
+      "path": "m0-after-dependencies/uname.json",
+      "bytes": 231,
+      "sha256": "0dad37fb3ce7c2d59f58661d46f8149c286bf79acf9804d7d1bf6bb2a448f4b3"
+    },
+    {
+      "path": "m0-after-dependencies/usb.json",
+      "bytes": 513,
+      "sha256": "e8263a5fd10da6b01a884d8ec896fdd9fbf67d957ff80a272fd5cbb7e74d5379"
+    },
+    {
+      "path": "m0-after-dependencies/usb_topology.json",
+      "bytes": 805,
+      "sha256": "114f6f0bbc6fd25c4383f8c08390adedf9e0a39cdc8965febaf662226fd486b2"
+    },
+    {
+      "path": "m0-after-dependencies/uvc_module.json",
+      "bytes": 6493,
+      "sha256": "49242913caf1fc57b7c789d2ec0923abd3716ea3dc5d9e23515628dddebfa3be"
+    },
+    {
+      "path": "m0-after-dependencies/video_devices.json",
+      "bytes": 306,
+      "sha256": "5ce5d1e4b248466c585fcc5b8987b43ab88ea2005cda755365530624e80554b7"
+    },
+    {
+      "path": "m1-build-compat.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "m1-build-compat.log",
+      "bytes": 29166,
+      "sha256": "634cbffb54b79826e4dadc080d458e76802a7ffceb9c5809249e24b888362fbf"
+    },
+    {
+      "path": "m1-build-compat2.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "m1-build-compat2.log",
+      "bytes": 29102,
+      "sha256": "7ec5cf68cbf41f15ae6db7fe899620d5d964a2639940ea9efaec12d001610f7e"
+    },
+    {
+      "path": "m1-build-retry1.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "m1-build-retry1.log",
+      "bytes": 96927,
+      "sha256": "493ad63e8300a6223cce78489a2e14443f4000af6d11197bbc3d5e8aeaa517f9"
+    },
+    {
+      "path": "m1-build.exit",
+      "bytes": 2,
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "path": "m1-build.log",
+      "bytes": 3611,
+      "sha256": "83bee47e96dfbbb870bd94933f64030d4b304b81d88ca1f597764992a1f2e87d"
+    },
+    {
+      "path": "m1-camera-jpeg-sink/resources.csv",
+      "bytes": 2406,
+      "sha256": "250f8a1f5f7078726c580460c2d0e6a8ddfe600950b6b517338a3bb0646df7a5"
+    },
+    {
+      "path": "m1-camera-jpeg-sink/run.json",
+      "bytes": 642,
+      "sha256": "81a524bfdbb07506bfe78b03608a2ca67700404b82042416f267804d6d1faf57"
+    },
+    {
+      "path": "m1-camera-jpeg-sink/stdout.log",
+      "bytes": 171986,
+      "sha256": "cac349008b2fdca3f89235d33ec37a3ce24c9fb76e31cd7b75c62278f066e7a1"
+    },
+    {
+      "path": "m1-camera-tool/capture-60s.log",
+      "bytes": 205948,
+      "sha256": "20995665bf7c0f90f3ad47f683aae2d21bdb1d33569b0566b27dc990d16da554"
+    },
+    {
+      "path": "m1-camera-tool/readback.txt",
+      "bytes": 3128,
+      "sha256": "f0320c33d6edaa176d3d76f1725d7188f44f9cce7b0f7f330be3e6956008a6c9"
+    },
+    {
+      "path": "m1-configure.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "m1-configure.log",
+      "bytes": 14544,
+      "sha256": "0962a4ffb41cab3315a95b428dbd4b824d4a85950d0190a00c95e89d78b9b7e4"
+    },
+    {
+      "path": "m1-final-suite.log",
+      "bytes": 2243,
+      "sha256": "5b86ba9541e675418e6b04b42c828d50dcaa7e9491ecf48772aa95218db7f01a"
+    },
+    {
+      "path": "m1-fixed/resources.csv",
+      "bytes": 5891,
+      "sha256": "9c84e3e1258b6b69e444b7e47aae44f2db5b975093319128015f280d2e0c98c5"
+    },
+    {
+      "path": "m1-fixed/run.json",
+      "bytes": 769,
+      "sha256": "998cdf2a9cd009b061a8939ee6cd9b9d42a6ad857ead45eb1182d5bb0b7750e4"
+    },
+    {
+      "path": "m1-fixed/stdout.log",
+      "bytes": 4489255,
+      "sha256": "a5d22c8acbcdf8f14239a40f16bb05ed2961625350cc764cabd9d60bcb934dc9"
+    },
+    {
+      "path": "m1-fixed-compat/resources.csv",
+      "bytes": 144,
+      "sha256": "8a373c138cd2950a1db7340548cce4bed6235d3aca43ff19bad1b04793289f8e"
+    },
+    {
+      "path": "m1-fixed-compat/run.json",
+      "bytes": 764,
+      "sha256": "c98dd96652d1594f1b100e904f8ae07f683483d08a48c9ba4aa8d14d9fce51b8"
+    },
+    {
+      "path": "m1-fixed-compat/stdout.log",
+      "bytes": 10461,
+      "sha256": "0b15c885a21c404476f956414de3866414401a8a399948f22e94804ae0a09d4d"
+    },
+    {
+      "path": "m1-fixed-compat-launch.log",
+      "bytes": 694,
+      "sha256": "9170fce6abbbd4f8a27274b7f912bf1e95c07218702ac152dc1266c4eec374b6"
+    },
+    {
+      "path": "m1-fixed-final/resources.csv",
+      "bytes": 145,
+      "sha256": "da6abf9156aa4f796bfc63c29cedcb3ab77a83be5ce8ce1bc64e256ae42968af"
+    },
+    {
+      "path": "m1-fixed-final/run.json",
+      "bytes": 763,
+      "sha256": "01842fcbf9a76e4dd19d81433bf304b91617bddc4032d58a848ad1cf3dc3afa3"
+    },
+    {
+      "path": "m1-fixed-final/stdout.log",
+      "bytes": 10456,
+      "sha256": "009c35296d8019de785eff095ec4bf941614f695d77107483eced76415a5654d"
+    },
+    {
+      "path": "m1-fixed-gdb.log",
+      "bytes": 13282,
+      "sha256": "48460b4e03322ea52c53e97cf1c5e0d92576cb8aa3e319677506c067635494f0"
+    },
+    {
+      "path": "m1-fixed-launch.log",
+      "bytes": 699,
+      "sha256": "44fc38d9a311cd89aa130ef132f63bc4ff4c0b75a60302d0ec55b8246f5bce9a"
+    },
+    {
+      "path": "m1-model/archive-list.txt",
+      "bytes": 232,
+      "sha256": "fe2235b52af3d5f3bccfa53674ed0f9e666b4296533dbff6d17db797fc08bd68"
+    },
+    {
+      "path": "m1-model/download.exit",
+      "bytes": 3,
+      "sha256": "9961d158a7e0e2f990765971a9e490af826c0743b7d603020f34cc8944319fcb"
+    },
+    {
+      "path": "m1-model/download.log",
+      "bytes": 1047,
+      "sha256": "887909ab48bea94803e0d4bf6d0f094a25ebb78234fca4b53b9f351d5e076592"
+    },
+    {
+      "path": "m1-model/labels.txt",
+      "bytes": 73,
+      "sha256": "9513d407a6f5e94efaf69ca6ee1e17b0b5f1f3653b7d7ef502c5927c72b8549e"
+    },
+    {
+      "path": "m1-model/onnx-inspect.json",
+      "bytes": 440,
+      "sha256": "5c7c14e18d30065191f559d550d7b8ac87994261ae69b8dd6ccdad300b92ddaf"
+    },
+    {
+      "path": "m1-regression/auxiliary-retry.log",
+      "bytes": 6967,
+      "sha256": "e9f0f33df2ece56a55a4391f9c7cf88b3c787d41f57e7d31bee336c8eba2c4b7"
+    },
+    {
+      "path": "m1-regression/auxiliary.log",
+      "bytes": 6702,
+      "sha256": "f59703174f6e527bb89e9b2e7703dec7bc076bebe23565109feb8493b90701cb"
+    },
+    {
+      "path": "m1-regression/compile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "m1-regression/full-retry.log",
+      "bytes": 7036,
+      "sha256": "ca0f6576768ca03e8c0dee2a2ac8d733334750c6daeb37e8a5b56d2dd814fe67"
+    },
+    {
+      "path": "m1-regression/full.log",
+      "bytes": 6777,
+      "sha256": "8e5312c1c2b7ba7bd11e2f6951e0b7c6007b3bcfd0d0959c3153c4705453f9f4"
+    },
+    {
+      "path": "m1-regression/retry-summary.txt",
+      "bytes": 19,
+      "sha256": "495e423105293a955ec203d711e175a58ff7714d5f50a4993431b5c12067b2f1"
+    },
+    {
+      "path": "m1-restart-negative-suite.log",
+      "bytes": 1469,
+      "sha256": "ae5380b39235109e4c775777feb086db19f174e4c6dcc48e07cbca486a126be5"
+    },
+    {
+      "path": "m1-upstream-camera/resources.csv",
+      "bytes": 42,
+      "sha256": "07406f98c04d02fb90765bf8ace4eff7ba79e253350e6ff618d596143ae671a0"
+    },
+    {
+      "path": "m1-upstream-camera/run.json",
+      "bytes": 572,
+      "sha256": "3f34d6edb9ef6065728199193d5df8ff5d635ebe8e8395280ba7fefb9e539acc"
+    },
+    {
+      "path": "m1-upstream-camera/stdout.log",
+      "bytes": 3089,
+      "sha256": "214c6e888f573663388ba1edbdf72a4671cb21fb127f4b98cfa3b7a6224cca12"
+    },
+    {
+      "path": "m1-upstream-camera-launch.log",
+      "bytes": 510,
+      "sha256": "94ace14a681ddec6bfed4d7b098694eb9ae40705125cb20568b032c0f2cc6d98"
+    },
+    {
+      "path": "m1-video-compat/resources.csv",
+      "bytes": 2651,
+      "sha256": "44ea528bb0ae04f6210ef01a3617644bc39a80b6b913f8de44aef3e8feeee8a2"
+    },
+    {
+      "path": "m1-video-compat/run.json",
+      "bytes": 861,
+      "sha256": "2e6483a13102f42c1aec41b1cae7fefa78d62ac2af53351de1e560590230fd9b"
+    },
+    {
+      "path": "m1-video-compat/stdout.log",
+      "bytes": 994542,
+      "sha256": "3e37bb2088897a481c60073fe34e7755b284b8c9b2b31a9b9440c586f4416f27"
+    },
+    {
+      "path": "m1-video-final/resources.csv",
+      "bytes": 2650,
+      "sha256": "872f27adcc590f374aaf8e93add1cfcc3e3d150b64f92476ee9b27680a1962c4"
+    },
+    {
+      "path": "m1-video-final/run.json",
+      "bytes": 861,
+      "sha256": "87066953a7daef8781f8ba3d288e2f0723e6d20a96a61c0797179ad7ffc4bca1"
+    },
+    {
+      "path": "m1-video-final/stdout.log",
+      "bytes": 999726,
+      "sha256": "411b36ad7437d3e439659b5616f1ad6b108bf0197900e5215861f72177a306e6"
+    },
+    {
+      "path": "m1-video-restart/resources.csv",
+      "bytes": 460,
+      "sha256": "1154a59d5019331fd47f8af61fc4014e88d4d33270c33fbdc0bece6070f0a5df"
+    },
+    {
+      "path": "m1-video-restart/run.json",
+      "bytes": 859,
+      "sha256": "625d7d061fedbe62d045dc26743652a664c248aa405adcba3a67deeb1828a374"
+    },
+    {
+      "path": "m1-video-restart/stdout.log",
+      "bytes": 129390,
+      "sha256": "b254f896657da8819fc935a8d62446a0a458c6d75793abccc433c8faa5603de6"
+    },
+    {
+      "path": "m1-video-restart-final/resources.csv",
+      "bytes": 458,
+      "sha256": "3c79986742b51d78afb62db53bb33f337d2cd601a168beafd9971ef6a7dd02c1"
+    },
+    {
+      "path": "m1-video-restart-final/run.json",
+      "bytes": 861,
+      "sha256": "b19f2574ae2bba511b1d62f1e0df0471d75c171215b5f0a6011e777deb27fd70"
+    },
+    {
+      "path": "m1-video-restart-final/stdout.log",
+      "bytes": 130542,
+      "sha256": "04f0ba5a91769f33185b65ab1b5fb112c800a963ec394b92f420bb37e288ea2a"
+    },
+    {
+      "path": "m1-video-suite.log",
+      "bytes": 1351,
+      "sha256": "3792e0c7c73ac9fad1f98b0ffbafcf36807ac5f42271fe4c3e5728423a7eb1ec"
+    },
+    {
+      "path": "m1-wrong-output/resources.csv",
+      "bytes": 145,
+      "sha256": "676078a5d7810cd6863e6c32de309b73894b534dbdb090b1eaf9556fccc2e89e"
+    },
+    {
+      "path": "m1-wrong-output/run.json",
+      "bytes": 766,
+      "sha256": "45dc2e2e9d99f8ba69e0d1acec67c3537aeb6f575d843733f4f5d3b565246bb7"
+    },
+    {
+      "path": "m1-wrong-output/stdout.log",
+      "bytes": 8932,
+      "sha256": "f9c5118fdd4b0e88a10f666655c2edee06bffaf5189cc55fb87611471920272b"
+    }
+  ],
+  "uncompressed_bytes": 7512227,
+  "archive_sha256": "e361f15ac7b91be61a17f68f1d8320553e3769fb5b1bd02137bd398314f1aaa7",
+  "capture": {
+    "schema_version": 1,
+    "simulated": false,
+    "frames": 1800,
+    "first_sequence": 0,
+    "last_sequence": 1799,
+    "driver_timestamp_span_s": 59.979771000000255,
+    "driver_interval_fps": 29.993445623525176,
+    "sequence_gaps": 0,
+    "sequence_duplicates": 0,
+    "sequence_backward": 0,
+    "bytesused_min": 460800,
+    "bytesused_max": 460800,
+    "interval_ms": {
+      "p50": 32.058999999662774,
+      "p95": 36.00700000015422,
+      "p99": 36.01608000001761,
+      "max": 36.04399999994712
+    },
+    "timestamp_type_monotonic": true,
+    "timestamp_source_soe": true,
+    "limitations": [
+      "Driver timestamp intervals only; no user dequeue timestamps or inference latency.",
+      "One tool run, no warmup exclusion or repeated formal benchmark.",
+      "Sequence gaps cannot identify the physical cause of missing frames."
+    ]
+  },
+  "runs": {
+    "m1-camera-jpeg-sink": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/video-viewer",
+        "/dev/video0",
+        "projects/edgevision/artifacts/m1-model/discard.jpg",
+        "--input-width=640",
+        "--input-height=360",
+        "--input-rate=30",
+        "--input-codec=raw",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:11:00.418614+00:00",
+      "duration_requested_s": 60.0,
+      "timeout_s": 85.0,
+      "acceptance": "requires_log_review",
+      "pid": 13430,
+      "stop_reason": "requested_duration_sigint",
+      "exit_code": 0,
+      "elapsed_s": 60.62477569600014,
+      "output_image_calls": 1785,
+      "inference_timing_reports": 0,
+      "shutdown_complete": true
+    },
+    "m1-fixed": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/detectnet",
+        "data/images/banana_0.jpg",
+        "projects/edgevision/artifacts/m1-model/banana-detected.jpg",
+        "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+        "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+        "--input_blob=input_0",
+        "--output_cvg=scores",
+        "--output_bbox=boxes",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:01:26.738469+00:00",
+      "duration_requested_s": 0,
+      "timeout_s": 240.0,
+      "acceptance": "requires_log_review",
+      "pid": 13306,
+      "exit_code": -11,
+      "stop_reason": "process_exit",
+      "elapsed_s": 133.3087436560004,
+      "output_image_calls": 0,
+      "inference_timing_reports": 0,
+      "shutdown_complete": false
+    },
+    "m1-fixed-compat": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/detectnet",
+        "data/images/banana_0.jpg",
+        "projects/edgevision/artifacts/m1-model/banana-compat.jpg",
+        "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+        "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+        "--input_blob=input_0",
+        "--output_cvg=scores",
+        "--output_bbox=boxes",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:09:30.235990+00:00",
+      "duration_requested_s": 0,
+      "timeout_s": 90.0,
+      "acceptance": "requires_log_review",
+      "pid": 13411,
+      "exit_code": 0,
+      "stop_reason": "process_exit",
+      "elapsed_s": 3.007522812999923,
+      "output_image_calls": 1,
+      "inference_timing_reports": 1,
+      "shutdown_complete": true
+    },
+    "m1-fixed-final": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/detectnet",
+        "data/images/banana_0.jpg",
+        "projects/edgevision/artifacts/m1-model/banana-final.jpg",
+        "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+        "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+        "--input_blob=input_0",
+        "--output_cvg=scores",
+        "--output_bbox=boxes",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:18:43.817774+00:00",
+      "duration_requested_s": 0,
+      "timeout_s": 30.0,
+      "acceptance": "requires_log_review",
+      "pid": 13582,
+      "exit_code": 0,
+      "stop_reason": "process_exit",
+      "elapsed_s": 3.006928030000381,
+      "output_image_calls": 1,
+      "inference_timing_reports": 1,
+      "shutdown_complete": true
+    },
+    "m1-upstream-camera": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/video-viewer",
+        "/dev/video0",
+        "--input-width=640",
+        "--input-height=360",
+        "--input-rate=30",
+        "--input-codec=raw",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:06:20.964228+00:00",
+      "duration_requested_s": 60.0,
+      "timeout_s": 85.0,
+      "acceptance": "requires_log_review",
+      "pid": 13360,
+      "exit_code": 0,
+      "stop_reason": "process_exit",
+      "elapsed_s": 0.5016426100000899,
+      "output_image_calls": 0,
+      "inference_timing_reports": 0,
+      "shutdown_complete": false
+    },
+    "m1-video-compat": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/detectnet",
+        "/dev/video0",
+        "projects/edgevision/artifacts/m1-model/discard.jpg",
+        "--input-width=640",
+        "--input-height=360",
+        "--input-rate=30",
+        "--input-codec=raw",
+        "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+        "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+        "--input_blob=input_0",
+        "--output_cvg=scores",
+        "--output_bbox=boxes",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:12:01.111114+00:00",
+      "duration_requested_s": 60.0,
+      "timeout_s": 85.0,
+      "acceptance": "requires_log_review",
+      "pid": 13435,
+      "stop_reason": "requested_duration_sigint",
+      "exit_code": 0,
+      "elapsed_s": 60.624289467999915,
+      "output_image_calls": 1703,
+      "inference_timing_reports": 1703,
+      "shutdown_complete": true
+    },
+    "m1-video-final": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/detectnet",
+        "/dev/video0",
+        "projects/edgevision/artifacts/m1-model/discard.jpg",
+        "--input-width=640",
+        "--input-height=360",
+        "--input-rate=30",
+        "--input-codec=raw",
+        "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+        "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+        "--input_blob=input_0",
+        "--output_cvg=scores",
+        "--output_bbox=boxes",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:18:46.891251+00:00",
+      "duration_requested_s": 60.0,
+      "timeout_s": 85.0,
+      "acceptance": "requires_log_review",
+      "pid": 13594,
+      "stop_reason": "requested_duration_sigint",
+      "exit_code": 0,
+      "elapsed_s": 60.622516557999916,
+      "output_image_calls": 1712,
+      "inference_timing_reports": 1712,
+      "shutdown_complete": true
+    },
+    "m1-video-restart": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/detectnet",
+        "/dev/video0",
+        "projects/edgevision/artifacts/m1-model/discard.jpg",
+        "--input-width=640",
+        "--input-height=360",
+        "--input-rate=30",
+        "--input-codec=raw",
+        "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+        "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+        "--input_blob=input_0",
+        "--output_cvg=scores",
+        "--output_bbox=boxes",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:15:24.542170+00:00",
+      "duration_requested_s": 10.0,
+      "timeout_s": 30.0,
+      "acceptance": "requires_log_review",
+      "pid": 13480,
+      "stop_reason": "requested_duration_sigint",
+      "exit_code": 0,
+      "elapsed_s": 10.5234667120003,
+      "output_image_calls": 201,
+      "inference_timing_reports": 201,
+      "shutdown_complete": true
+    },
+    "m1-video-restart-final": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/detectnet",
+        "/dev/video0",
+        "projects/edgevision/artifacts/m1-model/discard.jpg",
+        "--input-width=640",
+        "--input-height=360",
+        "--input-rate=30",
+        "--input-codec=raw",
+        "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+        "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+        "--input_blob=input_0",
+        "--output_cvg=scores",
+        "--output_bbox=boxes",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:19:47.580809+00:00",
+      "duration_requested_s": 10.0,
+      "timeout_s": 85.0,
+      "acceptance": "requires_log_review",
+      "pid": 13606,
+      "stop_reason": "requested_duration_sigint",
+      "exit_code": 0,
+      "elapsed_s": 10.523383666999507,
+      "output_image_calls": 203,
+      "inference_timing_reports": 203,
+      "shutdown_complete": true
+    },
+    "m1-wrong-output": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "build-baseline/aarch64/bin/detectnet",
+        "data/images/banana_0.jpg",
+        "projects/edgevision/artifacts/m1-model/discard.jpg",
+        "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+        "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+        "--input_blob=input_0",
+        "--output_cvg=scores",
+        "--output_bbox=not_a_tensor",
+        "--headless",
+        "--log-level=verbose"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-15T13:15:35.131836+00:00",
+      "duration_requested_s": 0,
+      "timeout_s": 30.0,
+      "acceptance": "requires_log_review",
+      "pid": 13488,
+      "exit_code": 1,
+      "stop_reason": "process_exit",
+      "elapsed_s": 3.0078867680003896,
+      "output_image_calls": 0,
+      "inference_timing_reports": 0,
+      "shutdown_complete": false
+    }
+  }
+}

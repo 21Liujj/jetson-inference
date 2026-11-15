@@ -1,0 +1,10 @@
+artifacts/**
+!artifacts/.gitkeep
+build/
+__pycache__/
+*.engine
+*.plan
+*.onnx
+*.pt
+*.bag
+site/.openai/state/

@@ -1,0 +1,158 @@
+Jetson项目开发指令 V3.1
+2026年11月15日
+
+使用方法
+把本文件与《Jetson端侧具身智能视觉系统施工方案.md》放到个人项目工作区。主方案为完整设计，项目定位为机器人视觉与多模态Agent系统，本文件用于让Cursor或Codex在jetson-inference的个人fork上实际施工。本版替代旧提示词中Jetson必须绑定STM32、只做host模拟和暂不做ROS2或Agent的安排。ROS2和Agent均为正式交付项。
+
+================ 已确定的开源基础 必须执行 ================
+
+主项目：https://github.com/dusty-nv/jetson-inference
+使用其配套jetson-utils与ros_deep_learning submodule，首轮保持主仓库锁定版本。本次核查主仓库commit为45da40a8f3c180191b269f57f736caaa025b8a69，utils配套commit为6d5471c97dad443776d2339569a4d1145f034a9e；实施时记录实际SHA并先验证。
+
+先原样构建并运行固定图、USB相机与推理闭环，保留baseline。随后在同一fork进行有边界的修改。不能跳过上游直接生成另一套完整视觉框架，不能把上游本来已有的功能写成个人新增成果。
+
+新增UPSTREAM.md和贡献矩阵：每项标记upstream_reused、upstream_modified或new；记录对应代码、上游SHA、个人提交与验证证据。已有个人工作区和未提交改动优先保护，远端fork条件不足时先本地分支继续开发。
+
+新增系统层建议位于projects/edgevision，复用libjetson-inference与libjetson-utils。保持上游结构和构建标准；新增模块可用C++17。改submodule时要在对应个人分支提交，并更新主仓库gitlink，不能只在主仓库提交一个脏目录。
+
+已核查入口：c/tensorNet.cpp、examples/detectnet、配套utils/camera/gstCamera.cpp、utils/video/videoSource.cpp、utils/cuda和ros/src/node_detectnet.cpp。路径以锁定submodule为准。
+
+源码存在TensorRT 10适配分支，但不代表所有模型与镜像都能运行。历史有r36.4.3镜像tag缺失记录；核验本机TensorRT、模型格式与镜像，必要时源码构建，不自动升级JetPack。
+
+ROS2与Agent必须完成。Agent参考NanoLLM及NVIDIA-AI-IOT/ros2_nanollm的结构，优先复用已独立运行的本地模型后端；这些旧示例的依赖必须独立核验。
+
+================ 项目目标 ================
+
+请作为C++、嵌入式Linux、CUDA和ROS2开发搭档，在我的实际工作区中完成项目实现与必要验证。目标为：USB摄像头 + Linux UVC驱动开发 + CUDA/TensorRT端侧模型部署 + ROS2 + 视觉任务Agent。
+
+两个项目的分工已经确定：
+Jetson：USB相机、UVC/V4L2、驱动源码扩展、C++执行层、CUDA与TensorRT、ROS2视觉接口和Agent。
+RK3588：完整多模态边缘AI交互终端，正式覆盖Boot/U-Boot、kernel/DT/rootfs、全类外设、IIO、MAC/PHY/CAN、双路V4L2/RGA/MPP/RTSP、RKNN/RKLLM、本地LLM/VLM与ASR/TTS、Qt、ROS2/Agent和Linux/RTOS。不能收窄为IMU加RKNN。两边均独立部署，当前Jetson不依赖RK或STM32先完成。
+
+岗位目标是AI芯片系统软件方向，重视C/C++、Linux kernel、CUDA异步launch、内存传输、stream、event和软硬件系统调试。请把工作落到有实际用途的源码、运行记录和性能分析。
+
+================ 工作区审计与实施原则 ================
+
+1. 先读取当前工作区AGENTS.md、README、构建文件、相关设计、现有测试与git状态；识别已有个人工程、版本、入口和真实完成度，形成docs/repo-audit.md。已有结构可用就增量实现，不新造并行框架，不覆盖未提交改动。
+2. 历史环境为Jetson Orin Nano Super 8GB、JetPack 6.2、L4T 36.4.3、Ubuntu 22.04和CUDA 12.6系列。实际版本、相机能力、TensorRT与ROS2安装状态必须检查，不能把历史值写成本轮检测结果。
+3. 如果当前不在Jetson上，完成可执行的host工作，并将V4L2实机、CUDA、TensorRT和模块加载分别标为待板端验证。显式mock可以用于逻辑测试，日志必须标记simulated。
+4. 若当前目录是参考采集系统源码，先确认个人项目目录。保留参考仓库，按公开接口在个人工程实现对应功能，复用架构思想、状态机与诊断方法。
+5. 核心C++17与CMake，Python用于Agent和轻量控制。CUDA、TensorRT和ROS2依赖显式启用；缺库不能静默切成mock并报告真实功能成功。
+6. ROS2与Agent属于必须实现范围。可以分阶段开发，但架构、接口、里程碑与最终验收必须包含，不能改成可选项或永久stub。
+7. 事实、设计和实测分开记录。planned、implemented、host_verified、board_verified、blocked按条目填写；没有执行过的命令不写通过。
+
+================ 今晚首次执行 M0与M1上游基线 ================
+
+先完成环境和工作区审计，再获取并冻结上游与submodule版本，构建最小目标，执行上游固定图推理与USB输入。今晚先完成可复现baseline，不先重写完整采集与推理代码。
+
+M0交付：env记录、当前仓库git状态、上游与submodule SHA、相机格式与USB拓扑、CUDA/TensorRT/ROS2及工具状态。不存在的工具写unavailable，未连接硬件写待板端验证。
+M1交付：实际构建命令和输出、一个兼容ONNX模型的原始预测、同一USB设备的工具基线与上游视频输入结果、正常退出与再次启动记录、docs/baseline.md。
+先检查上游安装脚本与依赖，选择当前阶段所需目标，不提前构建全部训练工具。模型、镜像或编译问题保留完整错误，不以空文件或mock替代。
+USB格式、分辨率与帧率按实际枚举结果选择。压缩数据单列解码阶段，保存driver timestamp类型和host单调时间，时钟域未确认时不相减。
+运行先60秒，再逐级扩大到30分钟。无Jetson时完成可执行的host工作和源码审计，板端结果保持待验证。
+完成后列出第一批个人改造：上游可直接复用、需要修改、需要新增及各自验收。继续开发按阶段推进，每轮给出真实结果和具体下一步。
+
+================ M2中补充的采集改造 ================
+
+以现有gstCamera和videoSource为参照，按需要新增直接V4L2输入后端，保留上游路径作对照。实现device_caps、格式读回、MMAP、poll与停止eventfd、QBUF/DQBUF、STREAMOFF及RAII。
+采集fd单一owner，正确处理stride、bytesused和错误标志。复制到自有slot后再QBUF；GPU使用中的slot等待完成事件后回收。待处理队列初值2、自有slot初值4，容量可配置且有预算。
+补充sequence缺口、主动丢弃、帧间隔和启停指标，再做重连与100次启停验证。所有新增行为与上游基线对照。
+
+================ 核心接口与资源契约 ================
+
+core包含FrameMeta、FrameLease、BoundedQueue、TaskManager、ControlRouter与HealthMonitor。目录可按现有工程映射。
+
+FrameMeta至少有frame_id、session_generation、sequence、width、height、fourcc、stride、bytesused、flags、driver_timestamp及类型、host_dequeue_mono_ns和publish_mono_ns。
+FrameLease为move-only资源。slot状态为FREE、WRITING、READY、INFLIGHT、DONE；过载时只回收READY旧帧。GPU使用中的slot由完成事件保护。
+队列close必须唤醒等待者；正常、错误、取消和退出路径恰好释放一次。旧generation结果不能影响新的采集会话。
+
+ControlRouter是CLI、ROS2、Agent与Web的唯一控制入口。命令携带request_id、generation、deadline和参数，受理返回accepted与task_id，最终状态另查。重复request_id不重复执行。
+RUNNING要求STREAMON成功并收到有效首帧。相机与模型分别维护状态，空检测、采集失败和模型失败分别表示。
+
+执行层提供initialize、submit、query、collect、cancel_pending与shutdown。GPU任务已经提交后的超时只让结果失效，不允许提前归还在途内存。不可恢复CUDA错误进入worker失败流程。
+
+================ 后续阶段 M2 帧池与任务框架 ================
+
+建立有界队列、资源租约和任务终态，先用mutex与condition_variable。首版采用单进程核心，采集、推理与控制有清楚线程边界。
+覆盖队列关闭、生产消费并发、慢消费者、重复停止、slot重复利用和任务过期。测试围绕所有权与异常行为，避免只镜像实现。
+如果现有工程已具备POSIX MQ与共享内存，保留已验证边界，补齐boot_id、generation、消息长度、ACK与异常回收，不重写另一套协议。
+
+================ 后续阶段 M3 模型基线与驱动准备 ================
+
+在已运行的上游模型基线之后，增加YOLOv8n等小模型适配，固定输入与batch 1。先审计已有模型，再决定沿用或替换。
+保存权重、ONNX、engine的hash与模型manifest，记录导出版本、输入输出布局、预处理、类别表、NMS、TensorRT/CUDA、GPU与构建参数。
+在兼容目标环境构建engine；先用固定图比较参考框架、ONNX和TensorRT，再接视频流。缺少模型或构建失败时明确报告。
+实现C++ TensorRTBackend，按实际版本使用命名tensor接口与enqueueV3，预分配buffer。一个并发worker独占context、stream和在途资源。
+至少20张固定图验证颜色、letterbox、输出解析与坐标映射；再冻结带标注的小验证集，精度阈值在比较前登记。
+
+同时审计目标L4T对应的UVC与videobuf2源码，记录匹配配置、符号和模块依赖，先完成未修改版本构建，保留原版相机基线。
+
+================ 后续阶段 M4 UVC驱动开发 ================
+
+必须形成真实内核功能扩展与板端证据。主目标是UVC帧完成及buffer状态的可观测性扩展。
+先检查已有V4L2/vb2 tracepoint和dynamic debug，明确缺失的信息；在目标release实际存在的帧完成或归还路径新增小型UVC tracepoint。
+候选字段为stream标识、sequence、有效字节数、完成状态和内核单调时间。额外队列字段需有正确维护和锁保护，不读取已结束生命周期的对象。
+遵守USB完成上下文约束，避免高频printk，不为每个USB包生成日志。检查stop、disconnect、引用和锁序。
+提交patch、源码版本、构建配置、构建日志、module信息、trace解析脚本、真实trace与回退说明。
+对照原版、补丁关闭事件与启用事件，解释信息增量与性能开销。新增功能至少回答一次真实场景中的诊断问题。
+真实相机支持XU控制或实际发现恢复缺陷时才增加对应开发；没有bug不编造修复故事。只启用现有日志不能作为新增驱动功能验收。
+安装前完成备份、目标版本检查和可执行回退步骤；先停止使用设备的进程，不强制加载符号或vermagic不匹配的模块。
+
+================ 后续阶段 M5 CUDA与异步执行 ================
+
+先审计和复用上游CUDA kernel，针对实际模型缺口或profile热点开展有数值验证的改造，例如letterbox、布局转换或算子融合。明确支持的输入格式与stride。
+先与CPU参考做数值对照，再接模型精度回归；性能优化后仍使用同一组输入与误差标准。
+依次保留串行基线、buffer复用、双或三缓冲事件流水线。单context版本先稳定；多context并发另测内存与尾延迟。
+使用cudaEventRecord、cudaStreamWaitEvent等建立依赖，GPU完成后再释放slot。记录并区分CPU提交耗时、GPU阶段耗时、排队与端到端耗时。
+Jetson CPU与GPU共享物理DRAM。至少比较两条实际可用的内存路径，如host到device与pinned staging；mapped或managed方案按能力展开。
+分别检查host register、mapped host、managed memory、concurrent access和async engine属性；不要假定任意V4L2 mmap都可cudaHostRegister，不默认cudaMallocAsync或预取API可用。
+V4L2 MMAP、DMA-BUF与CUDA异步传输的边界分别表述。DMA-BUF只有export/import与GPU互操作均可用时才实现，不预先承诺端到端零拷贝。
+用NVTX与Nsight Systems保存一次有意义的时间线，正式性能在不带profiler时测。多stream收益以实际重叠与完整指标证明。
+
+================ 后续阶段 M6 ROS2 必须交付 ================
+
+以实际Ubuntu与ROS版本建立ament/colcon工作区，默认评估Humble。建立edgevision_interfaces、edgevision_ros与edgevision_bringup，复用核心C++库。
+首版相机只有一个owner，ROS适配器发布核心结果与低频rgb8快照。主推理路径不依赖图像经DDS绕回；之后需要全频图像时补性能对照。
+实现/edgevision/image、/edgevision/detections、/edgevision/frame_meta与/diagnostics。使用sensor_msgs、vision_msgs与diagnostic_msgs，字段按本机包版本核对。
+实现set_capture与get_status服务，以及run_inspection Action，分别测试受理、最终成功、失败与取消。全部调用同一ControlRouter和TaskManager。
+图像采用SensorDataQoS与小队列，验证订阅端兼容性。模型加载和推理不堵塞ROS executor；使用清楚的callback group与worker边界。
+ROS header时间不能直接填steady_clock数值。实时use_sim_time默认false；记录时间戳映射，未建立映射时明确发布时刻来源。内参和TF未测量时保留未标定状态。
+用真实图像、真实检测、ROS控制和一段受限大小的rosbag2完成演示。比较ROS关闭、诊断、低频图像与全频图像的成本，不凭配置名称宣称零拷贝。
+
+================ 后续阶段 M7 Agent 必须交付 ================
+
+开发VisionAgent、ModelAdapter、Planner、ToolRegistry与Executor。真实模型优先复用已独立验证的EdgeQwen或其他本地小型模型；检查现有接口与构建结果，不凭历史进度假定可运行。
+自然语言进入结构化计划，计划通过schema验证后调用真实工具，依据工具返回生成回答。deterministic模式可做开发与回归测试，但必须明确标注，不能代替模型参与的正式验收。
+工具集包含get_status、start_capture、stop_capture、capture_snapshot、detect_snapshot、describe_snapshot、get_recent_metrics和create_report。
+所有控制经同一ControlRouter。输入参数受schema约束，不将用户文本拼到shell。工具返回task_id、frame_id、generation、status、error_code和结果依据。
+规划和执行均有队列、步骤数、timeout与内存预算。初值任务队列1、最大步骤6；失败重试有限，控制动作遵守幂等规则。
+实时采集线程不能调用LLM。测检测与Agent模型独立及组合内存，按需加载或串行调度，记录Agent对持续检测P95/P99的影响。
+完成至少20条任务集和3条真实端到端轨迹：自然语言拍照检测并报告、视觉问答、设备或模型失败时返回明确失败。回答引用真实结果，不为模型没检测到的对象伪造框或置信度。
+ROS2 Action与Agent共享TaskManager；同时请求时返回排队或BUSY，避免各自加载同一模型或争用相机。
+
+================ 后续阶段 M8 系统交付 ================
+
+实现JSONL事件日志、逐帧CSV、统一run_id、错误码、日志轮转、磁盘限制、systemd和轻量Web。页面显示真实设备、检测、资源及Agent任务轨迹。
+长稳先30分钟，再2小时，成熟版12小时，检查有效帧、任务推进、RSS/fd、队列与在途slot。没有执行的时长保持待验证。
+故障覆盖相机拔插、采集停止、推理过载、模型失败、Agent超时、ROS慢订阅和磁盘限制；记录实际恢复范围。单进程崩溃会停止采集，只有完成独立进程隔离才能验收AI崩溃而采集继续。
+正式benchmark固定模型、输入、精度、功耗与热状态，排除warmup，关键配置重复3次并保留样本。分别报告吞吐、P50/P95/P99、sequence缺口和主动丢弃。
+若设备确认为Orin Nano，不预设硬件NVENC，RTSP按实际编码能力决定。网页状态与RTSP限频预览为正式交付。Docker、开放词汇分割、Jetson额外外设按剩余时间扩展，ROS2和Agent保持核心验收项。
+
+================ 每轮反馈格式 ================
+
+完成当前阶段后给出：
+1. 本轮实际完成与对应代码路径。
+2. 执行过的构建、运行与验证命令及结果。
+3. 可复制的启动方式与依赖。
+4. 原始证据目录、关键结果与解释。
+5. 尚未完成、尚未验证及阻塞事项。
+6. 下一阶段最少的三件具体工作。
+
+主动修复本轮发现且属于当前范围的问题。不要把实现计划写成完成报告，不用恒真测试或静默mock掩盖缺失功能。让每一阶段都能运行、能解释、能继续开发。
+
+================ 双平台完整范围与ARM64补充 ================
+
+Jetson的主交付是USB相机/UVC内核扩展、C++ GPU执行、CUDA/TensorRT、本地VLM、ROS2和模型驱动Agent，加网络展示、日志、部署与长稳。
+RK的完整范围以其新版主方案为准，本地AI与Agent不能以Jetson远程接口代替；允许两板都有模型、ROS2与Agent，按深入问题区分。
+Jetson补AArch64整数传参反汇编、一次系统调用/驱动入口、MMAP/DMA地址与相机故障调用链，源码构建和模块回退均实际验证。
+VLM候选优先审计已有EdgeQwen/Qwen3-VL-2B后端，独立通过后再组合检测，分别测模型质量、TTFT、峰值内存和检测P95/P99干扰。
