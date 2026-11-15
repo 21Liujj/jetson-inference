@@ -12,7 +12,11 @@
   640×360 YUYV 工具采集 1,800 帧，观测窗口内无序号缺口。
 - 使用 GDB 定位 TensorRT 10 模型加载崩溃，修复 execution context 初始化、命名
   tensor 绑定及显式 batch 维度处理；通过固定图、60 秒实时推理、退出后重启和真实
-  GPU 绑定回归，保存模型哈希、原始失败与恢复日志。
+  GPU 绑定回归，保存模型哈希、原始失败与恢复日志；进一步完成 30 分钟实际相机
+  推理基线，处理 53,898 帧后正常退出。
+- 复用并扩展 C++ 有界队列和共享帧池租约，增加 generation 隔离、READY 帧淘汰与
+  任务幂等/超时/取消核心；通过 Windows 与 Jetson sanitizer 各 4/4 项 CPU 核心
+  回归。真实 V4L2 后端接入与 CUDA event 适配仍在开发。
 
 GitHub: https://github.com/21Liujj/jetson-inference
 

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "simulated": false,
+  "scope": "supervised repaired-upstream functional baseline",
+  "checks": {
+    "normal_exit": true,
+    "supervised_window_completed": true,
+    "effective_work_observed": true,
+    "cleanup_logged": true,
+    "no_failure_markers": true,
+    "resource_samples_cover_window": true
+  },
+  "passed": true,
+  "run": {
+    "schema_version": 1,
+    "simulated": false,
+    "argv": [
+      "build-baseline/aarch64/bin/detectnet",
+      "/dev/video0",
+      "projects/edgevision/artifacts/m1-model/discard.jpg",
+      "--input-width=640",
+      "--input-height=360",
+      "--input-rate=30",
+      "--input-codec=raw",
+      "--model=projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+      "--labels=projects/edgevision/artifacts/m1-model/labels.txt",
+      "--input_blob=input_0",
+      "--output_cvg=scores",
+      "--output_bbox=boxes",
+      "--headless",
+      "--log-level=verbose"
+    ],
+    "cwd": "/home/nvidia/jetson-inference-edgevision",
+    "wall_time": "2026-11-15T13:39:43.310660+00:00",
+    "duration_requested_s": 1800.0,
+    "timeout_s": 1830.0,
+    "acceptance": "requires_log_review",
+    "pid": 13770,
+    "stop_reason": "requested_duration_sigint",
+    "exit_code": 0,
+    "elapsed_s": 1800.6016051329998
+  },
+  "inference_reports": 53898,
+  "jpeg_output_calls": 53898,
+  "resource_samples": 3594,
+  "failure_markers": [],
+  "post_60s_resources": {
+    "rss_kib_min": 1093684,
+    "rss_kib_max": 1141612,
+    "fd_min": 52,
+    "fd_max": 53,
+    "rss_kib_first_5min_median": 1096944,
+    "rss_kib_last_5min_median": 1141612
+  },
+  "limitations": [
+    "Verbose logging and real JPEG discard encoding included; not a formal latency/FPS benchmark.",
+    "Only process RSS/fd sampled; not total CPU/GPU memory, temperature or power.",
+    "No per-frame V4L2 sequence/timestamp trace for this upstream GStreamer run.",
+    "Short CPU-core sanitizer builds/tests occurred during this functional window.",
+    "No camera unplug, 100-cycle, 2-hour or 12-hour acceptance."
+  ],
+  "files": [
+    {
+      "path": "run.json",
+      "bytes": 865,
+      "sha256": "d2c21dcfe77040432bdc561cbec1d0dfdc0281521ccf858fda9784e73168862a"
+    },
+    {
+      "path": "resources.csv",
+      "bytes": 83667,
+      "sha256": "0bd6e675c5a1925e88b3409db86d7706ae33011468975a1cf7a4cf2d3b5e948e"
+    },
+    {
+      "path": "stdout.log",
+      "bytes": 31058862,
+      "sha256": "dafd837573a557597c7e436c2a0462152b890a8f05ce4db2d4a468983c04693d"
+    }
+  ],
+  "archive_sha256": "1d044ced0d441af019f9747bbad583bc367582c3f474b41b521a066cddc2a268"
+}

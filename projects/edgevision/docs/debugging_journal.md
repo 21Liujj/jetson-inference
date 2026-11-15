@@ -80,3 +80,21 @@ encoding; they save no private camera images and are not pure capture benchmarks
 4. Why is exit code 0 insufficient for capture acceptance?
 5. Why do zero V4L2 sequence gaps not prove zero application drops or latency?
 6. What work does the JPEG discard output add to these measurements?
+
+## 2026-11-15 · 30-minute follow-up and shutdown checkpoint
+
+The repaired upstream path completed 53,898 inference/output calls over the full
+supervised 30-minute window and normal cleanup. Evidence is archived separately
+so the first 112-file baseline package is immutable. First-to-last resource-window
+RSS medians rose by 44,668 KiB before a flat last 20 minutes; cache/lazy allocation
+is a hypothesis, not a confirmed cause. FD samples stayed within 52–53. No formal
+FPS/P99, zero-leak or multi-hour claim is derived from this run.
+
+M2 CPU-core source is separately verified on Windows and native Jetson with
+sanitizers, 4/4 each. Those tests use explicit CPU fence fixtures and are not GPU
+or real V4L2 acceptance. A raw-log Git attribute preserves CRLF bytes in Windows
+evidence so committed files still match recorded hashes.
+
+The user was told the camera was released and all evidence was saved locally,
+then advised to use normal shutdown before removing power. No shutdown command
+was executed by the assistant; physical power state must be rechecked next time.

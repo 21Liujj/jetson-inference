@@ -25,7 +25,7 @@
 M0 evidence collected; unmodified M1 inference SIGSEGV retained. Commit afee249
 repairs TRT10 local-context binding, I/O addresses and batch/remaining dimensions.
 Final fixed image and 60s USB plus restart pass; full/auxiliary real-GPU probes
-pass. No 30min/100-cycle/kernel/ROS2/Agent acceptance. vision_msgs missing.
+pass. No 100-cycle/kernel/ROS2/Agent acceptance. vision_msgs missing.
 User requests a plain system-tool dashboard and may apply for jobs tomorrow;
 prioritize honest, traceable publication without shrinking the required scope.
 
@@ -36,3 +36,12 @@ not open a camera or implement a CUDA fence. See docs/m2-core.md for raw API and
 record-retention limits. The user intends to power down after the 30min baseline;
 finish and retrieve its evidence first, start no new long board test, and leave
 normal shutdown to the user unless explicitly requested.
+
+Final 2026-11-15 board checkpoint: repaired upstream 30min completed, 53,898 real
+inference/output calls, exit0, camera released, legacy daemon IDLE. Raw 31MB log
+and resource CSV are archived separately and hash-verified locally. RSS rose
+early and was flat in the last20min; no zero-leak/formal-FPS/multi-hour claim.
+User was told normal shutdown is safe; assistant did not shut down the board.
+SSH is closed. Recheck connectivity, current power/software/device identity and
+camera owners on next entry; do not assume a managed Git HEAD in the board
+worktree (actual build input source hashes/archives are the authority there).

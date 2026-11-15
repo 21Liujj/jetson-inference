@@ -2,7 +2,7 @@
 
 基于 [jetson-inference](https://github.com/dusty-nv/jetson-inference) 二次开发，面向 USB 相机采集、UVC 追踪、CUDA/TensorRT 执行、ROS2 与本地视觉任务 Agent。
 
-**当前：M0 已审计；M1 兼容基线通过短时实机验证。M2–M8 仍在计划中。**
+**当前：M1 兼容基线通过 30 分钟功能验证；M2 核心组件通过回归，采集适配继续开发。M3–M8 待验收。**
 未修改上游在 TensorRT 10 下的崩溃已保留；修复版结果与原版分别记录。
 
 [展示页](https://21Liujj.github.io/jetson-inference/) · [实机基线](projects/edgevision/docs/baseline.md) · [进度](projects/edgevision/docs/progress.md) · [贡献边界](UPSTREAM.md) · [上游原版说明](README.upstream.md)
@@ -18,10 +18,12 @@
 | 驱动帧间隔 | 29.9934fps；MONOTONIC / SOE 时间戳 |
 | TensorRT 兼容修复 | 修复 context 初始化、命名 I/O 绑定、显式 batch 维度及辅助输出索引 |
 | 实际推理 | 固定图输出检测框；最终版 60 秒窗口完成 1,712 次相机推理 |
+| 30 分钟基线 | 完成 53,898 次真实相机推理，正常退出，日志逐文件哈希核验 |
+| M2 核心 | 有界队列、帧租约、任务管理；Windows 和 Jetson sanitizer 各 4/4 CPU 核心测试 |
 | 退出与重启 | 正常退出后再次启动完成 203 次推理；错误 tensor 名明确失败 |
 | GPU 回归 | 完整输出及辅助输出两种场景，真实 enqueueV3、形状与有限值检查通过 |
 
-以上是短时功能验证。推理窗口包含模型初始化、JPEG 输出和日志开销，**不是正式性能 benchmark**；尚无本轮 30 分钟、2 小时或 12 小时长稳结论。当前 SSD 水果模型仅用于上游基线，不代表最终检测模型。
+以上为短时和 30 分钟功能验证。推理窗口包含模型初始化、JPEG 输出和日志开销，**不是正式性能 benchmark**；尚无本轮 2 小时或 12 小时长稳结论；M2 测试不等同于真实 GPU 或新采集后端验收。当前 SSD 水果模型仅用于上游基线，不代表最终检测模型。
 
 [原始日志与哈希清单](projects/edgevision/evidence/2026-11-15/manifest.json) · [完整文本证据包](projects/edgevision/evidence/2026-11-15/raw-text-evidence.zip) · [故障定位](projects/edgevision/docs/debugging_journal.md)
 
@@ -29,7 +31,7 @@
 
 | 方向 | 目标 | 状态 |
 |---|---|---|
-| 采集 | 单 owner V4L2、MMAP、有界帧池、启停与断连恢复 | M2 待验收 |
+| 采集 | 单 owner V4L2、MMAP、有界帧池、启停与断连恢复 | M2 核心已验，采集适配待验 |
 | 内核 | 匹配 L4T 的 UVC 帧完成 trace，关联用户态记录 | M3–M4 待验收 |
 | GPU | 数值回归、缓冲复用、stream/event、Nsight 对照 | M5 待验收 |
 | 机器人 | 图像、检测、诊断、服务与 Action | M6 待验收 |
@@ -65,6 +67,7 @@ build-baseline/aarch64/bin/detectnet data/images/banana_0.jpg /tmp/result.jpg \
 ~~~text
 c/tensorNet.cpp                     TensorRT 10 兼容性修复
 projects/edgevision/
+  include/ src/ tests/              C++ 帧池、租约、队列、任务核心与回归
   tools/                           环境采集、监督运行、实机回归、证据导出
   models/                          模型契约与哈希；权重/engine 不入库
   docs/                            审计、基线、调试记录、施工规范与验收表

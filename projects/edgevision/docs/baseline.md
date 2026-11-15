@@ -128,9 +128,32 @@ g++ -std=c++17 -O0 -g -Wno-deprecated-declarations \
 
 ## Not yet verified
 
-30-minute acquisition; 100 starts/stops; physical unplug/replug; reference-framework
+Direct-V4L2-backend 30-minute acquisition; 100 starts/stops; physical unplug/replug; reference-framework
 accuracy; CUDA numerical/stream optimization; kernel source build/patch/load/rollback;
 ROS2 interface packages and real data; local VLM and model-driven Agent; RTSP in
 this new mainline; production resource limits; 2h/12h endurance. `vision_msgs` is
 not installed. Formal performance needs warmup exclusion, repeated measurements
 and controlled power/temperature; none of the short-run numbers above substitutes.
+
+## 30-minute repaired-upstream follow-up
+
+The supervised run completed after **1800.6016s**, with **53,898** inference reports
+and matching JPEG discard calls. SIGINT led to normal pipeline shutdown and exit
+0. No failure marker was found in the run log. The camera had no remaining owner,
+owned test processes had exited, and the original legacy daemon remained IDLE.
+Raw evidence was retrieved and every file hash verified locally before the user
+was told it was safe to perform normal shutdown.
+
+[Machine-readable checks](../evidence/2026-11-15-30min/summary.json) ·
+[Complete 30-minute text log and resource samples](../evidence/2026-11-15-30min/raw-long-run.zip).
+
+There are 3,594 process RSS/fd samples. After 60s, RSS ranged from 1,093,684 to
+1,141,612 KiB; first-window and last-window medians rose from 1,096,944 to
+1,141,612 KiB. In the last 20 minutes RSS was constant at 1,141,612 KiB. FD samples
+were 52–53. The early rise is observed but not yet attributed; this is not proof
+that all resource paths are leak-free.
+
+This run included JPEG encoding/discard, verbose logs and short CPU-core
+sanitizer builds/tests. It is a functional duration baseline, not a controlled
+throughput/P99 benchmark. It contains no per-frame V4L2 sequence trace and does
+not replace direct-backend capture, unplug, 100-cycle, 2h or 12h acceptance.
