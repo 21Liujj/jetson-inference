@@ -1,0 +1,13 @@
+Test project C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+    Start 1: bounded_queue
+1/4 Test #1: bounded_queue ....................   Passed    0.25 sec
+    Start 2: frame_lease
+2/4 Test #2: frame_lease ......................   Passed    0.10 sec
+    Start 3: frame_queue
+3/4 Test #3: frame_queue ......................   Passed    0.31 sec
+    Start 4: task_manager
+4/4 Test #4: task_manager .....................   Passed    0.06 sec
+
+100% tests passed out of 4
+
+Total Test time (real) =   0.78 sec

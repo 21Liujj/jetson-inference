@@ -28,3 +28,11 @@ Final fixed image and 60s USB plus restart pass; full/auxiliary real-GPU probes
 pass. No 30min/100-cycle/kernel/ROS2/Agent acceptance. vision_msgs missing.
 User requests a plain system-tool dashboard and may apply for jobs tomorrow;
 prioritize honest, traceable publication without shrinking the required scope.
+
+M2 core now ports the exact hashed personal J11/J12 storage/queue implementation,
+adds FrameMeta, explicit slot/fence states, READY-only generation queue and bounded
+TaskManager. Windows 4/4 and Jetson ASan/UBSan/LSan CPU-core 4/4; these tests do
+not open a camera or implement a CUDA fence. See docs/m2-core.md for raw API and
+record-retention limits. The user intends to power down after the 30min baseline;
+finish and retrieve its evidence first, start no new long board test, and leave
+normal shutdown to the user unless explicitly requested.

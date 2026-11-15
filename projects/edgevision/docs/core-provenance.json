@@ -1,0 +1,37 @@
+{
+  "source_repository": "https://github.com/21Liujj/jetson-stm32F407",
+  "tracked_head": "666a3a1d33d4637e267dd858c9af91ff83827d57",
+  "source_worktree": "J11/J12 uncommitted local changes; exact hashes recorded below",
+  "files": [
+    {
+      "path": "include/edgevision/bounded_queue.h",
+      "sha256": "20d8acd0f24cd1e32b31da69238752bcb737b43447232685c94fbe75742c45ee"
+    },
+    {
+      "path": "include/edgevision/frame.h",
+      "sha256": "a6b30adb583767707fcec99ec4f72224234d69ee538e7db72e73240d3ecba878"
+    },
+    {
+      "path": "include/edgevision/frame_lease.h",
+      "sha256": "f1923b8197a39293b3f428d4693715bc16279983da3b08a078aba187049cd9fb"
+    },
+    {
+      "path": "src/frame/frame.cc",
+      "sha256": "e1f1b8f911d7ed136f63b200ecaf33520f43b3abcd73df6b5d503fe2a38d30bb"
+    },
+    {
+      "path": "tests/unit/test_bounded_queue.cc",
+      "sha256": "170568ccf10c27299ed95d727551d62ef4053a5d0da305f5b45e7ae38dab067f"
+    },
+    {
+      "path": "tests/unit/test_frame_lease.cc",
+      "sha256": "9bee4331ebfc03138dc709b929622b8e0b3617c01de3e71c7eaaa3d24ca3932c"
+    }
+  ],
+  "changes_in_new_mainline": [
+    "drop oldest READY frames with generation check",
+    "FrameMeta and explicit slot states",
+    "completion-fence lifetime guard",
+    "bounded idempotent TaskManager; logical timeout distinct from execution completion"
+  ]
+}

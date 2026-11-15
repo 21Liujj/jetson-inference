@@ -1,0 +1,25 @@
+{
+  "scope": "M2 core only; no camera or CUDA execution in these tests",
+  "host": "Windows / GCC 15.2.0 UCRT64",
+  "host_tests_passed": 4,
+  "target": "Jetson Linux aarch64 / ASan+UBSan+LSan",
+  "target_tests_passed": 4,
+  "files": [
+    {
+      "path": "build-final.log",
+      "sha256": "378cb1a0c4e2dc0e0562c7ddffd930074607b354b0d0368e7946ef482ad569f2"
+    },
+    {
+      "path": "configure.log",
+      "sha256": "504d1007ea59f71de2f8200bc1d00d9a66ae0ca71a0385417fec8b0ada4ed9d2"
+    },
+    {
+      "path": "ctest-final.log",
+      "sha256": "820f4bfb7dbdfa8cd6f42a60fa77d93b73a3d65d946594ff3af1af3ba5890beb"
+    },
+    {
+      "path": "jetson-sanitizers.zip",
+      "sha256": "aad0d1e8059c7a6533102b58e3cd6f0ec7127d6e975d1d74624797643eb27eef"
+    }
+  ]
+}

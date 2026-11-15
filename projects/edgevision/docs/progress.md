@@ -10,7 +10,7 @@ different definitions and are not carried over as completed stages.
 | M1-A unmodified upstream | board_verified (build/camera); blocked (inference) | Build succeeds after missing dev dependency installation; original TensorRT 10 loader crashes; raw failure retained |
 | M1-B compatibility repair | board_verified, short runs only | Fixed image, 60s USB inference, restart, negative tensor-name test, two real GPU probes pass |
 | M1 longer baseline | planned | 30-minute run not executed; M1-A failure is not relabeled as a pass |
-| M2 capture/task framework | planned | Audit and port legacy queue/lease, new metadata and task/control contracts, real V4L2 tests |
+| M2 capture/task framework | host_verified / board_verified (core only) | FrameMeta, bounded queues, pool states/fences and TaskManager; Windows 4/4 and Jetson ASan/UBSan/LSan 4/4; real capture/router integration remains |
 | M3 model and kernel preparation | planned | 20-image regression, frozen annotated set, native module baseline |
 | M4 UVC extension | planned | Source patch, original/disabled/enabled trace comparisons, install and actual rollback |
 | M5 CUDA and async optimization | planned | Numerical regression, two memory paths, event pipeline, Nsight timeline |
@@ -29,6 +29,7 @@ execution but is not a model-accuracy or optimization benchmark.
   [complete text logs](../evidence/2026-11-15/raw-text-evidence.zip).
 - Commands, results and restrictions: [baseline.md](baseline.md).
 - Existing work preserved: [repo-audit.md](repo-audit.md).
+- M2 core implementation and limits: [m2-core.md](m2-core.md).
 - Failure/root-cause record: [debugging_journal.md](debugging_journal.md).
 
 ## Next three engineering steps
