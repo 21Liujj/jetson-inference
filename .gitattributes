@@ -1,0 +1,7 @@
+# Preserve upstream CRLF bytes in the one modified source file.
+/c/tensorNet.cpp -text
+/projects/edgevision/** text eol=lf
+/projects/edgevision/evidence/**/*.zip -text
+/AGENTS.md text eol=lf
+/UPSTREAM.md text eol=lf
+/README.md text eol=lf

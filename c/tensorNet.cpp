@@ -183,8 +183,9 @@ static inline nvinfer1::Dims validateDims( const nvinfer1::Dims& dims )
 
 static inline void copyDims( Dims3* dest, const nvinfer1::Dims* src )
 {
-	for( int n=0; n < src->nbDims; n++ )
-		dest->d[n] = src->d[n];
+	// Legacy callers read CHW even when the logical tensor has fewer axes.
+	for( int n=0; n < nvinfer1::Dims::MAX_DIMS; n++ )
+		dest->d[n] = n < src->nbDims ? src->d[n] : 1;
 	
 	dest->nbDims = src->nbDims;
 }
@@ -239,13 +240,13 @@ static inline nvinfer1::Dims shiftDims( const nvinfer1::Dims& dims )
 	out.d[2] = dims.d[3];
 	out.d[3] = 1;*/
 	
-	if( dims.nbDims == 1 )
+	if( dims.nbDims <= 1 )
 		return out;
 	
-	for( int n=0; n < dims.nbDims; n++ )
+	for( int n=0; n < dims.nbDims - 1; n++ )
 		out.d[n] = dims.d[n+1];
 	
-	for( int n=dims.nbDims; n < nvinfer1::Dims::MAX_DIMS; n++ )
+	for( int n=dims.nbDims - 1; n < nvinfer1::Dims::MAX_DIMS; n++ )
 		out.d[n] = 1;
 	
 	out.nbDims -= 1;
@@ -1560,7 +1561,7 @@ bool tensorNet::LoadEngine( nvinfer1::ICudaEngine* engine,
 	#if NV_TENSORRT_MAJOR > 1
     #if NV_TENSORRT_MAJOR >= 10
         //mContext->setInputShape(input_blobs[n].c_str(), nvinfer1::Dims4{1, 3, 224, 224});
-        nvinfer1::Dims inputDims = engine->getTensorShape(input_blobs[n].c_str());
+        nvinfer1::Dims inputDims = validateDims(engine->getTensorShape(input_blobs[n].c_str()));
     #else  
 		nvinfer1::Dims inputDims = validateDims(engine->getBindingDimensions(inputIndex));
     #endif
@@ -1595,14 +1596,8 @@ bool tensorNet::LoadEngine( nvinfer1::ICudaEngine* engine,
 		}
 	#endif
 	
-    #if 0 && NV_TENSORRT_MAJOR >= 10
-        if( !mContext->setInputTensorAddress(input_blobs[n].c_str(), inputCUDA) )
-        {
-            LogError(LOG_TRT "failed to set input tensor address for %s (%zu bytes)\n", inputSize, input_blobs[n].c_str());
-			return false;
-        }
-    #endif
-	 
+		// TensorRT 10 addresses are bound through the local context below, after
+		// every requested and auxiliary I/O buffer has been allocated.
 		layerInfo l;
 		
 		l.CPU  = (float*)inputCPU;
@@ -1638,16 +1633,17 @@ bool tensorNet::LoadEngine( nvinfer1::ICudaEngine* engine,
 		LogVerbose(LOG_TRT "binding to output %i %s  binding index:  %i\n", n, output_blobs[n].c_str(), outputIndex);
 
     #if NV_TENSORRT_MAJOR >= 10
-        nvinfer1::Dims outputDims = engine->getTensorShape(output_blobs[n].c_str());
+        nvinfer1::Dims outputDims = validateDims(engine->getTensorShape(output_blobs[n].c_str()));
 	#elif NV_TENSORRT_MAJOR > 1
 		nvinfer1::Dims outputDims = validateDims(engine->getBindingDimensions(outputIndex));
 
-	#if NV_TENSORRT_MAJOR >= 7
-		if( mModelType == MODEL_ONNX )
-			outputDims = shiftDims(outputDims);  // change NCHW to CHW if EXPLICIT_BATCH set
-	#endif
 	#else
 		Dims3 outputDims = engine->getBindingDimensions(outputIndex);
+	#endif
+
+	#if NV_TENSORRT_MAJOR >= 7
+		if( mModelType == MODEL_ONNX )
+			outputDims = shiftDims(outputDims);  // remove explicit batch for legacy postprocessing
 	#endif
 
 		const size_t outputSize = mMaxBatchSize * sizeDims(outputDims) * sizeof(float);
@@ -1664,14 +1660,6 @@ bool tensorNet::LoadEngine( nvinfer1::ICudaEngine* engine,
 			return false;
 		}
 	
-    #if NV_TENSORRT_MAJOR >= 10
-        if( !mContext->setTensorAddress(output_blobs[n].c_str(), outputCUDA) )
-        {
-            LogError(LOG_TRT "failed to set input tensor address for %s (%zu bytes)\n", outputSize, output_blobs[n].c_str());
-			return false;
-        }  
-    #endif
-    
 		layerInfo l;
 		
 		l.CPU  = (float*)outputCPU;
@@ -1712,7 +1700,7 @@ bool tensorNet::LoadEngine( nvinfer1::ICudaEngine* engine,
 			continue;
 		
     #if NV_TENSORRT_MAJOR >= 10
-        const size_t bindingSize = sizeDims(validateDims(engine->getTensorShape(output_blobs[n].c_str()))) * mMaxBatchSize * sizeof(float);
+        const size_t bindingSize = sizeDims(validateDims(engine->getTensorShape(engine->getIOTensorName(n)))) * mMaxBatchSize * sizeof(float);
     #else
 		const size_t bindingSize = sizeDims(validateDims(engine->getBindingDimensions(n))) * mMaxBatchSize * sizeof(float);
     #endif
@@ -1725,6 +1713,21 @@ bool tensorNet::LoadEngine( nvinfer1::ICudaEngine* engine,
 		
 		LogVerbose(LOG_TRT "allocated %zu bytes for unused binding %u\n", bindingSize, n);
 	}
+
+#if NV_TENSORRT_MAJOR >= 10
+	// mContext is assigned only after initialization succeeds.  Bind all I/O,
+	// including inputs, through the context that was just created.  enqueueV3
+	// does not consume the legacy mBindings array passed to executeV2.
+	for( uint32_t n=0; n < numBindings; n++ )
+	{
+		const char* name = engine->getIOTensorName(n);
+		if( !context->setTensorAddress(name, mBindings[n]) )
+		{
+			LogError(LOG_TRT "failed to set tensor address for %s (index %u)\n", name, n);
+			return false;
+		}
+	}
+#endif
 	
 
 	/*
