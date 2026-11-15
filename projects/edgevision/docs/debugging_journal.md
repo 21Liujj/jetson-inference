@@ -98,3 +98,9 @@ evidence so committed files still match recorded hashes.
 The user was told the camera was released and all evidence was saved locally,
 then advised to use normal shutdown before removing power. No shutdown command
 was executed by the assistant; physical power state must be rechecked next time.
+
+An additional committed-byte check found that three Windows text logs were
+already staged with LF before the raw-evidence attribute was added. Ordinary
+git add reused the cached index entries. `git add --renormalize` under the scoped
+raw attribute restores their original CRLF bytes; checks verify both index/Git
+blob hashes, not only local file hashes. Executed tests/results did not change.
