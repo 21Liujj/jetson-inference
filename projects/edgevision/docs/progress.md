@@ -1,6 +1,6 @@
 # V3.1 acceptance ledger
 
-Last updated: 2026-11-16, Asia/Shanghai (development resumed). This ledger applies to the new
+Last updated: 2026-11-16, Asia/Shanghai (checkpoint; development paused as requested by user). This ledger applies to the new
 jetson-inference fork. Old M/J/F milestones in the two legacy repositories have
 different definitions and are not carried over as completed stages.
 
