@@ -72,6 +72,6 @@ sanitizer 构建加 `-DEDGEVISION_ENABLE_SANITIZERS=ON -DBUILD_TESTING=ON`，再
 
 ## 下一步
 
-新后端 30 分钟采集、运行中拔插/有限重连与 HealthMonitor 已另行记录。上游 DetectNet 输入适配
-仍待实施/验收。CUDA event 和异步执行在 M5 单独完成；ROS2/VLM/Agent/Web/RTSP
+新后端 30 分钟采集、运行中拔插/有限重连与 HealthMonitor 已另行记录。串行 DetectNet 输入适配
+已在 [m2-inference.md](m2-inference.md) 实测，完整执行层仍待验。CUDA event 和异步执行在 M5 单独完成；ROS2/VLM/Agent/Web/RTSP
 仍在完整施工范围内，不能依据本页把 M2 或后续阶段写成全部完成。

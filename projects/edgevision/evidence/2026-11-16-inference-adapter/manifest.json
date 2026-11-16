@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "r7-summary.json",
+      "bytes": 1781,
+      "sha256": "f8c3eb0be0e8db94027e922db39ac54237a47a9c75671dc5448e1974e65f41cf"
+    },
+    {
+      "path": "raw-inference-adapter.zip",
+      "bytes": 280984,
+      "sha256": "79a0af19dc9584a05a485565468272b1c24bae4f1d853ef853e8a81121cf75fa"
+    },
+    {
+      "path": "raw-inference-aligned-r8.zip",
+      "bytes": 118087,
+      "sha256": "fd4ce44e9f710669220ea4e5793d80c5907fb194251099362415140166200c29"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 3555,
+      "sha256": "f62e6ae1578e31d96ca4087fa54b0b745e2bf1aea762411f3f0c179503cd5912"
+    },
+    {
+      "path": "windows-core-lasttest.log",
+      "bytes": 6745,
+      "sha256": "659c31dea90bfd3b20207d6473d3339fb8cb2351f0402c6ad33c0accf381f4ce"
+    }
+  ],
+  "embedded_manifests": {
+    "raw-inference-adapter.zip": "projects/edgevision/artifacts/2026-11-16/inference-evidence-manifest.json",
+    "raw-inference-aligned-r8.zip": "projects/edgevision/artifacts/2026-11-16/r8-inference-manifest.json"
+  }
+}

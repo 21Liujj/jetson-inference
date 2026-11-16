@@ -17,6 +17,7 @@
 | EV-METRIC-001 | 未知指标、时钟和跨会话污染 | 有界窗口与 generation 隔离已测 |
 | EV-TEST-001 | 人工拔插发生在测试窗口结束后 | 原始不通过保留，延长窗口与驻留观察后通过 |
 | EV-BUILD-002 | 新 target 未配置、错误 build 路径及 dmesg 参数 | 保留原始错误，显式配置/核对路径与参数后成功 |
+| EV-GPU-002 | 对照运行的 engine 配置漂移与 workspace 记录 | 原 R6/R7 保留，R8 对齐 M1；更正 manifest 的未实证内存上限 |
 
 新增问题记录：ID、时间/环境/源码、触发与预期/实际、复现、原始证据、已确认原因、
 假设、处理、复测、未解决项和面试追问。后续结论追加到原 ID，保留失败事实。
@@ -296,3 +297,32 @@ R4 增加 recovery target 后，旧 Makefile 一次请求两个目标：先构�
 时 tail 成功掩盖了上游失败，表现为 exit0、stderr 报错、stdout 空。保留该次记录，
 改为默认单调时间戳输出并启用 pipefail 后成功。诊断命令必须检查 stderr 与实际内容，
 不能仅凭退出码。没有更改内核、权限设置或日志配置。
+
+## EV-GPU-002 · 2026-11-16 · 相同 ONNX 不代表相同 engine
+
+R6/R7 个人输入适配直接调用 DetectNet::Create 时，把 allowGPUFallback 设为了 false；
+M1 CLI 使用默认 true。冻结上游 cache_prefix 包含该标志，因此首次 R6 创建了
+`.1.0.100300.GPU.FP16.engine`，SHA256 为
+e2e26b99fdc5a1ab7f2461a35acac997cb7b15bf025728c0e268a2db3a1a677d。
+R7 加载该缓存，60s 完成1,802次。它是有效功能测试，但不能假称使用 M1 的同一 engine。
+
+R8 只对齐该标志为 true，重用 M1 `.1.1.100300.GPU.FP16.engine`，已在启动前冻结
+期望 SHA256 3cb11235bc6338895bca58e710383dd36c7ecfded68ee3491ec20ddd7eab2fc4；
+验收同时核对实际加载日志和运行后哈希。旧 engine 与原始运行不删除，不混合版本结果。
+输入接口、代码版本、builder 参数与 engine 字节都要记录，相同模型哈希不足以证明
+比较条件相同。当前没有正式性能或数值改进结论。
+
+R8 实际复测：60s 窗口完成/发布1,802次，总进程63.1163s，正常退出；最终
+IDLE/UNLOADED、pool_busy=0、视频无owner。加载日志及运行后SHA均核对为M1原engine。
+本次只有有效空检测结果，精度未验；原R7的1,802次也不与本轮合并成一个长窗口。
+
+审计还发现模型 manifest 把 workspace 写成2GiB，没有区分日志请求与实际生效。
+原始 M1 `m1-fixed/stdout.log` 和 R6 构建都记录536,870,912字节；冻结 tensorNet.cpp 的
+TRT10 分支并未调用 setMemoryPoolLimit，旧 setMaxWorkspaceSize 仅位于 <10 分支。
+因此将 manifest 改为实际观察的 requested 值、explicit limit=false；实际默认上限未测，
+不能声称 workspace 被限制到512MiB或2GiB。本轮只纠正记录，不改变上游 builder 行为。
+
+代码审查另发现正常退出时模型已由 worker 销毁，但首次 probe 的最后快照仍报 READY。
+R7 在销毁后发布 UNLOADED，控制线程 join 后再采最终状态；真实 R7 窗口最终
+capture=IDLE/model=UNLOADED。模型加载失败保留 ERROR，且不改写正常采集为故障。
+详见 [输入适配与证据](m2-inference.md)。

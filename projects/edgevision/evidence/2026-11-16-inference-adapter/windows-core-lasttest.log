@@ -1,0 +1,131 @@
+Start testing: Nov 16 12:15 �й���׼ʱ��
+----------------------------------------------------------
+1/8 Testing: bounded_queue
+1/8 Test: bounded_queue
+Command: "C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/test_bounded_queue.exe"
+Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+"bounded_queue" start time: Nov 16 12:15 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+[test_bounded_queue] PASS
+<end of output>
+Test time =   0.79 sec
+----------------------------------------------------------
+Test Passed.
+"bounded_queue" end time: Nov 16 12:15 �й���׼ʱ��
+"bounded_queue" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/8 Testing: frame_lease
+2/8 Test: frame_lease
+Command: "C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/test_frame_lease.exe"
+Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+"frame_lease" start time: Nov 16 12:15 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+[test_frame_lease] PASS
+<end of output>
+Test time =   0.36 sec
+----------------------------------------------------------
+Test Passed.
+"frame_lease" end time: Nov 16 12:15 �й���׼ʱ��
+"frame_lease" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/8 Testing: frame_queue
+3/8 Test: frame_queue
+Command: "C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/test_frame_queue.exe"
+Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+"frame_queue" start time: Nov 16 12:15 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS READY-only freshness queue, generation and in-flight exclusion; CPU fixtures only
+<end of output>
+Test time =   0.34 sec
+----------------------------------------------------------
+Test Passed.
+"frame_queue" end time: Nov 16 12:15 �й���׼ʱ��
+"frame_queue" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/8 Testing: task_manager
+4/8 Test: task_manager
+Command: "C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/test_task_manager.exe"
+Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+"task_manager" start time: Nov 16 12:15 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS task admission/idempotency/deadline/cancel/generation/budget; no hardware executed
+<end of output>
+Test time =   0.34 sec
+----------------------------------------------------------
+Test Passed.
+"task_manager" end time: Nov 16 12:15 �й���׼ʱ��
+"task_manager" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/8 Testing: control_router
+5/8 Test: control_router
+Command: "C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/test_control_router.exe"
+Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+"control_router" start time: Nov 16 12:15 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS ControlRouter config/first-frame/stop/generation/cancel/exception/owner; CPU fixture only
+<end of output>
+Test time =   0.33 sec
+----------------------------------------------------------
+Test Passed.
+"control_router" end time: Nov 16 12:15 �й���׼ʱ��
+"control_router" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/8 Testing: capture_recovery
+6/8 Test: capture_recovery
+Command: "C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/test_capture_recovery.exe"
+Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+"capture_recovery" start time: Nov 16 12:15 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS runtime recovery: physical cleanup, stable identity, generation/history, stop priority, deadline and total retry budget; CPU fixture only
+<end of output>
+Test time =   0.32 sec
+----------------------------------------------------------
+Test Passed.
+"capture_recovery" end time: Nov 16 12:15 �й���׼ʱ��
+"capture_recovery" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/8 Testing: health_monitor
+7/8 Test: health_monitor
+Command: "C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/test_health_monitor.exe"
+Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+"health_monitor" start time: Nov 16 12:15 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS bounded health windows, unknown values, rate/quantiles, generation, stale reports, progress and coherent snapshots; CPU only
+<end of output>
+Test time =   0.29 sec
+----------------------------------------------------------
+Test Passed.
+"health_monitor" end time: Nov 16 12:15 �й���׼ʱ��
+"health_monitor" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/8 Testing: image_layout
+8/8 Test: image_layout
+Command: "C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host/test_image_layout.exe"
+Directory: C:/Users/31542/Documents/ChatGPT/嵌入式日常实习-暑期实习-秋招/jetson-inference/projects/edgevision/build/host
+"image_layout" start time: Nov 16 12:15 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS YUYV row padding, guard bytes, truncation, stride, dimensions and format; CPU only
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Passed.
+"image_layout" end time: Nov 16 12:15 �й���׼ʱ��
+"image_layout" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 16 12:15 �й���׼ʱ��

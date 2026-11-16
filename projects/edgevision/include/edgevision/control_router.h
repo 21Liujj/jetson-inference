@@ -69,6 +69,7 @@ struct RouterStatus {
   bool backend_cleanup_pending = false;
   bool backend_resources_live = false;
   std::string last_error;
+  std::string model_error;
 };
 
 // Transport threads only submit/query/cancel. Exactly one control owner calls
@@ -83,6 +84,8 @@ class ControlRouter {
   std::optional<TaskRecord> query(uint64_t task_id) const { return tasks_.query(task_id); }
   bool cancel(uint64_t task_id, uint64_t now_mono_ns);
   void poll(uint64_t now_mono_ns);
+  // The control owner publishes worker observations; capture is independent.
+  void observe_model(ModelState, std::string error = {});
   static bool valid_config(const CaptureConfig&);
 
  private:

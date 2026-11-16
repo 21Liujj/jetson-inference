@@ -11,6 +11,20 @@ using namespace edgevision;
 int main() {
   {
     Fixture backend; ControlRouter router(backend);
+    auto a = router.submit(start("model-independent"), 1); router.poll(2);
+    backend.first(1); router.poll(3);
+    router.observe_model(ModelState::Error, "ENGINE_LOAD_FAILED");
+    assert(router.status().capture == CaptureState::Running && router.query(a.task_id)->state == TaskState::Done);
+    assert(router.status().last_error.empty() && router.status().model_error == "ENGINE_LOAD_FAILED");
+    bool rejected = std::async(std::launch::async, [&] {
+      try { router.observe_model(ModelState::Ready); return false; } catch (const std::logic_error&) { return true; }
+    }).get();
+    assert(rejected && router.status().model == ModelState::Error);
+    router.observe_model(ModelState::Ready);
+    assert(router.status().model_error.empty() && router.status().capture == CaptureState::Running);
+  }
+  {
+    Fixture backend; ControlRouter router(backend);
     backend.inspect = [&] { (void)router.status(); }; // reentry detects backend calls made while holding router lock
     auto bad = start("bad"); bad.capture->device = "/dev/video0";
     assert(router.submit(bad, 1).error == AdmissionError::InvalidParameters);

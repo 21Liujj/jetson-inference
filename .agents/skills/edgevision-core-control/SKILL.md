@@ -26,3 +26,7 @@ description: 修改 EdgeVision 帧池租约、有界队列、TaskManager 或 Con
 HealthMonitor 入口是 `health_monitor.h` 与 `src/health_monitor.cc`。窗口有时间与容量
 双上限；跨 generation 清零，未测量返回 optional，捕获/消费/结果完成口径分开。
 活跃跨模块快照不做假原子守恒；最终停止后的严格核对仍由验收工具完成。
+
+模型 worker 的观测由同一控制 owner 调用 observe_model 发布；model_error 与
+capture last_error 独立。模型失效不能让正常采集显示故障，已销毁模型不能报 READY。
+真实负例和串行 GPU 输入适配见 docs/m2-inference.md；完整执行任务路由仍待接入。

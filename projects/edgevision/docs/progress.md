@@ -10,7 +10,7 @@ different definitions and are not carried over as completed stages.
 | M1-A unmodified upstream | board_verified (build/camera); blocked (inference) | Build succeeds after missing dev dependency installation; original TensorRT 10 loader crashes; raw failure retained |
 | M1-B compatibility repair | board_verified, short runs only | Fixed image, 60s USB inference, restart, negative tensor-name test, two real GPU probes pass |
 | M1 longer repaired baseline | board_verified | 1800.6016s process lifetime, 53,898 inference/output calls, normal shutdown; M1-A failure remains a failure |
-| M2 capture/task framework | board_verified (short capture), partial overall | Windows core 7/7; Jetson sanitizer 9/9. Real 100 cycles with 3 startup retries; R3 30min capture 53,999 frames; R4 runtime unplug recovery and R5 stop/replug pass. Bounded HealthMonitor implemented. Upstream inference adapter and real execution-layer integration remain |
+| M2 capture/task framework | board_verified (capture + serial inference), partial overall | Windows core 8/8; Jetson sanitizer 10/10. Real 100 cycles with 3 startup retries; R3 30min capture 53,999 frames; R4 runtime unplug recovery and R5 stop/replug pass. Bounded HealthMonitor implemented. R8 direct-input/upstream DetectNet 60s: 1,802 inferences using the same M1 engine; real missing-model failure stays independent of capture. Full execution task API and real GPU timeout/cancellation integration remain |
 | M3 model and kernel preparation | planned | 20-image regression, frozen annotated set, native module baseline |
 | M4 UVC extension | planned | Source patch, original/disabled/enabled trace comparisons, install and actual rollback |
 | M5 CUDA and async optimization | planned | Numerical regression, two memory paths, event pipeline, Nsight timeline |
@@ -31,16 +31,17 @@ execution but is not a model-accuracy or optimization benchmark.
 - Existing work preserved: [repo-audit.md](repo-audit.md).
 - M2 core implementation and limits: [m2-core.md](m2-core.md).
 - M2 real capture and original failure/retest: [m2-capture.md](m2-capture.md).
+- Serial upstream GPU input adapter: [m2-inference.md](m2-inference.md).
 - Runtime recovery/health and R3 capture endurance: [m2-runtime.md](m2-runtime.md).
 - 30-minute repaired baseline: [summary and raw evidence](../evidence/2026-11-15-30min/summary.json).
 - Failure/root-cause record: [debugging_journal.md](debugging_journal.md).
 
 ## Next three engineering steps
 
-1. Connect the verified V4L2 input to the repaired upstream DetectNet libraries;
-   keep GStreamer as the comparison path.
-2. Integrate bounded execution tasks with actual GPU completion, cancellation and
-   shutdown; camera and model state remain independent.
+1. Complete initialize/submit/query/collect/cancel_pending/shutdown through the
+   common task boundary; keep the verified serial adapter and GStreamer comparison.
+2. Verify real GPU in-flight timeout/cancellation, shutdown and combined camera
+   recovery, preserving memory until actual completion and independent model state.
 3. Close the remaining M2 gates, then begin
    M3 fixed-image numerical regression and matching kernel source preparation.
 

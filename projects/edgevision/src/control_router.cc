@@ -241,6 +241,13 @@ std::optional<ControlRouter::Action> ControlRouter::reopen_locked(uint64_t now) 
   else state_.capture = CaptureState::Starting;
   return Action{Action::Kind::Start, state_.generation, task ? task->id : 0, *session_config_};
 }
+void ControlRouter::observe_model(ModelState model, std::string error) {
+  std::lock_guard<std::mutex> lock(mu_);
+  if (!owner_) owner_ = std::this_thread::get_id();
+  if (*owner_ != std::this_thread::get_id()) throw std::logic_error("ControlRouter requires one control owner");
+  state_.model = model;
+  state_.model_error = error.substr(0, 128);
+}
 void ControlRouter::poll(uint64_t now) {
   std::optional<Action> action;
   {

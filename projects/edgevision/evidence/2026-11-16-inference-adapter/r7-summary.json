@@ -1,0 +1,50 @@
+{
+  "summary": {
+    "scope": "direct V4L2 to upstream DetectNet serial GPU baseline; no async optimization",
+    "completed_inferences": 1802,
+    "published_results": 1802,
+    "empty_results": 1802,
+    "stale_or_stopped_results": 0,
+    "copied_frames": 1864,
+    "pool_drop": 0,
+    "ready_drop": 62,
+    "sequence_gaps": 0,
+    "final_pool_busy": 0,
+    "stop_ns": 4402708,
+    "pre_stop_capture": "RUNNING",
+    "pre_stop_model": "READY",
+    "failure": ""
+  },
+  "supervision": {
+    "schema_version": 1,
+    "simulated": false,
+    "argv": [
+      "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_inference_probe",
+      "--device",
+      "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+      "--model",
+      "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+      "--labels",
+      "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/labels.txt",
+      "--seconds",
+      "60",
+      "--out",
+      "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/2026-11-16/inference-60s-r7"
+    ],
+    "cwd": "/home/nvidia/jetson-inference-edgevision",
+    "wall_time": "2026-11-16T04:27:38.698961+00:00",
+    "duration_requested_s": 0,
+    "timeout_s": 150.0,
+    "acceptance": "requires_log_review",
+    "pid": 10956,
+    "exit_code": 0,
+    "stop_reason": "process_exit",
+    "elapsed_s": 63.12652606999927
+  },
+  "result_rows": 1802,
+  "result_completion_interval_s": 59.977569279,
+  "all_results_empty": true,
+  "health_rows": 251,
+  "resource_samples": 126,
+  "scope": "functional input/ownership baseline, no model accuracy or formal performance claim"
+}

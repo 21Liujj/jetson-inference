@@ -13,6 +13,9 @@
   真实拔插 4 次重开到 gen5，检测故障到有效首帧 12.3811s；参数5次/30s。
 - R5 只改恢复 probe：操作窗口600s，故障后 stop，实际节点返回后进程继续观察5s，
   保持 IDLE、gen1、无活动 worker/设备资源，正常退出。
+- R8 新输入接入上游 DetectNet，复用 M1 engine，60s完成1,802次；模型缺失负例为
+  capture=RUNNING/model=ERROR。Windows8/8、目标sanitizer10/10。R6/R7不同engine
+  记录保留；R8来源sha256见下方。当前没有精度/异步优化/正式性能结论。
 - R2 的 S_FMT EIO / UVC probe -75、R4 无效180s人工窗口均保留。有限恢复不代表
   底层驱动缺陷已修复。固定 journal：EV-CAP-002/003、EV-TEST-001、EV-METRIC-001。
 - 新证据：evidence/2026-11-16-capture-30min 与 2026-11-16-runtime-recovery。
@@ -25,18 +28,20 @@
 R3 源码 ZIP sha256：2e3fc65c63225cba073f822b0046e3f5f13aab4d860415cfa9b191e28d4a9684。
 R4：197cf2bf9b4a3d6fcafb1438c3109eac48169fa87db36bff9e215e8e51debb90。
 R5：282c9e7bf75c412d882f0ea506b079afb2c39ac31d98742123b9f91a13b8d028。
-R3 30min 不能作为 R4/R5 长稳。原生构建目录 build/capture-native，sanitizer 为
+R8：183a9b41fada3c457f894f06e1bf831c6a5ebab02e62f353481fe09aa4b3ee7b。
+R3 30min 不能作为 R4–R8 长稳。原生构建目录 build/capture-native，sanitizer 为
 build/capture-asan；不要猜成 jetson-native。
 
 相机按稳定 by-id 打开；旧 edgevision.service active、IDLE。R5 退出后视频无 owner，
-本轮 SSH 会话仍在，后续开发继续。原两个项目及其未提交工作保留。无内核替换、JetPack
+R8停止后模型UNLOADED、视频无owner，本轮 SSH 会话仍在，后续开发继续。原两个项目及其未提交工作保留。无内核替换、JetPack
 升级、USB reset 或刷固件。下一次开设备前重新核对 owner。
 
 ## 当前下一步
 
-1. 用已修复的 build-baseline/aarch64 库接入新 V4L2 输入，保留上游 GStreamer 对照。
-2. 接好实际 GPU 完成与 lease 归还；后续执行层 initialize/submit/query/collect/
-   cancel_pending/shutdown 及超时取消需独立实测，模型状态与采集状态独立。
+1. 串行输入已验，见 m2-inference.md 与 evidence/2026-11-16-inference-adapter；
+   build/inference-native 链接固定 build-baseline/aarch64 库，保留 GStreamer 对照。
+2. 接入完整执行层 initialize/submit/query/collect/cancel_pending/shutdown，复用
+   公共任务边界；GPU在途超时、取消、联合拔插与停止仍需独立实测。
 3. 关闭剩余 M2 门槛，再进入 M3 固定20图回归、带标注集合与匹配内核源码准备。
 
 M3–M8 完整保留；UVC 补丁安装回退、数值与 Nsight、ROS2、真实本地 VLM/Agent、

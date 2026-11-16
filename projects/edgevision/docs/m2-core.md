@@ -15,7 +15,8 @@ uncommitted donor changes from the older published Git HEAD.
   256 MiB/1024-slot ceiling before allocating storage.
 - Explicit FREE / WRITING / READY / INFLIGHT / DONE states. An in-flight lease
   owns a completion fence and waits for physical completion before releasing its
-  slot. There is no real CUDA fence implementation in this phase.
+  slot. The optional serial GPU adapter now implements a real CUDA fence; core-only
+  fixtures remain CPU tests.
 - READY-only `FrameQueue`, default capacity 2; discard the oldest pending frame
   for freshness, never an in-flight frame. Queue generation mismatch is explicit.
 - Generic queue keeps nonblocking admission, drain/abort, stop wakeups and release
@@ -42,7 +43,8 @@ uncommitted donor changes from the older published Git HEAD.
 
 The completion interface deliberately does not declare GPU completion based on
 a timer. The CPU latch/fence fixtures test ownership contracts only. A CUDA event
-adapter and real cancellation/timeout GPU tests belong to M5.
+adapter is now verified in [m2-inference.md](m2-inference.md). Full task execution
+and real cancellation/timeout tests remain; asynchronous optimization belongs to M5.
 
 ## Build and verification
 
@@ -63,9 +65,10 @@ ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 \
 
 Windows uses GCC 15.2.0/UCRT64 with CMake and Ninja selected explicitly; only the
 build process PATH is changed. Tests retain assertions even for a release build.
-Current result (R4, Nov 16): Windows **7/7** core tests; Jetson **9/9** with ASan/UBSan and
+Current result (R7 core, Nov 16): Windows **8/8** core tests; Jetson **10/10** with ASan/UBSan and
 LeakSanitizer, including two Linux capture-worker/syscall-fixture tests.
-[Latest recovery/health evidence](../evidence/2026-11-16-runtime-recovery/),
+[Latest input-adapter/core evidence](../evidence/2026-11-16-inference-adapter/),
+[recovery/health evidence](../evidence/2026-11-16-runtime-recovery/),
 [capture evidence](../evidence/2026-11-15-m2-capture/),
 [earlier core evidence](../evidence/2026-11-15-m2-core/) and
 [router-only checkpoint](../evidence/2026-11-15-m2-router/).
@@ -84,7 +87,8 @@ status reentry without a held router lock and rejection of a second control owne
 
 - Linux V4L2/eventfd worker and real first-frame/100-cycle tests are implemented.
   Enable with EDGEVISION_ENABLE_V4L2=ON on Linux. Runtime disconnect/reconnect,
-  HealthMonitor and R3 30min capture now have separate evidence in m2-runtime.md; the upstream DetectNet adapter remains.
+  HealthMonitor and R3 30min capture now have separate evidence in m2-runtime.md; the serial upstream DetectNet adapter is verified in m2-inference.md. Full
+  execution-task routing and GPU timeout/cancellation remain.
 - FramePool raw index APIs are retained from the donor. Only the producer may use
   `slot_ref` before handoff; fabricating multiple leases for one slot or accessing
   a handed-off raw slot violates the owner contract. A fenced in-flight slot
