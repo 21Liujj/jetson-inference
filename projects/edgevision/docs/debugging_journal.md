@@ -406,7 +406,7 @@ R2慢消费者8秒：驱动交付/复制241帧，消费80，READY替换159，停
 真实拔插7.3799s恢复，用户generation1→4，内核stream ID1→2：失败的open尝试与实际
 STREAMON生命周期不同。按USB路径、sequence与同域单调时间建立明确映射；有歧义、
 负延迟或trace loss时拒绝验收。1803条消费全部关联，原版实际加载与采集回退通过。
-R1矩阵同时有engine构建；R2重测保存CPU和/proc/stat，但DVFS未锁定，不能声称零开销。
+R1矩阵同时有engine构建；R2重测保存CPU和/proc/stat，但未单独记录冻结功耗/频率条件，不能声称零开销。
 
 首次工具调用把source ZIP文件名写错，且sudo创建的新kernel目录导致普通SFTP写入拒绝。
 核对真实m3-uvc-pristine-input.zip，修正仅该新目录owner，使用新的R2构建目录；
@@ -443,3 +443,37 @@ R4 YOLO任务验收的正常、过期、取消、stop均通过，重启后却因
 保留原失败源码、failure/events及监督日志，测试改为记录start_retries并严格核对
 `new>old && new-old==1+start_retries`。R5 YOLO和原SSD各7项通过，最终物理资源排空。
 这是修正验收的不成立假设，不是放松GPU event、lease、取消或超时要求。
+
+## EV-GPU-004 · 2026-11-16 · 插值一字节误差仍需模型回归
+
+上游YUYV颜色转换继续复用，个人CUDA kernel只融合RGB letterbox、CHW与归一化。
+OpenCV CPU插值有整数舍入，CUDA浮点双线性可能相差一个u8值。首轮前冻结max≤1/255+1e-6、
+mean≤0.001；48例通过，实际max0.003921598196，最大mean0.0004806570448。
+不能把这写成byte-exact。继续跑原200张COCO子集，AP下降0.0652031个百分点，框匹配99.5%，
+独立输出解析无失败；满足未放松的原模型门槛。pinned/mapped/P2原始输出相同。
+
+原路径每帧约3次cudaMemcpy、2次device-wide同步。融合后保留producer→preprocess→inference
+实际事件依赖；单context在前一event完成前拒绝重绑定。真实摄像头1802次推理、7项共享任务
+GPU取消/过期/stop/shutdown通过；物理完成前继续保留lease，不能用逻辑终态释放输入。
+
+## EV-GPU-005 · 2026-11-16 · 吞吐提高不意味着尾延迟同时最优
+
+同模型与固定RGB输入，3轮×1000次，P0中位73.76images/s、P99=14.852ms；P1-pinned为
+129.99images/s、11.491ms；P2-pinned为190.17images/s、14.566ms。P2较P1吞吐提高而P99变差，
+保留队列与CPU后处理代价，运行时选择P1。不能把离线190images/s写成USB摄像头190fps。
+
+Nsight实际GPU区间显示597/600次预处理与另一stream的TRT kernel相交，但仅占预处理GPU时间
+8.66%，不是端到端收益百分比。profile本身使P2降至142.74images/s，因此正式性能来自无profiler
+矩阵。P0探针GPU阶段event零列只是未测占位，派生表标为unknown，不解释为GPU零耗时。
+板端concurrentManagedAccess=0；managed support与CPU/GPU可并发访问并非同一个能力。
+
+M4曾把未采集功耗状态误写为“DVFS未锁定”。M5查询发现板上已是固定CPU/GPU/EMC状态；
+不能据此倒推M4测试时的状态。更正为“未单独记录冻结条件”，原M4记录不变，开销结论仍有限。
+
+## EV-VLM-001 · 2026-11-16 · 可执行文件能启动不代表模型运行环境完整
+
+审计旧EdgeQwen资产，实际config/权重是Qwen3-VL-2B，旧README的Qwen2文字不作为身份依据。
+权重SHA与本地HF revision的LFS元数据吻合，engine、plugin、CLI与图片分别登记哈希；旧性能
+和稳定性结论不直接继承。首个新工作目录运行因默认build/libNvInfer_edgellm_plugin.so相对路径
+失败，原日志保留。第二轮仅给该子进程设置EDGELLM_PLUGIN_PATH绝对路径，未改全局环境、
+未修改旧工程；真实图片问答正常退出。它仅证明独立VQA，尚不代表Agent工具闭环或组合内存验收。

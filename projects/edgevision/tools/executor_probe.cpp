@@ -6,14 +6,16 @@ int main(int argc,char** argv){
   std::string out;
   try{
     std::string device,model,labels;bool missing=false; DetectorKind kind=DetectorKind::SsdFruit;
+    PreprocessMode preprocess=PreprocessMode::CpuBaseline;
     for(int i=1;i<argc;++i){const std::string key=argv[i];if(key=="--missing-model"){missing=true;continue;}
       if(i+1>=argc)throw std::invalid_argument("option needs value");const std::string value=argv[++i];
       if(key=="--device")device=value;else if(key=="--model")model=value;else if(key=="--labels")labels=value;else if(key=="--out")out=value;
       else if(key=="--kind") { if(value=="yolov8")kind=DetectorKind::YoloV8Coco;else if(value!="ssd")throw std::invalid_argument("unknown model kind"); }
+      else if(key=="--preprocess") {if(value=="cuda")preprocess=PreprocessMode::CudaFused;else if(value!="cpu")throw std::invalid_argument("unknown preprocessor");}
       else throw std::invalid_argument("unknown option");}
     require(!device.empty()&&!model.empty()&&!labels.empty()&&!out.empty(),"INVALID_ARGUMENTS");
     require(std::filesystem::create_directories(out),"OUTPUT_ALREADY_EXISTS");
-    Harness h(device,out);require(h.router.initialize({model,labels,250,kind}).accepted,"MODEL_INITIALIZE_REJECTED");h.start("start-initial");
+    Harness h(device,out);require(h.router.initialize({model,labels,250,kind,preprocess}).accepted,"MODEL_INITIALIZE_REJECTED");h.start("start-initial");
     if(missing){
       h.wait([&]{return h.router.status().model==ModelState::Error;});auto a=h.detect("missing-model-detect");h.expect(a.task_id,TaskState::Failed);
       require(h.router.query(a.task_id)->error_code=="MODEL_NOT_READY"&&h.router.status().capture==CaptureState::Running,"MODEL_FAILURE_NOT_INDEPENDENT");

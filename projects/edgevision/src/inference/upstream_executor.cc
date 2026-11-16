@@ -41,7 +41,9 @@ ExecutionReply UpstreamExecutor::initialize(InferenceConfig config) {
   if (config.onnx.empty() || config.labels.empty() || config.onnx.size()>512 || config.labels.size()>512 ||
       config.onnx.find('\0')!=std::string::npos || config.labels.find('\0')!=std::string::npos ||
       !config.max_frame_age_ms || config.max_frame_age_ms>5000 ||
-      (config.kind!=DetectorKind::SsdFruit && config.kind!=DetectorKind::YoloV8Coco)) return {false, "INVALID_MODEL_CONFIG"};
+      (config.kind!=DetectorKind::SsdFruit && config.kind!=DetectorKind::YoloV8Coco) ||
+      (config.preprocess!=PreprocessMode::CpuBaseline && config.preprocess!=PreprocessMode::CudaFused) ||
+      (config.preprocess==PreprocessMode::CudaFused && config.kind!=DetectorKind::YoloV8Coco)) return {false, "INVALID_MODEL_CONFIG"};
   config_ = std::move(config); state_.model = ModelState::Loading; wake_.notify_one(); return {true, ""};
 }
 ExecutionReply UpstreamExecutor::submit(ExecutionJob job) {
@@ -73,7 +75,7 @@ void UpstreamExecutor::worker_loop() {
     { std::unique_lock<std::mutex> lock(mu_); wake_.wait(lock,[&]{return closing_ || bool(config_);});
       if (!closing_) config = *config_; }
     if (!config.onnx.empty()) {
-      detector.reset(new UpstreamDetector); detector->initialize(config.onnx, config.labels, config.kind);
+      detector.reset(new UpstreamDetector); detector->initialize(config.onnx, config.labels, config.kind,config.preprocess);
       { std::lock_guard<std::mutex> lock(mu_); state_.model = ModelState::Ready; state_.accepting = !closing_; }
       while (true) {
         ExecutionJob job;

@@ -2,6 +2,10 @@
 #include "edgevision/image_layout.h"
 #include "edgevision/upstream_yolo.h"
 #include "edgevision/yolo_preprocess.h"
+#include "edgevision/nvtx_scope.h"
+#ifdef EDGEVISION_HAS_CUDA_PIPELINE
+#include "edgevision/gpu_yolo_pipeline.h"
+#endif
 #include <jetson-inference/detectNet.h>
 #include <jetson-utils/cudaColorspace.h>
 #include <chrono>
@@ -30,6 +34,7 @@ class CudaFence final : public CompletionFence {
   CudaFence() { check(cudaEventCreateWithFlags(&event_, cudaEventDisableTiming), "CUDA_EVENT_CREATE"); }
   ~CudaFence() override { wait(); if (event_) cudaEventDestroy(event_); }
   void record() { check(cudaEventRecord(event_, 0), "CUDA_EVENT_RECORD"); recorded_ = true; }
+  void reset_completed() {wait();recorded_=false;}
   bool ready() const noexcept override { return recorded_ && cudaEventQuery(event_) == cudaSuccess; }
   void wait() noexcept override {
     if (!recorded_) { completed_barrier(); return; }
@@ -74,6 +79,11 @@ struct UpstreamDetector::Impl {
   std::thread::id owner = std::this_thread::get_id();
   std::unique_ptr<detectNet> net;
   std::unique_ptr<UpstreamYolo> yolo;
+#ifdef EDGEVISION_HAS_CUDA_PIPELINE
+  std::unique_ptr<GpuYoloPipeline> pipeline;
+  std::shared_ptr<CudaFence> reusable_fence;
+  std::vector<float> output;
+#endif
   std::vector<std::string> labels;
   std::vector<uint8_t> cpu_rgb, tensor_bytes;
   std::vector<float> tensor;
@@ -84,14 +94,22 @@ struct UpstreamDetector::Impl {
   }
   ~Impl() {
     if (owner != std::this_thread::get_id()) { std::fputs("GPU_OWNER_DESTRUCTION_MISMATCH\n", stderr); std::_Exit(70); }
-    if (net || yolo) completed_barrier();
+    bool loaded=bool(net || yolo);
+#ifdef EDGEVISION_HAS_CUDA_PIPELINE
+    loaded=loaded || bool(pipeline);
+#endif
+    if(loaded)completed_barrier();
   }
 };
 UpstreamDetector::UpstreamDetector() : impl_(new Impl) {}
 UpstreamDetector::~UpstreamDetector() = default;
-void UpstreamDetector::initialize(const std::string& onnx, const std::string& labels, DetectorKind kind) {
+void UpstreamDetector::initialize(const std::string& onnx, const std::string& labels, DetectorKind kind,PreprocessMode preprocess) {
   impl_->require_owner();
-  if (impl_->net || impl_->yolo) throw std::logic_error("MODEL_ALREADY_INITIALIZED");
+  bool initialized=bool(impl_->net || impl_->yolo);
+#ifdef EDGEVISION_HAS_CUDA_PIPELINE
+  initialized=initialized || bool(impl_->pipeline);
+#endif
+  if (initialized) throw std::logic_error("MODEL_ALREADY_INITIALIZED");
   if (!std::filesystem::is_regular_file(onnx) || !std::filesystem::is_regular_file(labels))
     throw std::invalid_argument("MODEL_FILE_NOT_FOUND");
   if (kind==DetectorKind::YoloV8Coco) {
@@ -103,10 +121,20 @@ void UpstreamDetector::initialize(const std::string& onnx, const std::string& la
       impl_->labels.push_back(line);
     }
     if (!file.eof() || impl_->labels.size()!=80) throw std::invalid_argument("EXPECTED_80_COCO_LABELS");
-    impl_->yolo=std::make_unique<UpstreamYolo>(); impl_->yolo->initialize(onnx);
+    if(preprocess==PreprocessMode::CudaFused) {
+#ifdef EDGEVISION_HAS_CUDA_PIPELINE
+      impl_->pipeline=std::make_unique<GpuYoloPipeline>(onnx,1);
+      impl_->output.reserve(84*8400);
+#else
+      throw std::runtime_error("CUDA_PIPELINE_NOT_BUILT");
+#endif
+    } else if(preprocess==PreprocessMode::CpuBaseline) {
+      impl_->yolo=std::make_unique<UpstreamYolo>(); impl_->yolo->initialize(onnx);
+    } else throw std::invalid_argument("UNSUPPORTED_PREPROCESS_MODE");
     return;
   }
   if (kind!=DetectorKind::SsdFruit) throw std::invalid_argument("UNSUPPORTED_MODEL_KIND");
+  if(preprocess!=PreprocessMode::CpuBaseline)throw std::invalid_argument("UNSUPPORTED_SSD_PREPROCESS");
   impl_->net.reset(detectNet::Create(nullptr, onnx.c_str(), 0.0f, labels.c_str(), 0.5f,
                                   "input_0", "scores", "boxes", 1, TYPE_FP16, DEVICE_GPU, true));
   if (!impl_->net) throw std::runtime_error("UPSTREAM_MODEL_LOAD_FAILED");
@@ -123,26 +151,57 @@ void UpstreamDetector::initialize(const std::string& onnx, const std::string& la
 }
 DetectionResult UpstreamDetector::infer(FrameLease frame, const SubmitObserver& gpu_submitted) {
   impl_->require_owner();
-  if ((!impl_->net && !impl_->yolo) || !frame.valid() || frame.state() != SlotState::Ready) throw std::logic_error("MODEL_OR_FRAME_NOT_READY");
+  bool loaded=bool(impl_->net || impl_->yolo);
+#ifdef EDGEVISION_HAS_CUDA_PIPELINE
+  loaded=loaded || bool(impl_->pipeline);
+#endif
+  if (!loaded || !frame.valid() || frame.state() != SlotState::Ready) throw std::logic_error("MODEL_OR_FRAME_NOT_READY");
   const auto bytes = packed_yuyv_bytes(*frame, frame->data.size());
   impl_->raw.reserve(bytes); impl_->rgb.reserve(std::size_t(frame->width) * frame->height * 3);
   pack_yuyv(*frame, impl_->raw.cpu, impl_->raw.bytes);
   DetectionResult result; result.frame = *frame;
-  auto fence = std::make_shared<CudaFence>();
+  std::shared_ptr<CudaFence> fence;
+#ifdef EDGEVISION_HAS_CUDA_PIPELINE
+  if(impl_->pipeline) {
+    if(!impl_->reusable_fence)impl_->reusable_fence=std::make_shared<CudaFence>();
+    else impl_->reusable_fence->reset_completed();
+    fence=impl_->reusable_fence;
+  } else
+#endif
+  fence=std::make_shared<CudaFence>();
   if (!frame.mark_inflight(fence)) throw std::logic_error("FRAME_INFLIGHT_TRANSITION");
   try {
+    NvtxScope inference_range("frame/infer");
     check(cudaConvertColor(impl_->raw.gpu, IMAGE_YUYV, impl_->rgb.pointer, IMAGE_RGB8,
                            frame->width, frame->height, cudaStream_t(0)), "UPSTREAM_YUYV_TO_RGB");
     if (gpu_submitted) gpu_submitted(frame);
+#ifdef EDGEVISION_HAS_CUDA_PIPELINE
+    if(impl_->pipeline) {
+      impl_->pipeline->prepare_device(0,frame->frame_id,static_cast<const uint8_t*>(impl_->rgb.pointer),
+        std::size_t(frame->width)*frame->height*3,frame->width,frame->height,std::size_t(frame->width)*3,cudaStream_t(0));
+      if(!impl_->pipeline->submit(0))throw std::logic_error("SINGLE_JOB_CONTEXT_BUSY");
+      GpuStageTiming timing;
+      while(!impl_->pipeline->collect(0,impl_->output,timing))std::this_thread::sleep_for(std::chrono::microseconds(50));
+      if(!timing.valid || timing.tag!=frame->frame_id)throw std::runtime_error("GPU_PIPELINE_RESULT_INVALID");
+      {NvtxScope post("postprocess/yolo-nms");for(const auto& b:decode_yolov8(impl_->output.data(),impl_->output.size(),timing.geometry))
+        result.boxes.push_back({b.class_id,b.score,b.left,b.top,b.right,b.bottom,impl_->labels[b.class_id]});}
+      // collect observed the actual inference event, which depends on both the
+      // producer and preprocess events. No per-frame device-wide barrier here.
+      fence->record();fence->wait();
+    } else
+#endif
     if (impl_->yolo) {
       // M3 serial correctness baseline. M5 will profile and remove this GPU->CPU
       // round trip with a numerically checked fused preprocess kernel.
       impl_->cpu_rgb.resize(std::size_t(frame->width)*frame->height*3);
-      check(cudaMemcpy(impl_->cpu_rgb.data(),impl_->rgb.pointer,impl_->cpu_rgb.size(),cudaMemcpyDeviceToHost),"YOLO_RGB_DOWNLOAD");
-      const auto geometry=yolo_letterbox_rgb(impl_->cpu_rgb.data(),impl_->cpu_rgb.size(),frame->width,frame->height,
-                                             std::size_t(frame->width)*3,impl_->tensor_bytes);
-      impl_->tensor.resize(impl_->tensor_bytes.size());
-      for (std::size_t n=0;n<impl_->tensor.size();++n) impl_->tensor[n]=float(impl_->tensor_bytes[n])/255.f;
+      {NvtxScope range("copy/P0-rgb-download");check(cudaMemcpy(impl_->cpu_rgb.data(),impl_->rgb.pointer,impl_->cpu_rgb.size(),cudaMemcpyDeviceToHost),"YOLO_RGB_DOWNLOAD");}
+      LetterboxGeometry geometry{};
+      {NvtxScope pre("preprocess/P0-cpu-letterbox");
+        geometry=yolo_letterbox_rgb(impl_->cpu_rgb.data(),impl_->cpu_rgb.size(),frame->width,frame->height,
+                                    std::size_t(frame->width)*3,impl_->tensor_bytes);
+        impl_->tensor.resize(impl_->tensor_bytes.size());
+        for (std::size_t n=0;n<impl_->tensor.size();++n) impl_->tensor[n]=float(impl_->tensor_bytes[n])/255.f;
+      }
       const auto raw=impl_->yolo->infer(impl_->tensor.data(),impl_->tensor.size());
       for (const auto& b : decode_yolov8(raw.data(),raw.size(),geometry))
         result.boxes.push_back({b.class_id,b.score,b.left,b.top,b.right,b.bottom,impl_->labels[b.class_id]});

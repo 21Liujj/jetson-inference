@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "stage": "M5",
+  "acceptance": "board_verified_scoped",
+  "simulated": false,
+  "preprocess": {
+    "cases": 48,
+    "max_abs": 0.003921598196,
+    "max_mean_abs": 0.0004806570448,
+    "pass": true
+  },
+  "model": {
+    "reference_AP": 0.3948222949543204,
+    "target_AP": 0.39417026373627834,
+    "absolute_AP_drop": 0.0006520312180420818,
+    "fixed_match_fraction": 0.995,
+    "parser_failures": [],
+    "pass": true
+  },
+  "camera": {
+    "scope": "single-flight direct V4L2 to upstream inference; not final-stack endurance",
+    "preprocessor": "cuda-fused",
+    "model_kind": "yolov8-coco",
+    "completed_inferences": 1802,
+    "published_results": 1802,
+    "empty_results": 1802,
+    "stale_or_stopped_results": 0,
+    "copied_frames": 1859,
+    "pool_drop": 0,
+    "ready_drop": 57,
+    "sequence_gaps": 0,
+    "final_pool_busy": 0,
+    "stop_ns": 11883034,
+    "pre_stop_capture": "RUNNING",
+    "pre_stop_model": "READY",
+    "failure": ""
+  },
+  "gpu_lifecycle": {
+    "scope": "real camera / common task manager / upstream GPU executor lifecycle",
+    "cases_passed": 7,
+    "explicit_cuda_delay_injection_ms": 200,
+    "delay_records": 4,
+    "gpu_submissions": 6,
+    "gpu_completions": 6,
+    "generation": 2,
+    "pool_busy": 0,
+    "video_maps": 0,
+    "max_control_poll_ns_observed": 12416,
+    "shutdown_complete": true,
+    "failure": ""
+  },
+  "runtime_pipeline": "P1 one slot",
+  "P2_scope": "offline two-slot reusable component",
+  "source_snapshot_sha256": "9ed1bbb4c5814927ebfa676c0b8fe0feeff53a1b0911db56deba67e69f8cf6d0",
+  "raw_tensor_archive_retained_on_pc_and_target": {
+    "name": "m5-validation-r2.zip",
+    "sha256": "15148f340646cfff9e9795d3edfc80dc092b1111e258c1851e9bdac75dee6ece",
+    "bytes": 11324844
+  },
+  "limitations": [
+    "offline images/s is not USB camera FPS",
+    "no final-stack endurance claim",
+    "no destructive CUDA error injection",
+    "no managed input or DMA-BUF acceptance"
+  ]
+}

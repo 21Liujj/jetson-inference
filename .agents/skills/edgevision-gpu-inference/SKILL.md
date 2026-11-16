@@ -50,7 +50,11 @@ docs/m3-model.md及evidence/2026-11-16-yolo记录200张子集AP、24图逐字节
 新engine为2925e839…0474519，FP16 builder flag不表示所有算子均半精度。
 R4测试错误假定重启只增一代；R5严格核对1+start_retries，生产恢复策略未改变。
 
-当前M5起点仍是串行GPU颜色转换→CPU letterbox→GPU tensor，见upstream_detector.cc。
-P0诊断profile在板端artifacts/2026-11-16/m5-p0-diagnostic-r1，nsys2024.5.4已实测可采集；
-它不是锁频正式benchmark。先冻结新数值门槛，再实现融合和P0/P1/P2相同输入对照，
-不能因为M3用了CUDA event就声称M5已经完成。框阈值翻转真实样例见journal EV-GPU-003。
+M5入口是cuda_letterbox.cu、gpu_yolo_pipeline.cc和docs/m5-gpu-pipeline.md。
+RGB8融合预处理与CPU baseline显式切换；YUYV颜色转换仍归上游。固定槽、双非阻塞stream、
+producer/preprocess/inference事件依赖已验；同一context前一真实event未完成不得重新绑定。
+共享任务执行器使用P1；P2是独立组件/离线对照，不能冒称相机190fps。
+预处理误差门槛见models/cuda-preprocess-gates.json，不能拿M3的byte-exact口径要求CUDA，
+也不能省掉后续200图模型回归。Nsight原报告与未profile三轮矩阵分别保留；profile会扰动速度。
+managed support不等于concurrentManagedAccess，该板后者为0；未验driver mmap注册或DMA-BUF。
+P0 GPU event零列是未测量占位，不能当实测零耗时。问题见journal EV-GPU-003/004/005。

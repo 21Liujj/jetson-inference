@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "registered_before_first_cuda_preprocess_run": true,
+  "input": "RGB8 only, arbitrary validated row stride; YUYV color conversion remains the upstream implementation",
+  "geometry": "same rounded 640x640 letterbox geometry as the frozen M3 CPU reference",
+  "algorithm": "half-pixel bilinear resize, border clamp, rounded uint8, padding 114, fused RGB HWC to FP32 CHW /255",
+  "maximum_normalized_absolute_error": 0.00392256862745098,
+  "mean_normalized_absolute_error": 0.001,
+  "finite_required": true,
+  "fixed_cases_minimum": 24,
+  "source_padding_bytes_must_not_be_consumed": true,
+  "normalized_output_storage": "retain raw output files and hashes in artifacts",
+  "model_regression": "same frozen 200-image COCO subset; absolute AP drop <=0.005 against ORT reference, fixed display match >=0.98 at IoU>=0.95 and score error<=0.05",
+  "performance": "warmup excluded, same engine, no profiler for formal timings; P0/P1/P2 and pinned/device versus mapped recorded separately",
+  "threshold_policy": "retain first failure; investigate rather than relax these gates after evaluation"
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "stage": "M5",
+  "files": {
+    "m5-matrix-summary-r1.json": {
+      "bytes": 2665,
+      "sha256": "681f06ba9fee5c79b043c100c56d0efb0b060bfd4510386567520f2de356541a"
+    },
+    "m5-nsys-p2-analysis-r1.json": {
+      "bytes": 19935,
+      "sha256": "ad83e2c5978937ead7c9643a3d8d51cdf42fbd26c0e5399db1d345dff2784221"
+    },
+    "m5-raw-file-manifest-r1.json": {
+      "bytes": 21509,
+      "sha256": "1bc081338048ae63a0f0c6d521141e38fa30647a18a1f6be2f2d80346fb3601c"
+    },
+    "m5-validation-output-identity-r2.json": {
+      "bytes": 75,
+      "sha256": "154ef1ed2601bfa7cf5b66016d48000bbd8811aeeaba3167deccf60f881d4b6f"
+    },
+    "model-comparison.json": {
+      "bytes": 9576,
+      "sha256": "8934947ca90c3cadce0af863a857dd38367d4ecca24f1390641fe6a889a2bc3e"
+    },
+    "model-metrics.json": {
+      "bytes": 460,
+      "sha256": "7e277a0b68b2730ee640567b632230b288521c459923cc40e953f628d1b2e64c"
+    },
+    "raw-target-evidence.zip": {
+      "bytes": 8237728,
+      "sha256": "b59adb59da4dc1a257dca534af7dd09bfdf1e2d1de800715cec65c9ac0a7d7fa"
+    },
+    "summary.json": {
+      "bytes": 2038,
+      "sha256": "5badc1064ba029d59bc91b182627a9cae1d7043788e06a91192a2d88a1b3b81b"
+    }
+  }
+}

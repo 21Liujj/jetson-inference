@@ -37,6 +37,7 @@ int main(int argc, char** argv) {
   try {
     CaptureConfig config; std::string output, model, labels; unsigned seconds = 10;
     DetectorKind kind=DetectorKind::SsdFruit;
+    PreprocessMode preprocess=PreprocessMode::CpuBaseline;
     for (int i = 1; i < argc; ++i) {
       if (i + 1 >= argc) throw std::invalid_argument("option needs value");
       const std::string key = argv[i], value = argv[++i];
@@ -48,6 +49,10 @@ int main(int argc, char** argv) {
         if (value=="ssd") kind=DetectorKind::SsdFruit;
         else if (value=="yolov8") kind=DetectorKind::YoloV8Coco;
         else throw std::invalid_argument("unsupported model kind");
+      }
+      else if(key=="--preprocess") {
+        if(value=="cuda")preprocess=PreprocessMode::CudaFused;
+        else if(value!="cpu")throw std::invalid_argument("unsupported preprocessor");
       }
       else if (key == "--seconds") {
         if (value.empty() || value.find_first_not_of("0123456789") != std::string::npos) throw std::invalid_argument("invalid duration");
@@ -70,7 +75,7 @@ int main(int argc, char** argv) {
     std::signal(SIGINT, signal_handler); std::signal(SIGTERM, signal_handler);
     std::thread worker([&] {
       try {
-        UpstreamDetector detector; detector.initialize(model, labels, kind);
+        UpstreamDetector detector; detector.initialize(model, labels, kind,preprocess);
         worker_model = ModelState::Ready;
         while (!stop_worker) {
           auto status = router.status();
@@ -155,7 +160,8 @@ int main(int argc, char** argv) {
     if (failure.empty() && !published) failure = "NO_VALID_INFERENCE_RESULT";
     if (interrupted && failure.empty()) failure = "INTERRUPTED";
     std::ofstream summary(output + "/summary.json");
-    summary << "{\"scope\":\"direct V4L2 to upstream serial GPU baseline; no async optimization\",\"model_kind\":"
+    summary << "{\"scope\":\"single-flight direct V4L2 to upstream inference; not final-stack endurance\",\"preprocessor\":"
+            << quote(preprocess==PreprocessMode::CudaFused?"cuda-fused":"cpu-baseline") << ",\"model_kind\":"
             << quote(kind==DetectorKind::YoloV8Coco?"yolov8-coco":"ssd-fruit") << ",\"completed_inferences\":" << completed
             << ",\"published_results\":" << published << ",\"empty_results\":" << empty_results << ",\"stale_or_stopped_results\":" << stale
             << ",\"copied_frames\":" << capture.io.frames << ",\"pool_drop\":" << capture.io.no_slot << ",\"ready_drop\":" << capture.queue_replaced

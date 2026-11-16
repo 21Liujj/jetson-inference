@@ -35,6 +35,6 @@ verify_uvc_trace.py分prepare/matrix/recovery/restore，实验路径均finally�
 parse_uvc_trace.py按物理USB路径、内核stream_id、sequence、单调时刻关联消费CSV，
 内核stream_id与用户generation显式映射；歧义或trace丢失不能判通过。
 M4两轮矩阵与真实拔插/回退已验，见docs/m4-uvc-trace.md、
-evidence/2026-11-16-uvc-trace。R1矩阵并行engine构建；R2仅为DVFS未锁定的开销观测，
+evidence/2026-11-16-uvc-trace。R1矩阵并行engine构建；R2未单独记录冻结功耗/频率条件，
 不能宣称零开销。真实reason=1内部回收已出现，不与READY替换/取消归还混算。
 用户generation1→4映射内核stream1→2；不能要求二者数值相同。运行模块现为系统原版。

@@ -40,7 +40,7 @@ No submodule source has been intentionally modified in M0/M1.
 | Agent repository routing and domain skills | new | `AGENTS.md`, `agent.md`, `.agents/skills` | Eight scoped development skills; not a completed runtime VLM/Agent |
 | Matched unchanged UVC build / runtime rollback | upstream_rebuilt; new verification tools | `tools/fetch_kernel_sources.py`, `build_uvc_module.py`, `verify_uvc_baseline.py` | M3 kernel gate: original srcversion/vermagic, 155 import CRCs; actual original/rebuilt/original captures |
 | UVC frame and stream trace extension | upstream_modified (GPL driver patch) / new parser | `kernel/0001-uvc-frame-observability.patch`, trace tools | M4 two matrices, 172 import CRCs, actual private internal-recycle observations, 1,803-row real USB recovery correlation, loaded identity and actual stock rollback; see `docs/m4-uvc-trace.md` |
-| CUDA event pipeline | planned | Execution layer | M5; numerical regression + timeline required |
+| Fused RGB preprocessing and bounded event pipeline | new kernel/adapter; upstream tensorNet reused | `cuda_letterbox.cu`, `gpu_yolo_pipeline.cc`, pipeline probes/matrix/analyzer | M5: 48 preprocessing cases, same 200-image AP gates, 15 unprofiled runs, actual cross-stream GPU intervals, real camera/shared-task cancellation and physical cleanup; runtime P1 versus offline P2 limits in `docs/m5-gpu-pipeline.md` |
 | ROS2 + model-driven Agent | planned | ROS workspace + Agent adapter | M6/M7; real model/tool traces required |
 
 Personal commits are the commits after the frozen parent on `edgevision/v3.1`:

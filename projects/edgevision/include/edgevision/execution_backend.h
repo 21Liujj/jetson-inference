@@ -11,6 +11,7 @@ struct InferenceConfig {
   std::string onnx, labels;
   uint32_t max_frame_age_ms = 250;
   DetectorKind kind = DetectorKind::SsdFruit;
+  PreprocessMode preprocess = PreprocessMode::CpuBaseline;
 };
 struct ExecutionJob {
   uint64_t task_id = 0, generation = 0, deadline_mono_ns = 0;

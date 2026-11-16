@@ -1,0 +1,97 @@
+{
+  "cpu-pinned": {
+    "throughput_per_s": 73.7631625243,
+    "latency_p50_ns": 13443769,
+    "latency_p95_ns": 14444686,
+    "latency_p99_ns": 14852026
+  },
+  "p1-pinned": {
+    "throughput_per_s": 129.98584881,
+    "latency_p50_ns": 10952823,
+    "latency_p95_ns": 11366123,
+    "latency_p99_ns": 11491408
+  },
+  "p2-mapped": {
+    "throughput_per_s": 194.118296185,
+    "latency_p50_ns": 13507887,
+    "latency_p95_ns": 14020262,
+    "latency_p99_ns": 14215536
+  },
+  "p2-pinned": {
+    "throughput_per_s": 190.170311238,
+    "latency_p50_ns": 13833804,
+    "latency_p95_ns": 14380036,
+    "latency_p99_ns": 14565677
+  },
+  "p1-mapped": {
+    "throughput_per_s": 130.079415656,
+    "latency_p50_ns": 10983054,
+    "latency_p95_ns": 11354910,
+    "latency_p99_ns": 11500133
+  },
+  "frequency_observations": {
+    "/sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq": [
+      "1728000"
+    ],
+    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq": [
+      "1728000"
+    ],
+    "/sys/devices/platform/17000000.gpu/devfreq/17000000.gpu/min_freq": [
+      "1020000000"
+    ],
+    "/sys/devices/platform/17000000.gpu/devfreq/17000000.gpu/max_freq": [
+      "1020000000"
+    ],
+    "/sys/devices/platform/17000000.gpu/devfreq/17000000.gpu/cur_freq": [
+      "1020000000"
+    ]
+  }
+}
