@@ -1,0 +1,96 @@
+{
+  "release": "R36.4.3",
+  "download": {
+    "requested_url": "https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.3/sources/public_sources.tbz2",
+    "resolved_url": "https://developer.download.nvidia.com/embedded/L4T/r36_Release_v4.3/sources/public_sources.tbz2",
+    "content_length": 226034384,
+    "etag": "\"d9208757e875f0176b41fcc1bc27c3b6-27\"",
+    "last_modified": "Sun, 07 Jun 2026 18:11:17 GMT",
+    "checksum_authority": "locally computed SHA256; no published source checksum located",
+    "bytes": 226034384,
+    "sha256": "2c177804679e3ed650dabec6fa958388579896f170570c6171a1b6c386669216",
+    "kernel_archive_member": "Linux_for_Tegra/source/kernel_src.tbz2",
+    "kernel_archive_sha256": "0c314c5174d07149194e0a5a50d0f14a4ee5a4fe2cd1f382b471624cc1aa5184"
+  },
+  "kernel_makefile_header": "# SPDX-License-Identifier: GPL-2.0\nVERSION = 5\nPATCHLEVEL = 15\nSUBLEVEL = 148\nEXTRAVERSION =\nNAME = Trick or Treat\n\n# *DOCUMENTATION*\n# To see a list of typical targets execute \"make help\"\n# More info can be located in ./README\n# Comments in this file are targeted only to the developer, do not\n# expect to learn how to build the kernel reading this file.\n\n$(if $(filter __%, $(MAKECMDGOALS)), \\\n\t$(error targets prefixed with '__' are only for internal use))\n\n# That's our default target when none is given on the command line\nPHONY := __all\n__all:\n\n# We are using a recursive build, so we need to do a little thinking\n# to get the ordering right.\n#\n# Most importantly: sub-Makefiles should only ever modify files in\n# their own directory. If in some directory we have a dependency on\n# a file in another dir (which doesn't happen often, but it's often\n# unavoidable when linking the built-in.a targets which finally\n# turn into vmlinux), we will call a sub make in that other dir, and\n# after that we are sure that everything which is in that other dir\n# is now up to date.\n#\n# The only cases where we need to modify files which have global\n# effects are thus separated out and done before the recu",
+  "files": [
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_status.c",
+      "name": "uvc_status.c",
+      "bytes": 8478,
+      "sha256": "f7df0a3fd3a93c7cae5f520f35164951c10965422b2f83222e731099629fac2f"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_entity.c",
+      "name": "uvc_entity.c",
+      "bytes": 3992,
+      "sha256": "60e5c133f3f601055f70f389caa855d1934ce4d7ea76e1c7c53708cea0b6b45c"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_metadata.c",
+      "name": "uvc_metadata.c",
+      "bytes": 4964,
+      "sha256": "d479615b3dacac0d218377368e291214986ad6ce46c45003561ecfee243d2b70"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_driver.c",
+      "name": "uvc_driver.c",
+      "bytes": 87701,
+      "sha256": "d5def11dd60d6b445639d0b4717756d2ca827b6b09f253eee7d13b51b26bdac7"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_video.c",
+      "name": "uvc_video.c",
+      "bytes": 64958,
+      "sha256": "186d7b53e0f9bf76718389d669fcbc81188bcfc47ecae8593c3eb7f678b571b0"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/Makefile",
+      "name": "Makefile",
+      "bytes": 290,
+      "sha256": "a577b4a0b1bcad08052a7542f8331169ed9d523693ed32ebe99ea6eb53793ef3"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_ctrl.c",
+      "name": "uvc_ctrl.c",
+      "bytes": 65663,
+      "sha256": "48d470a9db40e8c66783df6df044d8581629185fdb7d8ddca2e762095f4c1095"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_v4l2.c",
+      "name": "uvc_v4l2.c",
+      "bytes": 39142,
+      "sha256": "ee236316b5d77931ea5f77cbff738e709ad80c41621c78e0af72ac24884a1b6e"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvcvideo.h",
+      "name": "uvcvideo.h",
+      "bytes": 27645,
+      "sha256": "2034a0eaa448563e8177f4d2f05e94f958c064dab98cd719ac91d6f56e13d607"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/Kconfig",
+      "name": "Kconfig",
+      "bytes": 623,
+      "sha256": "a9167536cc134c1fff58773082fdae7a6a83337a28b2f1cfdb36be216e0eea45"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_isight.c",
+      "name": "uvc_isight.c",
+      "bytes": 3779,
+      "sha256": "3825a2e961ae49c9616f496834cfdc6f069f170ceba127db179f20ff03df21ac"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_debugfs.c",
+      "name": "uvc_debugfs.c",
+      "bytes": 2520,
+      "sha256": "dc5f754da2ba91b39ee51df7f928360f65b65268d5f664f335a22b1698a23722"
+    },
+    {
+      "source_member": "kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_queue.c",
+      "name": "uvc_queue.c",
+      "bytes": 13448,
+      "sha256": "fe330165817cce27a0be3569a859b1c088c5560f07e1237be3bc42de90e861d7"
+    }
+  ]
+}

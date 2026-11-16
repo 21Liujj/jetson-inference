@@ -1,0 +1,204 @@
+--- a/drivers/media/usb/uvc/Makefile
++++ b/drivers/media/usb/uvc/Makefile
+@@ -5,3 +5,6 @@
+ uvcvideo-objs  += uvc_entity.o
+ endif
+ obj-$(CONFIG_USB_VIDEO_CLASS) += uvcvideo.o
++
++# Trace header re-inclusion for this external-module build.
++ccflags-y += -I$(src)
+--- a/drivers/media/usb/uvc/uvc_queue.c
++++ b/drivers/media/usb/uvc/uvc_queue.c
+@@ -20,6 +20,36 @@
+ 
+ #include "uvcvideo.h"
+ 
++#define CREATE_TRACE_POINTS
++#include "uvc_trace.h"
++
++/* Unique per STREAMON within this module load; not userspace generation. */
++static atomic64_t edgevision_stream_ids = ATOMIC64_INIT(0);
++
++/* reason: 0=delivered to vb2, 1=internal corrupt-frame recycle, 2=cancel return. */
++static void edgevision_trace_buffer(struct uvc_video_queue *queue,
++				  struct uvc_buffer *buf, u32 reason)
++{
++	if (queue->queue.type == V4L2_BUF_TYPE_VIDEO_CAPTURE &&
++	    trace_uvc_frame_enabled()) {
++		struct uvc_streaming *stream = uvc_queue_to_stream(queue);
++
++		trace_uvc_frame(stream, buf, READ_ONCE(queue->edgevision_stream_id),
++				reason, ktime_get_ns());
++	}
++}
++
++/* action: 1=start attempt, 2=start failure, 3=stop, 4=disconnect cancel. */
++static void edgevision_trace_stream(struct uvc_video_queue *queue,
++				  u32 action, int result)
++{
++	if (queue->queue.type == V4L2_BUF_TYPE_VIDEO_CAPTURE &&
++	    trace_uvc_stream_enabled())
++		trace_uvc_stream(uvc_queue_to_stream(queue),
++			READ_ONCE(queue->edgevision_stream_id), action, result,
++			ktime_get_ns());
++}
++
+ /* ------------------------------------------------------------------------
+  * Video buffers queue management.
+  *
+@@ -55,6 +85,7 @@
+ 							  queue);
+ 		list_del(&buf->queue);
+ 		buf->state = state;
++		edgevision_trace_buffer(queue, buf, 2);
+ 		vb2_buffer_done(&buf->buf.vb2_buf, vb2_state);
+ 	}
+ }
+@@ -165,10 +196,15 @@
+ 	lockdep_assert_irqs_enabled();
+ 
+ 	queue->buf_used = 0;
++	if (vq->type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		WRITE_ONCE(queue->edgevision_stream_id,
++			   atomic64_inc_return(&edgevision_stream_ids));
++	edgevision_trace_stream(queue, 1, 0);
+ 
+ 	ret = uvc_video_start_streaming(stream);
+ 	if (ret == 0)
+ 		return 0;
++	edgevision_trace_stream(queue, 2, ret);
+ 
+ 	spin_lock_irq(&queue->irqlock);
+ 	uvc_queue_return_buffers(queue, UVC_BUF_STATE_QUEUED);
+@@ -182,6 +218,7 @@
+ 	struct uvc_video_queue *queue = vb2_get_drv_priv(vq);
+ 
+ 	lockdep_assert_irqs_enabled();
++	edgevision_trace_stream(queue, 3, 0);
+ 
+ 	if (vq->type != V4L2_BUF_TYPE_META_CAPTURE)
+ 		uvc_video_stop_streaming(uvc_queue_to_stream(queue));
+@@ -216,6 +253,7 @@
+ {
+ 	int ret;
+ 
++	WRITE_ONCE(queue->edgevision_stream_id, 0);
+ 	queue->queue.type = type;
+ 	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR;
+ 	queue->queue.drv_priv = queue;
+@@ -411,6 +449,8 @@
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&queue->irqlock, flags);
++	if (disconnect)
++		edgevision_trace_stream(queue, 4, -ENODEV);
+ 	uvc_queue_return_buffers(queue, UVC_BUF_STATE_ERROR);
+ 	/* This must be protected by the irqlock spinlock to avoid race
+ 	 * conditions between uvc_buffer_queue and the disconnection event that
+@@ -475,12 +515,14 @@
+ 	struct uvc_video_queue *queue = vb2_get_drv_priv(vb->vb2_queue);
+ 
+ 	if ((queue->flags & UVC_QUEUE_DROP_CORRUPTED) && buf->error) {
++		edgevision_trace_buffer(queue, buf, 1);
+ 		uvc_queue_buffer_requeue(queue, buf);
+ 		return;
+ 	}
+ 
+ 	buf->state = buf->error ? UVC_BUF_STATE_ERROR : UVC_BUF_STATE_DONE;
+ 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, buf->bytesused);
++	edgevision_trace_buffer(queue, buf, 0);
+ 	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
+ }
+ 
+--- /dev/null
++++ b/drivers/media/usb/uvc/uvc_trace.h
+@@ -0,0 +1,78 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* EdgeVision UVC frame-boundary diagnostics for the frozen L4T 5.15 driver. */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM edgevision_uvc
++
++#if !defined(_EDGEVISION_UVC_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _EDGEVISION_UVC_TRACE_H
++#include <linux/tracepoint.h>
++
++TRACE_EVENT(uvc_frame,
++ TP_PROTO(const struct uvc_streaming *stream, const struct uvc_buffer *buf,
++          u64 stream_id, u32 reason, u64 completed_ns),
++ TP_ARGS(stream, buf, stream_id, reason, completed_ns),
++ TP_STRUCT__entry(
++  __string(usb, dev_name(&stream->dev->udev->dev))
++  __field(int, interface)
++  __field(int, video_minor)
++  __field(u64, stream_id)
++  __field(u32, index)
++  __field(u32, sequence)
++  __field(u32, bytesused)
++  __field(u32, state)
++  __field(u32, error)
++  __field(u32, reason)
++  __field(u64, completed_ns)
++ ),
++ TP_fast_assign(
++  __assign_str(usb, dev_name(&stream->dev->udev->dev));
++  __entry->interface = stream->intfnum;
++  __entry->video_minor = stream->vdev.minor;
++  __entry->stream_id = stream_id;
++  __entry->index = buf->buf.vb2_buf.index;
++  __entry->sequence = buf->buf.sequence;
++  __entry->bytesused = buf->bytesused;
++  __entry->state = buf->state;
++  __entry->error = buf->error;
++  __entry->reason = reason;
++  __entry->completed_ns = completed_ns;
++ ),
++ TP_printk("usb=%s interface=%d video_minor=%d stream_id=%llu index=%u sequence=%u bytesused=%u state=%u error=%u reason=%u completed_ns=%llu",
++  __get_str(usb), __entry->interface, __entry->video_minor,
++  __entry->stream_id, __entry->index, __entry->sequence, __entry->bytesused,
++  __entry->state, __entry->error, __entry->reason, __entry->completed_ns)
++);
++
++TRACE_EVENT(uvc_stream,
++ TP_PROTO(const struct uvc_streaming *stream, u64 stream_id, u32 action,
++          int result, u64 mono_ns),
++ TP_ARGS(stream, stream_id, action, result, mono_ns),
++ TP_STRUCT__entry(
++  __string(usb, dev_name(&stream->dev->udev->dev))
++  __field(int, interface)
++  __field(int, video_minor)
++  __field(u64, stream_id)
++  __field(u32, action)
++  __field(int, result)
++  __field(u64, mono_ns)
++ ),
++ TP_fast_assign(
++  __assign_str(usb, dev_name(&stream->dev->udev->dev));
++  __entry->interface = stream->intfnum;
++  __entry->video_minor = stream->vdev.minor;
++  __entry->stream_id = stream_id;
++  __entry->action = action;
++  __entry->result = result;
++  __entry->mono_ns = mono_ns;
++ ),
++ TP_printk("usb=%s interface=%d video_minor=%d stream_id=%llu action=%u result=%d mono_ns=%llu",
++  __get_str(usb), __entry->interface, __entry->video_minor, __entry->stream_id,
++  __entry->action, __entry->result, __entry->mono_ns)
++);
++#endif
++
++#undef TRACE_INCLUDE_PATH
++#define TRACE_INCLUDE_PATH .
++#undef TRACE_INCLUDE_FILE
++#define TRACE_INCLUDE_FILE uvc_trace
++#include <trace/define_trace.h>
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -453,6 +453,8 @@
+ #define UVC_QUEUE_DROP_CORRUPTED	(1 << 1)
+ 
+ struct uvc_video_queue {
++	/* Assigned before URB submission; stable until all work is drained. */
++	u64 edgevision_stream_id;
+ 	struct vb2_queue queue;
+ 	struct mutex mutex;			/* Protects queue */
+ 

@@ -1,0 +1,15 @@
+{
+  "initial_local_archive_sha256": "49fe2d19e63563bcfa8f4f1f8ba14c6872d184212c686034c8476a83ea864a1f",
+  "files": [
+    {
+      "path": "raw-uvc-trace-evidence.zip",
+      "bytes": 1083785,
+      "sha256": "3f6b0e8f17f1d150dfd73cb412377640d0d3eeaccbd62fdf1af27798f18e636e"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 18697,
+      "sha256": "a46f04e14cf6a3889a5606c56e9bf1a32a193b863336bc3b62a97349f60125d4"
+    }
+  ]
+}

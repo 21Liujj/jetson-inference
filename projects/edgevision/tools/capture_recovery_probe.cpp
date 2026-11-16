@@ -56,8 +56,10 @@ int main(int argc, char** argv) {
     }
     if (!ControlRouter::valid_config(config) || output.empty()) throw std::invalid_argument("invalid capture config/output");
     if (!std::filesystem::create_directories(output)) throw std::invalid_argument("output already exists");
-    std::ofstream events(output + "/events.jsonl"), metrics(output + "/health.csv");
+    std::ofstream events(output + "/events.jsonl"), metrics(output + "/health.csv"), frame_log(output + "/frames.csv");
     events.exceptions(std::ios::badbit | std::ios::failbit); metrics.exceptions(std::ios::badbit | std::ios::failbit);
+    frame_log.exceptions(std::ios::badbit | std::ios::failbit);
+    frame_log << "generation,sequence,host_dq_ns,publish_ns,consume_ns,bytesused,flags\n";
     metrics << "mono_ns,state,generation,valid_frames,pool_drop,ready_drop,depth,pool_busy,rate_n,rate_interval_ns,capture_fps,consume_n,consume_p95_ns,result_n,result_p95_ns,frame_age_from_dq_ns,rss_kib,fd_count\n";
     auto log = [&](const std::string& what, const RouterStatus& s) {
       events << "{\"mono_ns\":" << now() << ",\"event\":" << quote(what) << ",\"state\":" << quote(name(s.capture))
@@ -92,13 +94,17 @@ int main(int argc, char** argv) {
       FrameLease frame;
       if (state.capture == CaptureState::Running && backend.consume(frame, 0)) {
         if (frame->session_generation == state.generation) {
-          ++frames; health.observe_consumed(*frame, now());
+          const auto consumed_at=now();
+          frame_log << frame->session_generation << ',' << frame->driver_sequence << ',' << frame->host_dequeue_mono_ns << ','
+                    << frame->publish_mono_ns << ',' << consumed_at << ',' << frame->bytesused << ',' << frame->driver_flags << '\n';
+          ++frames; health.observe_consumed(*frame, consumed_at);
           if (ready && frame->session_generation != first_generation && !recovered) {
             recovered = true; recovery_observed_at = now(); log("recovered_valid_frame", state);
           }
         }
       }
       if (metrics_due) {
+        frame_log.flush();
         health.observe_process(process(now())); auto h = health.snapshot(now(), state);
         metrics << at << ',' << name(state.capture) << ',' << h.generation << ',' << h.counters.valid_frames << ',' << h.counters.pool_drops << ','
                 << h.counters.ready_drops << ',' << h.counters.queue_depth << ',' << h.counters.pool_busy << ',' << h.rate.samples << ',' << h.rate.interval_ns << ',';

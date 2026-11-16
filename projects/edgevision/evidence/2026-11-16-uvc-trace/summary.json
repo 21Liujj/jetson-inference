@@ -1,0 +1,598 @@
+{
+  "matrix": {
+    "stock": {
+      "normal_runs": [
+        {
+          "consumed": 300,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.11861699999999999,
+          "supervised_wall_seconds": 11.084663112,
+          "child_cpu_core_fraction": 0.010701001807766983,
+          "system_cpu_core_fraction": 0.09923621393681921,
+          "dequeue_to_consume_p95_ns": 941218,
+          "trace_loss": 0
+        },
+        {
+          "consumed": 301,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.120239,
+          "supervised_wall_seconds": 10.585605627,
+          "child_cpu_core_fraction": 0.011358726579924193,
+          "system_cpu_core_fraction": 0.029285050938351948,
+          "dequeue_to_consume_p95_ns": 954308,
+          "trace_loss": 0
+        },
+        {
+          "consumed": 301,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.11955999999999999,
+          "supervised_wall_seconds": 10.5850181,
+          "child_cpu_core_fraction": 0.011295209783344631,
+          "system_cpu_core_fraction": 0.026452481928207573,
+          "dequeue_to_consume_p95_ns": 956707,
+          "trace_loss": 0
+        }
+      ],
+      "median_child_cpu_core_fraction": 0.011295209783344631,
+      "median_dequeue_to_consume_p95_ns": 954308,
+      "slow": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 1,
+        "interrupted": false,
+        "consumed": 80,
+        "copied": 241,
+        "pool_drop": 0,
+        "queue_replaced": 159,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": ""
+      },
+      "cycles": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 3,
+        "interrupted": false,
+        "consumed": 183,
+        "copied": 183,
+        "pool_drop": 0,
+        "queue_replaced": 0,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": ""
+      }
+    },
+    "disabled": {
+      "normal_runs": [
+        {
+          "consumed": 301,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.12314499999999999,
+          "supervised_wall_seconds": 10.586588576,
+          "child_cpu_core_fraction": 0.011632170185509246,
+          "system_cpu_core_fraction": 0.031171514565902406,
+          "dequeue_to_consume_p95_ns": 943138,
+          "trace_loss": 0
+        },
+        {
+          "consumed": 301,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.120123,
+          "supervised_wall_seconds": 10.585003949,
+          "child_cpu_core_fraction": 0.011348413338225387,
+          "system_cpu_core_fraction": 0.026452517292301296,
+          "dequeue_to_consume_p95_ns": 957251,
+          "trace_loss": 0
+        },
+        {
+          "consumed": 300,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.120942,
+          "supervised_wall_seconds": 10.5844952,
+          "child_cpu_core_fraction": 0.011426336137409747,
+          "system_cpu_core_fraction": 0.02645378874563617,
+          "dequeue_to_consume_p95_ns": 954980,
+          "trace_loss": 0
+        }
+      ],
+      "median_child_cpu_core_fraction": 0.011426336137409747,
+      "median_dequeue_to_consume_p95_ns": 954980,
+      "slow": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 1,
+        "interrupted": false,
+        "consumed": 80,
+        "copied": 241,
+        "pool_drop": 0,
+        "queue_replaced": 159,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": ""
+      },
+      "cycles": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 3,
+        "interrupted": false,
+        "consumed": 182,
+        "copied": 183,
+        "pool_drop": 0,
+        "queue_replaced": 0,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": ""
+      }
+    },
+    "enabled": {
+      "normal_runs": [
+        {
+          "consumed": 301,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.119432,
+          "supervised_wall_seconds": 10.585269556,
+          "child_cpu_core_fraction": 0.011282849186613571,
+          "system_cpu_core_fraction": 0.029285980707433577,
+          "dequeue_to_consume_p95_ns": 942083,
+          "trace_loss": 0
+        },
+        {
+          "consumed": 300,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.11903599999999999,
+          "supervised_wall_seconds": 10.584672892,
+          "child_cpu_core_fraction": 0.011246072619775388,
+          "system_cpu_core_fraction": 0.027398106957011854,
+          "dequeue_to_consume_p95_ns": 947843,
+          "trace_loss": 0
+        },
+        {
+          "consumed": 300,
+          "sequence_gaps": 0,
+          "ready_drop": 0,
+          "child_cpu_seconds": 0.120059,
+          "supervised_wall_seconds": 10.584222089,
+          "child_cpu_core_fraction": 0.011343204912978464,
+          "system_cpu_core_fraction": 0.025509668800374696,
+          "dequeue_to_consume_p95_ns": 962179,
+          "trace_loss": 0
+        }
+      ],
+      "median_child_cpu_core_fraction": 0.011282849186613571,
+      "median_dequeue_to_consume_p95_ns": 947843,
+      "slow": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 1,
+        "interrupted": false,
+        "consumed": 80,
+        "copied": 241,
+        "pool_drop": 0,
+        "queue_replaced": 159,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": ""
+      },
+      "slow_trace": {
+        "scope": "UVC final-copy completion to consumed-frame DQ/publish/consume, all CLOCK_MONOTONIC",
+        "usb": "1-2.1",
+        "kernel_frame_events": 246,
+        "delivered_to_vb2": 241,
+        "internal_corrupt_recycles": 1,
+        "cancel_returns": 4,
+        "delivered_error_buffers": 0,
+        "user_consumed_rows": 80,
+        "matched": 80,
+        "unmatched": [],
+        "generation_mapping": {
+          "1": {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "kernel_stream_id": 11
+          }
+        },
+        "stream_events": [
+          {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "stream_id": 11,
+            "action": 1,
+            "result": 0,
+            "mono_ns": 20833913613656
+          },
+          {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "stream_id": 11,
+            "action": 3,
+            "result": 0,
+            "mono_ns": 20842304722519
+          }
+        ],
+        "latency_ns": {
+          "complete_to_dq_ns": {
+            "n": 80,
+            "min": 9857,
+            "median": 13633,
+            "p95": 22209,
+            "p99": 29537,
+            "max": 29537
+          },
+          "dq_to_publish_ns": {
+            "n": 80,
+            "min": 39266,
+            "median": 41026,
+            "p95": 42978,
+            "p99": 247049,
+            "max": 247049
+          },
+          "publish_to_consume_ns": {
+            "n": 80,
+            "min": 436560,
+            "median": 38510633,
+            "p95": 61274126,
+            "p99": 63577699,
+            "max": 63577699
+          }
+        },
+        "kernel_completions_not_in_consumed_csv": 161,
+        "unconsumed_interpretation": "may be startup/stop, pool drop or READY replacement; correlate counters before assigning a loss cause",
+        "pass": true
+      },
+      "cycles": {
+        "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+        "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "cycles_completed": 3,
+        "interrupted": false,
+        "consumed": 183,
+        "copied": 183,
+        "pool_drop": 0,
+        "queue_replaced": 0,
+        "sequence_gaps": 0,
+        "start_retries": 0,
+        "negotiated": {
+          "width": 640,
+          "height": 360,
+          "fourcc": 1448695129,
+          "stride": 1280,
+          "sizeimage": 460800,
+          "driver_buffers": 4,
+          "mapped_bytes": 1843200,
+          "pool_bytes": 1843200,
+          "interval_num": 1,
+          "interval_den": 30
+        },
+        "warning": ""
+      },
+      "cycles_trace": {
+        "scope": "UVC final-copy completion to consumed-frame DQ/publish/consume, all CLOCK_MONOTONIC",
+        "usb": "1-2.1",
+        "kernel_frame_events": 200,
+        "delivered_to_vb2": 183,
+        "internal_corrupt_recycles": 5,
+        "cancel_returns": 12,
+        "delivered_error_buffers": 0,
+        "user_consumed_rows": 183,
+        "matched": 183,
+        "unmatched": [],
+        "generation_mapping": {
+          "1": {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "kernel_stream_id": 12
+          },
+          "2": {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "kernel_stream_id": 13
+          },
+          "3": {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "kernel_stream_id": 14
+          }
+        },
+        "stream_events": [
+          {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "stream_id": 12,
+            "action": 1,
+            "result": 0,
+            "mono_ns": 20842949425412
+          },
+          {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "stream_id": 12,
+            "action": 3,
+            "result": 0,
+            "mono_ns": 20845313006956
+          },
+          {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "stream_id": 13,
+            "action": 1,
+            "result": 0,
+            "mono_ns": 20845323492269
+          },
+          {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "stream_id": 13,
+            "action": 3,
+            "result": 0,
+            "mono_ns": 20847750803587
+          },
+          {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "stream_id": 14,
+            "action": 1,
+            "result": 0,
+            "mono_ns": 20847761207618
+          },
+          {
+            "usb": "1-2.1",
+            "interface": 1,
+            "video_minor": 0,
+            "stream_id": 14,
+            "action": 3,
+            "result": 0,
+            "mono_ns": 20850192257413
+          }
+        ],
+        "latency_ns": {
+          "complete_to_dq_ns": {
+            "n": 183,
+            "min": 11616,
+            "median": 20192,
+            "p95": 22945,
+            "p99": 26913,
+            "max": 26913
+          },
+          "dq_to_publish_ns": {
+            "n": 183,
+            "min": 40609,
+            "median": 43202,
+            "p95": 45089,
+            "p99": 228681,
+            "max": 232137
+          },
+          "publish_to_consume_ns": {
+            "n": 183,
+            "min": 7264,
+            "median": 617751,
+            "p95": 917698,
+            "p99": 962819,
+            "max": 1011813
+          }
+        },
+        "kernel_completions_not_in_consumed_csv": 0,
+        "unconsumed_interpretation": "may be startup/stop, pool drop or READY replacement; correlate counters before assigning a loss cause",
+        "pass": true
+      }
+    }
+  },
+  "recovery": {
+    "capture": {
+      "scope": "real USB capture runtime recovery; no inference",
+      "frames": 1803,
+      "recovered": true,
+      "stopped_in_recovery": false,
+      "generation": 4,
+      "runtime_retries": 3,
+      "fault_detected_ns": 20469351735979,
+      "recovered_ns": 20476731596934,
+      "runtime_retry_limit": 5,
+      "recovery_budget_ms": 30000,
+      "post_stop_node_returned_while_idle": false,
+      "post_stop_observation_ns": 0,
+      "failure": ""
+    },
+    "trace": {
+      "scope": "UVC final-copy completion to consumed-frame DQ/publish/consume, all CLOCK_MONOTONIC",
+      "usb": "1-2.1",
+      "kernel_frame_events": 1812,
+      "delivered_to_vb2": 1803,
+      "internal_corrupt_recycles": 1,
+      "cancel_returns": 8,
+      "delivered_error_buffers": 0,
+      "user_consumed_rows": 1803,
+      "matched": 1803,
+      "unmatched": [],
+      "generation_mapping": {
+        "1": {
+          "usb": "1-2.1",
+          "interface": 1,
+          "video_minor": 0,
+          "kernel_stream_id": 1
+        },
+        "4": {
+          "usb": "1-2.1",
+          "interface": 1,
+          "video_minor": 0,
+          "kernel_stream_id": 2
+        }
+      },
+      "stream_events": [
+        {
+          "usb": "1-2.1",
+          "interface": 1,
+          "video_minor": 0,
+          "stream_id": 1,
+          "action": 1,
+          "result": 0,
+          "mono_ns": 20410890246886
+        },
+        {
+          "usb": "1-2.1",
+          "interface": 1,
+          "video_minor": 0,
+          "stream_id": 1,
+          "action": 3,
+          "result": 0,
+          "mono_ns": 20469351209912
+        },
+        {
+          "usb": "1-2.1",
+          "interface": 1,
+          "video_minor": 0,
+          "stream_id": 2,
+          "action": 1,
+          "result": 0,
+          "mono_ns": 20476365532732
+        },
+        {
+          "usb": "1-2.1",
+          "interface": 1,
+          "video_minor": 0,
+          "stream_id": 2,
+          "action": 3,
+          "result": 0,
+          "mono_ns": 20478732364825
+        }
+      ],
+      "latency_ns": {
+        "complete_to_dq_ns": {
+          "n": 1803,
+          "min": 9312,
+          "median": 15073,
+          "p95": 24225,
+          "p99": 41185,
+          "max": 77283
+        },
+        "dq_to_publish_ns": {
+          "n": 1803,
+          "min": 42530,
+          "median": 45729,
+          "p95": 51202,
+          "p99": 78275,
+          "max": 402991
+        },
+        "publish_to_consume_ns": {
+          "n": 1803,
+          "min": 1792,
+          "median": 507443,
+          "p95": 992068,
+          "p99": 1046822,
+          "max": 5713200
+        }
+      },
+      "kernel_completions_not_in_consumed_csv": 0,
+      "unconsumed_interpretation": "may be startup/stop, pool drop or READY replacement; correlate counters before assigning a loss cause",
+      "pass": true
+    },
+    "fault_to_new_valid_frame_ns": 7379885661
+  },
+  "identities": {
+    "matrix_r1": {
+      "candidate_loaded": true,
+      "rollback_restored": true,
+      "final_loaded_build_id": "4f3253a8a815a048b37be4908a51db4ef5b66053",
+      "tainted_before": "12288",
+      "tainted_after": "12288"
+    },
+    "recovery_r1": {
+      "candidate_loaded": true,
+      "rollback_restored": true,
+      "final_loaded_build_id": "4f3253a8a815a048b37be4908a51db4ef5b66053",
+      "tainted_before": "12288",
+      "tainted_after": "12288"
+    },
+    "matrix_r2": {
+      "candidate_loaded": true,
+      "rollback_restored": true,
+      "final_loaded_build_id": "4f3253a8a815a048b37be4908a51db4ef5b66053",
+      "tainted_before": "12288",
+      "tainted_after": "12288"
+    }
+  },
+  "limitations": [
+    "R1 matrix overlaps M3 engine build; use R2 for observational overhead records.",
+    "R2 has no deliberate competing workload but clocks/DVFS/OS jitter are uncontrolled; no precise overhead bound or optimization claim.",
+    "Internal corrupt-frame recycling was observed (one event in the R1 recovery trace and one in the R2 slow-consumer trace). No device/firmware root cause or driver bug fix is claimed.",
+    "USB recovery uses explicit 5 attempts/30s test policy; not a default-policy claim."
+  ],
+  "processing_note": "An initial local summary template incorrectly said no corrupt event was observed. Corrected from the original reason=1 trace before publication; raw trace bytes unchanged."
+}

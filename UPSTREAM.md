@@ -37,7 +37,8 @@ No submodule source has been intentionally modified in M0/M1.
 | Bounded HealthMonitor | new | `health_monitor.h`, `src/health_monitor.cc` | Window capacity/time, unknown values, generation isolation, CPU latency samples; fixture and real capture telemetry, no GPU benchmark |
 | Recovery acceptance probe | new | `tools/capture_recovery_probe.cpp` | Actual fault-to-first-frame and alive-after-stop observation; invalid R4 operator window retained, see `docs/m2-runtime.md` |
 | Agent repository routing and domain skills | new | `AGENTS.md`, `agent.md`, `.agents/skills` | Eight scoped development skills; not a completed runtime VLM/Agent |
-| UVC frame trace extension | planned | Target-L4T kernel patch | M3/M4; no modified module claimed |
+| Matched unchanged UVC build / runtime rollback | upstream_rebuilt; new verification tools | `tools/fetch_kernel_sources.py`, `build_uvc_module.py`, `verify_uvc_baseline.py` | M3 kernel gate: original srcversion/vermagic, 155 import CRCs; actual original/rebuilt/original captures |
+| UVC frame and stream trace extension | upstream_modified (GPL driver patch) / new parser | `kernel/0001-uvc-frame-observability.patch`, trace tools | M4 two matrices, 172 import CRCs, actual private internal-recycle observations, 1,803-row real USB recovery correlation, loaded identity and actual stock rollback; see `docs/m4-uvc-trace.md` |
 | CUDA event pipeline | planned | Execution layer | M5; numerical regression + timeline required |
 | ROS2 + model-driven Agent | planned | ROS workspace + Agent adapter | M6/M7; real model/tool traces required |
 

@@ -1,0 +1,47 @@
+{
+  "scope": "M3 unmodified UVC build/runtime/rollback baseline; no new trace feature yet",
+  "release": "5.15.148-tegra",
+  "build_exit_code": 0,
+  "headers_unchanged": true,
+  "vermagic": {
+    "original": "5.15.148-tegra SMP preempt mod_unload modversions aarch64",
+    "built": "5.15.148-tegra SMP preempt mod_unload modversions aarch64",
+    "equal": true
+  },
+  "srcversion": {
+    "original": "CBF6D7338385ACE45CFC76B",
+    "built": "CBF6D7338385ACE45CFC76B",
+    "equal": true
+  },
+  "imported_crc": {
+    "original_count": 155,
+    "built_count": 155,
+    "mismatches": {}
+  },
+  "original_sha256": "66257a362ecdbc4cd2a08f80cd9a4440b833354fbba3a08f77a810699b9a36b4",
+  "candidate_sha256": "fff14db20ad988031a6ad0a704aadb469caf9d33d7310d31873e53d92afd81f9",
+  "candidate_loaded": true,
+  "rollback_restored": true,
+  "tainted_before": "4096",
+  "tainted_after": "12288",
+  "captures": {
+    "stock-before": {
+      "consumed": 151,
+      "sequence_gaps": 0,
+      "loaded_build_id": "4f3253a8a815a048b37be4908a51db4ef5b66053",
+      "exit_code": 0
+    },
+    "candidate": {
+      "consumed": 150,
+      "sequence_gaps": 0,
+      "loaded_build_id": "df05b47372a7b88f0beb19cca77aa2508a682a90",
+      "exit_code": 0
+    },
+    "stock-after-rollback": {
+      "consumed": 151,
+      "sequence_gaps": 0,
+      "loaded_build_id": "4f3253a8a815a048b37be4908a51db4ef5b66053",
+      "exit_code": 0
+    }
+  }
+}

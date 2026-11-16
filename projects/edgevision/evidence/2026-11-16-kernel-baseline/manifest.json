@@ -1,0 +1,19 @@
+{
+  "files": [
+    {
+      "path": "raw-kernel-baseline.zip",
+      "bytes": 32579,
+      "sha256": "30173b803e7432fc0e19eef3bfce1078bddf485689fafa5ec7800bba5f2f9507"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 5167,
+      "sha256": "21e68ee0743fb6feae90c6cf8eadea829060be61594db5d8f7273e43866b0f45"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 1456,
+      "sha256": "c0af8c2379c7bfe02926a8c61a96d574a28aae7acd3f4b0838e224435f5706bf"
+    }
+  ]
+}
