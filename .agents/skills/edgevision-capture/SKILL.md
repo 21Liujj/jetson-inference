@@ -23,3 +23,9 @@ description: 开发或排查 Jetson USB 相机的 V4L2 MMAP、格式协商、采
 Linux 构建加 `-DEDGEVISION_ENABLE_V4L2=ON`，主机默认 OFF 不探测硬件依赖。
 用 `capture_probe.cpp` 和 `run_capture_acceptance.py` 保存真实 metadata、命令和错误。
 fixture、真实短采集、100 次启停、30 分钟及拔插验收分别记账，不能互相替代。
+
+运行中恢复由 ControlRouter 的会话意图驱动：Stopped 后退避重开、换 generation、
+有效首帧后 RUNNING。预算跨一次显式 start 累计，成功不重置；stop 清除会话意图。
+仅稳定设备路径自动恢复。真实观测和参数见 docs/m2-runtime.md；R3 长采集与
+R4/R5 恢复源码不同，不互相套用。人工测试先确认 ready，再观察进程存活期间的事件；
+没有覆盖断连或插回的窗口必须判未通过。症状与处理统一记 journal EV-CAP-003/EV-TEST-001。

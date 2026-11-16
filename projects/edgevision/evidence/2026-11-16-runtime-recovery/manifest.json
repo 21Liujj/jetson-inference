@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "r5-native-build-result.json",
+      "sha256": "9f51323224f04b39179d0f99d7b328eb34073c481ce31632ce0d60285df8fb19",
+      "bytes": 196
+    },
+    {
+      "path": "raw-runtime-recovery.zip",
+      "sha256": "816b7996938a88966fcc1433b63b431beb74b3b4541540fe26dd8cec8124ce12",
+      "bytes": 187099
+    },
+    {
+      "path": "runtime-recovery-kernel-retry.json",
+      "sha256": "31de779672cbe0464c91e3e98cb10b3d0362eae72c952b9c3b3259d6d0c2bb9a",
+      "bytes": 2617
+    },
+    {
+      "path": "runtime-recovery-kernel.json",
+      "sha256": "21a98231b3359655199130daf803c20a650168f615bb789d17d5f55e7ab249eb",
+      "bytes": 91
+    },
+    {
+      "path": "summary.json",
+      "sha256": "d6a8dd6dda1d68f89eaada62df0dd62b4aa82fdb6992470bbe2c67d5ba3c5b22",
+      "bytes": 3772
+    },
+    {
+      "path": "windows-core-lasttest.log",
+      "sha256": "821ffe18a6254bb74accdf49dd5350573777760c7712013f22549fda7e45adad",
+      "bytes": 5922
+    }
+  ],
+  "embedded_archive_manifest": "projects/edgevision/artifacts/2026-11-16/runtime-recovery-manifest.json"
+}

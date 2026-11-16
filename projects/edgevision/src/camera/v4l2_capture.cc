@@ -152,7 +152,10 @@ void V4L2Capture::account_sequence(uint32_t sequence) {
 }
 V4L2Capture::Read V4L2Capture::read(Frame* frame, int ms) {
   if (frame) frame->valid = false;
-  auto fault = [&](std::string why) { last_error_ = std::move(why); ++counters_.faults; return Read::Fault; };
+  auto fault = [&](std::string why, int cause = 0) {
+    last_error_ = std::move(why); last_errno_ = cause; ++counters_.faults; return Read::Fault;
+  };
+  auto system_fault = [&](const char* op) { const int cause = errno; return fault(error(op), cause); };
   if (!streaming_) return fault("READ_NOT_STREAMING");
   if (ms < 1 || ms > 1000) return fault("INVALID_POLL_BUDGET");
   const auto deadline = io_->monotonic_ns() + uint64_t(ms) * 1000000;
@@ -164,12 +167,12 @@ V4L2Capture::Read V4L2Capture::read(Frame* frame, int ms) {
     auto ready = io_->wait_frame_or_stop(fd_, stop_fd_, int((deadline - now + 999999) / 1000000));
     if (ready == V4L2Io::Wait::Stopped) return Read::Stopped;
     if (ready == V4L2Io::Wait::Timeout) { ++counters_.timeouts; return Read::Timeout; }
-    if (ready == V4L2Io::Wait::Fault) return fault(error("POLL"));
+    if (ready == V4L2Io::Wait::Fault) return system_fault("POLL");
     if (ready == V4L2Io::Wait::Retry) continue;
     b = {}; b.type = V4L2_BUF_TYPE_VIDEO_CAPTURE; b.memory = V4L2_MEMORY_MMAP;
     if (control(VIDIOC_DQBUF, &b) == 0) break;
     if (errno == EAGAIN || errno == EINTR) continue;
-    return fault(error("DQBUF"));
+    return system_fault("DQBUF");
   }
   const auto host_dequeue = io_->monotonic_ns();
   ++counters_.dequeued; account_sequence(b.sequence);
@@ -184,16 +187,16 @@ V4L2Capture::Read V4L2Capture::read(Frame* frame, int ms) {
   if (!b.bytesused || b.bytesused > mappings_[b.index].length || b.bytesused > format_.sizeimage ||
       truncated || (b.flags & V4L2_BUF_FLAG_ERROR)) {
     ++counters_.invalid_payloads;
-    if (!requeue()) return fault(error("QBUF_REJECTED_PAYLOAD"));
+    if (!requeue()) return system_fault("QBUF_REJECTED_PAYLOAD");
     return Read::InvalidPayload;
   }
   if (!frame) {
     ++counters_.no_slot;
-    if (!requeue()) return fault(error("QBUF_NO_SLOT"));
+    if (!requeue()) return system_fault("QBUF_NO_SLOT");
     return Read::NoSlot;
   }
   if (frame->data.capacity() < format_.sizeimage) {
-    if (!requeue()) return fault(error("QBUF_SMALL_SLOT"));
+    if (!requeue()) return system_fault("QBUF_SMALL_SLOT");
     return fault("SLOT_CAPACITY_NOT_RESERVED");
   }
   frame->width = format_.width; frame->height = format_.height; frame->pixfmt_fourcc = format_.fourcc;
@@ -215,8 +218,8 @@ V4L2Capture::Read V4L2Capture::read(Frame* frame, int ms) {
     const auto* p = static_cast<const uint8_t*>(mappings_[b.index].addr);
     frame->data.assign(p, p + b.bytesused);
   } catch (...) { requeue(); return fault("SLOT_COPY_FAILED"); }
-  if (!requeue()) return fault(error("QBUF"));
-  frame->valid = true; ++counters_.frames; last_error_.clear(); return Read::Frame;
+  if (!requeue()) return system_fault("QBUF");
+  frame->valid = true; ++counters_.frames; last_error_.clear(); last_errno_ = 0; return Read::Frame;
 }
 void V4L2Capture::request_stop() noexcept {
   stop_requested_.store(true);

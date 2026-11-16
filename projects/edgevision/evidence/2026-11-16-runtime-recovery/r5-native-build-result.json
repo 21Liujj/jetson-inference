@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "stdout": "R5_TOOL_ONLY_SOURCE_VERIFIED\nError: /home/nvidia/jetson-inference-edgevision/projects/edgevision/build/jetson-native is not a directory\n",
+  "stderr": ""
+}

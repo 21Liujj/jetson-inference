@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "scope": "M2 capture recovery and health; no inference",
+  "host_core_tests_passed": 7,
+  "jetson_asan_ubsan_lsan_tests_passed": 9,
+  "source_versions": {
+    "target_tests_and_live_recovery": "R4",
+    "stop_replug_observation": "R5; only recovery probe changed"
+  },
+  "live_recovery": {
+    "summary": {
+      "scope": "real USB capture runtime recovery; no inference",
+      "frames": 4707,
+      "recovered": true,
+      "stopped_in_recovery": false,
+      "generation": 5,
+      "runtime_retries": 4,
+      "fault_detected_ns": 4284668712161,
+      "recovered_ns": 4297049819086,
+      "runtime_retry_limit": 5,
+      "recovery_budget_ms": 30000,
+      "failure": ""
+    },
+    "supervision": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_recovery_probe",
+        "--device",
+        "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "--seconds",
+        "180",
+        "--out",
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/2026-11-16/recovery-live-r4"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-16T03:20:12.592727+00:00",
+      "duration_requested_s": 0,
+      "timeout_s": 210.0,
+      "acceptance": "requires_log_review",
+      "pid": 9877,
+      "exit_code": 0,
+      "stop_reason": "process_exit",
+      "elapsed_s": 170.2796343659993
+    },
+    "fault_detection_to_valid_frame_s": 12.381106925
+  },
+  "explicit_stop": {
+    "summary": {
+      "scope": "real USB capture runtime recovery; no inference",
+      "frames": 3084,
+      "recovered": false,
+      "stopped_in_recovery": true,
+      "generation": 1,
+      "runtime_retries": 0,
+      "fault_detected_ns": 6013357286196,
+      "recovered_ns": 0,
+      "runtime_retry_limit": 5,
+      "recovery_budget_ms": 30000,
+      "post_stop_node_returned_while_idle": true,
+      "post_stop_observation_ns": 12772653347,
+      "failure": ""
+    },
+    "supervision": {
+      "schema_version": 1,
+      "simulated": false,
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_recovery_probe",
+        "--device",
+        "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "--seconds",
+        "600",
+        "--stop-during-recovery",
+        "--out",
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/2026-11-16/recovery-stop-r5"
+      ],
+      "cwd": "/home/nvidia/jetson-inference-edgevision",
+      "wall_time": "2026-11-16T03:49:53.547888+00:00",
+      "duration_requested_s": 0,
+      "timeout_s": 700.0,
+      "acceptance": "requires_log_review",
+      "pid": 10166,
+      "exit_code": 0,
+      "stop_reason": "process_exit",
+      "elapsed_s": 116.69795675000023
+    },
+    "node_reappeared_then_idle_observed_s": 5
+  },
+  "original_invalid_stop_test": {
+    "scope": "real USB capture runtime recovery; no inference",
+    "frames": 5379,
+    "recovered": false,
+    "stopped_in_recovery": false,
+    "generation": 1,
+    "runtime_retries": 0,
+    "fault_detected_ns": 0,
+    "recovered_ns": 0,
+    "runtime_retry_limit": 5,
+    "recovery_budget_ms": 30000,
+    "failure": "RECOVERY_NOT_OBSERVED"
+  },
+  "limits": [
+    "R3 30-minute capture is separate evidence, not an R4/R5 endurance test.",
+    "Recovery test configured 5 attempts/30s; production default 3 attempts/15s was not validated by this unplug case.",
+    "No GPU, kernel patch, formal latency/performance, ROS2 or runtime Agent acceptance."
+  ]
+}

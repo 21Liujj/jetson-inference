@@ -1,0 +1,82 @@
+{
+  "source_commit": "01c17ba",
+  "binary_sha256": "438852b3810e6da3bc6750df6965defa3c710854b7657a215e719159107cdf3c",
+  "run": {
+    "schema_version": 1,
+    "simulated": false,
+    "argv": [
+      "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/capture-native/edgevision_capture_probe",
+      "--device",
+      "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+      "--seconds",
+      "1800",
+      "--out",
+      "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/2026-11-16/capture-30min-data"
+    ],
+    "cwd": "/home/nvidia/jetson-inference-edgevision",
+    "wall_time": "2026-11-16T02:41:17.148753+00:00",
+    "duration_requested_s": 0,
+    "timeout_s": 1830.0,
+    "acceptance": "requires_log_review",
+    "pid": 9346,
+    "exit_code": 0,
+    "stop_reason": "process_exit",
+    "elapsed_s": 1801.08766739
+  },
+  "capture": {
+    "scope": "real USB V4L2/MMAP and ControlRouter; no inference",
+    "device": "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+    "cycles_completed": 1,
+    "interrupted": false,
+    "consumed": 53999,
+    "copied": 53999,
+    "pool_drop": 0,
+    "queue_replaced": 0,
+    "sequence_gaps": 0,
+    "start_retries": 0,
+    "negotiated": {
+      "width": 640,
+      "height": 360,
+      "fourcc": 1448695129,
+      "stride": 1280,
+      "sizeimage": 460800,
+      "driver_buffers": 4,
+      "mapped_bytes": 1843200,
+      "pool_bytes": 1843200,
+      "interval_num": 1,
+      "interval_den": 30
+    },
+    "warning": ""
+  },
+  "metadata_rows": 53999,
+  "resource_samples": 3596,
+  "post_60s_rss_kib_min_max": [
+    4272,
+    4272
+  ],
+  "post_60s_fd_min_max": [
+    7,
+    7
+  ],
+  "after_stop": {
+    "cycle": "0",
+    "generation": "1",
+    "consumed": "53999",
+    "dequeued": "53999",
+    "copied": "53999",
+    "pool_drop": "0",
+    "invalid": "0",
+    "sequence_gaps": "0",
+    "queue_replaced": "0",
+    "queue_aborted": "0",
+    "queue_consumed": "53999",
+    "queue_high_water": "1",
+    "fd": "6",
+    "rss_kib": "1696",
+    "video_maps": "0",
+    "stop_ns": "2413385",
+    "held_stop_guarded": "0",
+    "start_retries": "0"
+  },
+  "scope": "capture-only stability; no inference/performance/modified-R4 acceptance"
+}

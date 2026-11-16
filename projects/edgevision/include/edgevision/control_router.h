@@ -19,6 +19,9 @@ struct CaptureConfig {
   uint32_t driver_buffers = 4, pool_slots = 4, queue_capacity = 2;
   uint64_t memory_budget_bytes = 64u * 1024 * 1024;
   uint32_t start_retry_limit = 2, retry_delay_ms = 250;
+  // Total physical reopen attempts per explicit start, not reset by flapping.
+  uint32_t runtime_retry_limit = 3, runtime_retry_delay_ms = 1000;
+  uint32_t runtime_recovery_budget_ms = 15000;
   bool allow_unstable_device = false;
 };
 struct ControlRequest {
@@ -34,7 +37,8 @@ struct CaptureEvent {
   Kind kind = Kind::Fault;
   uint64_t generation = 0;
   bool stream_on = false;
-  bool retryable = false;
+  bool retryable = false; // initial-start transient I/O failures only
+  bool runtime_retryable = false; // includes absent device during an established session
   FrameMeta frame;
   std::string error_code;
 };
@@ -56,6 +60,9 @@ struct RouterStatus {
   ModelState model = ModelState::Unloaded;
   uint64_t generation = 0, stale_events = 0;
   uint32_t start_retries = 0;
+  uint32_t runtime_retries = 0;
+  bool runtime_recovery_active = false;
+  uint64_t fault_detected_mono_ns = 0, recovered_mono_ns = 0;
   std::optional<uint64_t> active_task;
   std::optional<FrameMeta> first_frame;
   std::size_t queued_tasks = 0;
@@ -87,13 +94,18 @@ class ControlRouter {
   std::optional<Action> handle_event_locked(CaptureEvent, uint64_t now);
   void execute(std::optional<Action>, uint64_t now);
   void finish_locked(bool success, const std::string& error, uint64_t now);
+  std::optional<Action> reopen_locked(uint64_t now);
   CaptureBackend& backend_;
   mutable std::mutex mu_;
   TaskManager tasks_;
   RouterStatus state_;
   std::optional<std::thread::id> owner_;
   bool backend_live_ = false, error_after_cleanup_ = false;
-  bool retry_pending_ = false;
+  enum class Recovery { None, Startup, Runtime };
+  Recovery recovery_pending_ = Recovery::None;
+  std::optional<CaptureConfig> session_config_;
+  bool session_requested_ = false;
+  uint64_t runtime_deadline_ = 0;
   uint64_t retry_at_ = 0;
   std::optional<uint64_t> pending_stop_;
   // One queued and one active command: configuration storage is bounded too.

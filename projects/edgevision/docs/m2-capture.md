@@ -1,6 +1,6 @@
 # M2 · 真实 USB 采集阶段记录
 
-这是 M2 的增量验收，整阶段尚未完成；没有新后端推理、运行中拔插或长采集结论。
+这是 11-15 的 M2 采集增量记录，整阶段尚未完成。11-16 新增的 30min 采集、运行中拔插与 HealthMonitor 见 [m2-runtime.md](m2-runtime.md)；新后端推理仍待接入。
 主线仍是指定 jetson-inference fork，个人输入接口位于 `projects/edgevision`，
 原 GStreamer 相机后端保留用于对照。
 
@@ -17,7 +17,7 @@
   完成后才发送 Stopped。持有帧期间不假报物理清理完成。
 - 启动 EIO/ETIMEDOUT/EOVERFLOW 可有限恢复，默认 250/500ms、最多 2 次；
   等实际清理后重开，每次增加 generation，原请求身份不变。退避期间可取消/过期/停止。
-  无设备、busy 与配置错误明确失败。运行中自动断连恢复尚未实现。
+  无设备、busy 与配置错误明确失败。11-16 已新增运行中有限恢复，独立验收见 m2-runtime.md。
 
 ## 本轮实际验收
 
@@ -72,6 +72,6 @@ sanitizer 构建加 `-DEDGEVISION_ENABLE_SANITIZERS=ON -DBUILD_TESTING=ON`，再
 
 ## 下一步
 
-新后端 30 分钟采集、运行中拔插/有限重连、HealthMonitor 与上游 DetectNet 输入适配
+新后端 30 分钟采集、运行中拔插/有限重连与 HealthMonitor 已另行记录。上游 DetectNet 输入适配
 仍待实施/验收。CUDA event 和异步执行在 M5 单独完成；ROS2/VLM/Agent/Web/RTSP
 仍在完整施工范围内，不能依据本页把 M2 或后续阶段写成全部完成。

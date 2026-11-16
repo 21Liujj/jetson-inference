@@ -1,18 +1,24 @@
 #include "edgevision/control_router.h"
+#include <algorithm>
 #include <limits>
 #include <sstream>
 #include <stdexcept>
 #include <utility>
 
 namespace edgevision {
+namespace {
+bool stable_device(const std::string& path) {
+  for (const auto* prefix : {"/dev/v4l/by-id/", "/dev/v4l/by-path/"}) {
+    const auto n = std::char_traits<char>::length(prefix);
+    if (path.rfind(prefix, 0) == 0 && path.size() > n && path.find('/', n) == std::string::npos) return true;
+  }
+  return false;
+}
+}
 bool ControlRouter::valid_config(const CaptureConfig& c) {
   if (c.device.empty() || c.device.size() > 256 || c.device.find('\0') != std::string::npos ||
       c.device.find("..") != std::string::npos) return false;
-  const auto stable_name = [&](const std::string& prefix) {
-    return c.device.rfind(prefix, 0) == 0 && c.device.size() > prefix.size() &&
-        c.device.find('/', prefix.size()) == std::string::npos;
-  };
-  const bool stable = stable_name("/dev/v4l/by-id/") || stable_name("/dev/v4l/by-path/");
+  const bool stable = stable_device(c.device);
   const bool node = c.device.rfind("/dev/video", 0) == 0 && c.device.size() > 10 &&
       c.device.find_first_not_of("0123456789", 10) == std::string::npos;
   if (!stable && !(c.allow_unstable_device && node)) return false;
@@ -24,15 +30,18 @@ bool ControlRouter::valid_config(const CaptureConfig& c) {
       !c.queue_capacity || c.queue_capacity > c.pool_slots - 2 || !c.memory_budget_bytes ||
       c.memory_budget_bytes > 256u * 1024 * 1024) return false;
   if (c.start_retry_limit > 2 || c.retry_delay_ms < 10 || c.retry_delay_ms > 2000) return false;
+  if (c.runtime_retry_limit > 10 || c.runtime_retry_delay_ms < 50 || c.runtime_retry_delay_ms > 5000 ||
+      c.runtime_recovery_budget_ms < c.runtime_retry_delay_ms || c.runtime_recovery_budget_ms > 60000) return false;
   const uint64_t conservative_bytes = uint64_t(c.width) * c.height * 2 * (c.driver_buffers + c.pool_slots);
   return conservative_bytes <= c.memory_budget_bytes;
 }
 std::string ControlRouter::canonical(const CaptureConfig& c) {
   std::ostringstream s;
-  s << "capture-v1:" << c.device.size() << ':' << c.device << ':' << c.width << ':' << c.height << ':' << c.fourcc
+  s << "capture-v2:" << c.device.size() << ':' << c.device << ':' << c.width << ':' << c.height << ':' << c.fourcc
     << ':' << c.fps_num << ':' << c.fps_den << ':' << c.driver_buffers << ':' << c.pool_slots << ':'
     << c.queue_capacity << ':' << c.memory_budget_bytes << ':' << c.allow_unstable_device
-    << ':' << c.start_retry_limit << ':' << c.retry_delay_ms;
+    << ':' << c.start_retry_limit << ':' << c.retry_delay_ms << ':' << c.runtime_retry_limit
+    << ':' << c.runtime_retry_delay_ms << ':' << c.runtime_recovery_budget_ms;
   return s.str();
 }
 bool ControlRouter::terminal(TaskState state) {
@@ -92,16 +101,23 @@ std::optional<ControlRouter::Action> ControlRouter::dispatch_locked(const TaskRe
     }
     state_.generation = next;
     state_.capture = CaptureState::Starting;
-    state_.start_retries = 0; retry_pending_ = false;
+    state_.start_retries = state_.runtime_retries = 0; recovery_pending_ = Recovery::None;
+    state_.runtime_recovery_active = false; runtime_deadline_ = 0; session_requested_ = false;
+    state_.fault_detected_mono_ns = state_.recovered_mono_ns = 0;
+    session_config_ = configs_.at(task.id);
     state_.first_frame.reset(); state_.last_error.clear(); error_after_cleanup_ = false;
     backend_live_ = true;
     return Action{Action::Kind::Start, next, task.id, configs_.at(task.id)};
   }
+  // Explicit stop revokes automatic recovery, including while a worker cleans up.
+  session_requested_ = false; state_.runtime_recovery_active = false; recovery_pending_ = Recovery::None;
   if (!backend_live_) {
     state_.capture = CaptureState::Idle; state_.last_error.clear(); state_.first_frame.reset();
     finish_locked(true, "", now); return std::nullopt;
   }
-  if (state_.capture != CaptureState::Stopping) error_after_cleanup_ = false;
+  // This explicit stop acknowledges the previous capture fault. Any subsequent
+  // cleanup fault is still reported by the backend and fails the stop task.
+  error_after_cleanup_ = false; state_.last_error.clear();
   state_.capture = CaptureState::Stopping;
   return Action{Action::Kind::Stop, state_.generation, task.id, {}};
 }
@@ -118,35 +134,56 @@ std::optional<ControlRouter::Action> ControlRouter::handle_event_locked(CaptureE
     if (state_.capture == CaptureState::Starting && state_.active_task && event.retryable) {
       const auto task = tasks_.query(*state_.active_task);
       const auto config = configs_.find(*state_.active_task);
-      retry_pending_ = task && task->state == TaskState::Running && config != configs_.end() &&
-          state_.start_retries < config->second.start_retry_limit;
-    } else retry_pending_ = false;
+      recovery_pending_ = task && task->state == TaskState::Running && config != configs_.end() &&
+          state_.start_retries < config->second.start_retry_limit ? Recovery::Startup : Recovery::None;
+    } else if ((state_.capture == CaptureState::Running || state_.runtime_recovery_active) &&
+        session_requested_ && session_config_ && stable_device(session_config_->device) && event.runtime_retryable &&
+        state_.runtime_retries < session_config_->runtime_retry_limit) {
+      if (!state_.runtime_recovery_active) {
+        state_.fault_detected_mono_ns = now;
+        state_.recovered_mono_ns = 0;
+        runtime_deadline_ = now + uint64_t(session_config_->runtime_recovery_budget_ms) * 1000000;
+      }
+      state_.runtime_recovery_active = true;
+      recovery_pending_ = now < runtime_deadline_ ? Recovery::Runtime : Recovery::None;
+    } else recovery_pending_ = Recovery::None;
+    if (recovery_pending_ == Recovery::None) session_requested_ = false;
+    state_.first_frame.reset();
     return stop_locked(event.error_code.empty() ? "CAPTURE_FAILED" : event.error_code);
   }
   if (event.kind == CaptureEvent::Kind::Stopped) {
     if (!backend_live_) return std::nullopt;
     if (state_.capture != CaptureState::Stopping) { error_after_cleanup_ = true; state_.last_error = "UNEXPECTED_STOP"; }
     backend_live_ = false;
-    if (retry_pending_ && state_.active_task) {
+    if (recovery_pending_ == Recovery::Runtime && session_requested_ && session_config_ && now < runtime_deadline_) {
+      const auto delay_ms = std::min<uint64_t>(5000, uint64_t(session_config_->runtime_retry_delay_ms) << state_.runtime_retries);
+      retry_at_ = now + delay_ms * 1000000;
+      state_.capture = CaptureState::Recovering; recovery_pending_ = Recovery::None;
+      return std::nullopt;
+    }
+    if (recovery_pending_ == Recovery::Startup && state_.active_task) {
       const auto task = tasks_.query(*state_.active_task);
       if (task && task->state == TaskState::Running) {
         ++state_.start_retries;
         retry_at_ = now + uint64_t(configs_.at(*state_.active_task).retry_delay_ms) * state_.start_retries * 1000000;
-        state_.capture = CaptureState::Recovering; retry_pending_ = false;
+        state_.capture = CaptureState::Recovering; recovery_pending_ = Recovery::None;
         return std::nullopt;
       }
     }
-    retry_pending_ = false;
+    recovery_pending_ = Recovery::None; state_.runtime_recovery_active = false; session_requested_ = false;
     state_.capture = error_after_cleanup_ ? CaptureState::Error : CaptureState::Idle;
     state_.first_frame.reset();
     finish_locked(!error_after_cleanup_, state_.last_error, now);
     return std::nullopt;
   }
-  if (state_.capture != CaptureState::Starting || !state_.active_task) return std::nullopt;
-  auto task = tasks_.query(*state_.active_task);
-  if (!task || terminal(task->state)) return stop_locked("");
+  if (state_.capture != CaptureState::Starting && !(state_.capture == CaptureState::Recovering && state_.runtime_recovery_active)) return std::nullopt;
+  if (!session_config_) return stop_locked("MISSING_SESSION_CONFIG");
+  if (state_.active_task) {
+    auto task = tasks_.query(*state_.active_task);
+    if (!task || terminal(task->state)) return stop_locked("");
+  } else if (!state_.runtime_recovery_active || !session_requested_) return stop_locked("");
   const auto& frame = event.frame;
-  const auto& config = configs_.at(*state_.active_task);
+  const auto& config = *session_config_;
   bool valid = event.stream_on && frame.session_generation == state_.generation && frame.width && frame.height &&
       frame.width <= 8192 && frame.height <= 8192 && frame.bytesused && frame.host_dequeue_mono_ns &&
       frame.pixfmt_fourcc == config.fourcc && frame.bytesused <= config.memory_budget_bytes;
@@ -157,6 +194,8 @@ std::optional<ControlRouter::Action> ControlRouter::handle_event_locked(CaptureE
   state_.first_frame = frame;
   state_.last_error.clear();
   state_.capture = CaptureState::Running;
+  if (state_.runtime_recovery_active) state_.recovered_mono_ns = now;
+  state_.runtime_recovery_active = false; session_requested_ = true;
   finish_locked(true, "", now);
   return std::nullopt;
 }
@@ -176,9 +215,31 @@ void ControlRouter::execute(std::optional<Action> action, uint64_t now) {
   if (!reply.accepted) {
     std::lock_guard<std::mutex> lock(mu_);
     backend_live_ = false; state_.capture = CaptureState::Error;
+    state_.runtime_recovery_active = false; session_requested_ = false; recovery_pending_ = Recovery::None;
     state_.last_error = reply.error_code.empty() ? "START_REJECTED" : reply.error_code.substr(0, 128);
     finish_locked(false, state_.last_error, now);
   }
+}
+std::optional<ControlRouter::Action> ControlRouter::reopen_locked(uint64_t now) {
+  if (state_.capture != CaptureState::Recovering || backend_live_ || now < retry_at_) return std::nullopt;
+  const bool runtime = state_.runtime_recovery_active && session_requested_ && session_config_;
+  std::optional<TaskRecord> task;
+  if (!runtime) {
+    if (!state_.active_task) return std::nullopt;
+    task = tasks_.query(*state_.active_task);
+    if (!task || task->state != TaskState::Running) return std::nullopt;
+  }
+  const auto before = state_.generation;
+  if (before == std::numeric_limits<uint64_t>::max() ||
+      (!runtime && !tasks_.retarget_running(task->id, before, before + 1))) {
+    state_.capture = CaptureState::Error; state_.last_error = "GENERATION_TRANSITION_FAILED";
+    session_requested_ = false; state_.runtime_recovery_active = false;
+    finish_locked(false, state_.last_error, now); return std::nullopt;
+  }
+  ++state_.generation; backend_live_ = true; error_after_cleanup_ = false;
+  if (runtime) { ++state_.runtime_retries; state_.capture = CaptureState::Recovering; }
+  else state_.capture = CaptureState::Starting;
+  return Action{Action::Kind::Start, state_.generation, task ? task->id : 0, *session_config_};
 }
 void ControlRouter::poll(uint64_t now) {
   std::optional<Action> action;
@@ -190,11 +251,12 @@ void ControlRouter::poll(uint64_t now) {
     if (pending_stop_) {
       const auto stop = tasks_.query(*pending_stop_);
       if (!stop || stop->state != TaskState::Queued) pending_stop_.reset();
-      else if ((state_.capture == CaptureState::Starting || state_.capture == CaptureState::Recovering) && state_.active_task) {
-        // A user stop must wake a no-frame start immediately. The queued stop
-        // still completes only after physical cleanup, through TaskManager.
-        tasks_.cancel(*state_.active_task, now);
-        retry_pending_ = false; action = stop_locked("");
+      else {
+        session_requested_ = false; state_.runtime_recovery_active = false; recovery_pending_ = Recovery::None;
+        if ((state_.capture == CaptureState::Starting || state_.capture == CaptureState::Recovering) && state_.active_task) {
+          // A queued stop preempts a no-frame start, but waits for physical cleanup.
+          tasks_.cancel(*state_.active_task, now); action = stop_locked("");
+        }
       }
     }
     // Expired/canceled queued configurations must not outlive their records.
@@ -206,9 +268,14 @@ void ControlRouter::poll(uint64_t now) {
       auto record = tasks_.query(*state_.active_task);
       if (record && terminal(record->state) && state_.capture == CaptureState::Starting) action = stop_locked("");
       if (record && terminal(record->state) && state_.capture == CaptureState::Recovering && !backend_live_) {
-        retry_pending_ = false; state_.capture = CaptureState::Idle; state_.last_error.clear();
+        recovery_pending_ = Recovery::None; state_.capture = CaptureState::Idle; state_.last_error.clear();
         finish_locked(false, "", now);
       }
+    }
+    if (state_.runtime_recovery_active && now >= runtime_deadline_) {
+      session_requested_ = false; state_.runtime_recovery_active = false; recovery_pending_ = Recovery::None;
+      if (backend_live_) action = stop_locked("RUNTIME_RECOVERY_TIMEOUT");
+      else { state_.capture = CaptureState::Error; state_.last_error = "RUNTIME_RECOVERY_TIMEOUT"; }
     }
   }
   execute(std::move(action), now);
@@ -228,23 +295,12 @@ void ControlRouter::poll(uint64_t now) {
   }
   {
     std::lock_guard<std::mutex> lock(mu_);
-    if (state_.capture == CaptureState::Recovering && !backend_live_ && state_.active_task && now >= retry_at_) {
-      auto task = tasks_.query(*state_.active_task);
-      if (task && task->state == TaskState::Running) {
-        const auto before = state_.generation;
-        if (before == std::numeric_limits<uint64_t>::max() || !tasks_.retarget_running(task->id, before, before + 1)) {
-          state_.capture = CaptureState::Error; state_.last_error = "GENERATION_TRANSITION_FAILED";
-          finish_locked(false, state_.last_error, now);
-        } else {
-          ++state_.generation; state_.capture = CaptureState::Starting; backend_live_ = true; error_after_cleanup_ = false;
-          action = Action{Action::Kind::Start, state_.generation, task->id, configs_.at(task->id)};
-        }
-      }
-    }
+    // User commands win over a scheduled automatic reopen.
     if (!state_.active_task && !tasks_.execution_busy()) {
       auto next = tasks_.take(now, state_.generation);
       if (next) action = dispatch_locked(*next, now);
     }
+    if (!action) action = reopen_locked(now);
   }
   execute(std::move(action), now);
 }

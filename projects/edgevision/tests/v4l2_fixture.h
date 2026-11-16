@@ -19,9 +19,10 @@ struct Fixture final : V4L2Io {
   unsigned long fail_request = 0;
   bool fail_once = false;
   std::atomic<bool> waiting{false};
+  std::atomic<bool> disconnected{false};
   uint64_t now = 1000000000;
   std::vector<std::vector<uint8_t>> memory = std::vector<std::vector<uint8_t>>(32, std::vector<uint8_t>(4096, 42));
-  int open_device(const char*) override { ++opens; if (fail_open) { errno = ENOENT; return -1; } return 4242; }
+  int open_device(const char*) override { ++opens; if (fail_open || disconnected.load()) { errno = ENOENT; return -1; } return 4242; }
   int close_device(int fd) override { if (fd == 4242) { ++closes; return 0; } ++event_closes; return ::close(fd); }
   int create_stop_event() override { return ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC); }
   void signal_stop(int fd) noexcept override { uint64_t one = 1; (void)::write(fd, &one, sizeof(one)); }
@@ -53,6 +54,7 @@ struct Fixture final : V4L2Io {
   }
   int unmap_buffer(void*, std::size_t) override { ++unmaps; return 0; }
   Wait wait_frame_or_stop(int, int stop, int ms) override {
+    if (disconnected.load()) { errno = ENODEV; return Wait::Fault; }
     if (!no_frames) return Wait::Frame;
     waiting.store(true); pollfd p{stop, POLLIN, 0}; int n = ::poll(&p, 1, ms);
     return n > 0 ? Wait::Stopped : n == 0 ? Wait::Timeout : Wait::Fault;

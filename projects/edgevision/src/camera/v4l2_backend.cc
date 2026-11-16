@@ -29,6 +29,7 @@ BackendStartReply V4L2Backend::request_start(const CaptureConfig& config, uint64
   std::lock_guard<std::mutex> lock(mu_);
   if (shutdown_ || pending_ || snapshot_.worker_active || !events_.empty()) return {false, "BACKEND_BUSY"};
   snapshot_ = {}; snapshot_.generation = generation; snapshot_.worker_active = true;
+  snapshot_.queue_capacity = config.queue_capacity; snapshot_.pool_capacity = config.pool_slots;
   stop_.store(false); pending_ = Start{config, generation}; wake_.notify_one(); return {true, ""};
 }
 void V4L2Backend::request_stop(uint64_t generation) noexcept {
@@ -61,6 +62,17 @@ CaptureSnapshot V4L2Backend::snapshot() const {
   if (pool_) s.pool_busy = pool_->busy();
   return s;
 }
+CaptureHealthSample V4L2Backend::health_sample(uint64_t at) const {
+  const auto s = snapshot(); CaptureHealthSample sample;
+  sample.generation = s.generation; sample.observed_mono_ns = at;
+  auto& c = sample.counters;
+  c.valid_frames = s.io.frames + s.io.no_slot; c.pool_drops = s.io.no_slot;
+  c.ready_drops = s.queue_replaced; c.stop_drops = s.queue_aborted;
+  c.invalid_payloads = s.io.invalid_payloads; c.sequence_gaps = s.io.sequence_gaps; c.timeouts = s.io.timeouts;
+  c.queue_depth = s.queue_depth; c.queue_capacity = s.queue_capacity;
+  c.pool_busy = s.pool_busy; c.pool_capacity = s.pool_capacity;
+  return sample;
+}
 void V4L2Backend::emit(CaptureEvent e) {
   std::lock_guard<std::mutex> lock(mu_);
   if (e.kind == CaptureEvent::Kind::Fault) snapshot_.error = e.error_code;
@@ -87,12 +99,18 @@ void V4L2Backend::run(Start start) {
   std::shared_ptr<FrameQueue> queue;
   std::string failure;
   bool startup_retryable = false;
+  bool runtime_retryable = false;
+  const auto device_error = [](int cause) {
+    return cause == EIO || cause == ETIMEDOUT || cause == EOVERFLOW || cause == ENODEV ||
+        cause == ENOENT || cause == ENXIO || cause == EPIPE;
+  };
   try {
     if (!stop_.load()) {
       if (!capture_.open(start.config.device) || !capture_.start(start.config, start.generation)) {
         failure = capture_.last_error();
         const auto cause = capture_.last_errno();
         startup_retryable = cause == EIO || cause == ETIMEDOUT || cause == EOVERFLOW;
+        runtime_retryable = device_error(cause);
       }
       else {
         pool = std::make_shared<FramePool>(start.config.pool_slots, capture_.format().sizeimage);
@@ -124,9 +142,11 @@ void V4L2Backend::run(Start start) {
         }
       } else {
         if (result == V4L2Capture::Read::Stopped) break;
-        if (result == V4L2Capture::Read::Fault) { failure = capture_.last_error(); break; }
+        if (result == V4L2Capture::Read::Fault) {
+          failure = capture_.last_error(); runtime_retryable = device_error(capture_.last_errno()); break;
+        }
         if (result == V4L2Capture::Read::NoSlot) last_valid = mono_ns(); // camera still delivers valid buffers
-        if (mono_ns() - last_valid > 3000000000ULL) { failure = "NO_VALID_FRAME_TIMEOUT"; break; }
+        if (mono_ns() - last_valid > 3000000000ULL) { failure = "NO_VALID_FRAME_TIMEOUT"; runtime_retryable = true; break; }
       }
       std::lock_guard<std::mutex> lock(mu_); snapshot_.io = capture_.counters();
     }
@@ -139,7 +159,7 @@ void V4L2Backend::run(Start start) {
   }
   if (!failure.empty()) {
     auto fault = event(CaptureEvent::Kind::Fault, start.generation, failure.substr(0, 128));
-    fault.retryable = startup_retryable; emit(std::move(fault));
+    fault.retryable = startup_retryable; fault.runtime_retryable = runtime_retryable; emit(std::move(fault));
   }
   if (queue) queue->close(); // stop publication and release queued READY slots
   const auto drain_start = mono_ns(); bool drain_reported = false;

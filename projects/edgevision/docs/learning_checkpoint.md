@@ -1,41 +1,43 @@
-# Checkpoint · 2026-11-15 晚间施工，11-16 凌晨收尾
+# Checkpoint · 2026-11-16 · M2 恢复与采集验收
 
-用户明确要求：同步当前内容到 GitHub 后停止，明天再继续。今晚不启动新开发或长测。
-先读根 AGENTS.md，再按领域加载 .agents/skills 中一个 SKILL；问题统一在 debugging_journal.md。
+用户已重新上电并明确继续施工，前次暂停解除。先读根 AGENTS，再按领域读一个 SKILL；
+问题唯一正文在 debugging_journal.md。当前阶段和所有待验项以 progress.md 为准。
 
-## 已有证据
+## 已验证事实
 
-- 主仓库为指定 jetson-inference 的个人 fork，默认 edgevision/v3.1，gh-pages 展示。
-- M0 已审计；M1 原版 TRT10 SIGSEGV 保留，afee249 修复指定模型路径。
-  修复后 30min 真实相机推理 53,898 次，正常退出；不是正式性能 benchmark。
-- M2 当前源码输入为 m2-capture-r3.zip，SHA256
-  2e3fc65c63225cba073f822b0046e3f5f13aab4d860415cfa9b191e28d4a9684。
-  Windows core 5/5，Jetson ASan/UBSan/LSan 7/7，真实短采集/慢消费者/持有帧/
-  无设备/占用测试通过。100 次真实启停、300 帧，共 3 次受限启动重试。
-- R2 原始 37 轮后 S_FMT EIO 保留；UVC probe -75 根因未确认。
-  R3 是有限恢复与复测，不是内核缺陷已修复。详见 EV-CAP-002。
-- 新后端证据在 evidence/2026-11-15-m2-capture/，原始 81 文件 ZIP、源码、日志、
-  metadata 与哈希已回收到本机；不含私有相机图片。两旧仓库未修改。
+- 指定 jetson-inference 个人 fork，主线 edgevision/v3.1，gh-pages 为静态工具式展示。
+- M1：原版 TRT10 崩溃保留；afee249 修复固定 SSD 路径，30min USB 53,898 次推理。
+- M2 R3：真实 100 次启停（含 3 次启动重试），30min 纯采集 53,999 帧、无序号缺口或
+  应用丢弃。60s 后该窗口 RSS 4,272 KiB、fd7；停止 fd6 / 视频映射0。
+- R4：Windows 7/7、目标 ASan/UBSan/LSan 9/9；运行中有限恢复、HealthMonitor。
+  真实拔插 4 次重开到 gen5，检测故障到有效首帧 12.3811s；参数5次/30s。
+- R5 只改恢复 probe：操作窗口600s，故障后 stop，实际节点返回后进程继续观察5s，
+  保持 IDLE、gen1、无活动 worker/设备资源，正常退出。
+- R2 的 S_FMT EIO / UVC probe -75、R4 无效180s人工窗口均保留。有限恢复不代表
+  底层驱动缺陷已修复。固定 journal：EV-CAP-002/003、EV-TEST-001、EV-METRIC-001。
+- 新证据：evidence/2026-11-16-capture-30min 与 2026-11-16-runtime-recovery。
+  原始源码与日志逐文件哈希验证；不含私有图像、权重、engine 或凭据。
 
-## 板端与代码现场
+## 现场与执行身份
 
-板端 /home/nvidia/jetson-inference-edgevision 的 Git HEAD 仍是上游固定父提交，
-其上有本轮 c/tensorNet.cpp 与 SFTP 传入项目源码；执行版本以实际输入 ZIP/哈希为准。
-禁止在其证据、模型与 build-baseline 上 blanket pull/reset/clean。
-原 /home/nvidia/jetson-inference 和 /home/nvidia/edgevisionrt 保留。
+板端 /home/nvidia/jetson-inference-edgevision 的 Git HEAD 是冻结的上游父提交，
+其上为 SFTP 传入源码。不能用 HEAD 冒充实际执行版本，不能 blanket pull/reset/clean。
+R3 源码 ZIP sha256：2e3fc65c63225cba073f822b0046e3f5f13aab4d860415cfa9b191e28d4a9684。
+R4：197cf2bf9b4a3d6fcafb1438c3109eac48169fa87db36bff9e215e8e51debb90。
+R5：282c9e7bf75c412d882f0ea506b079afb2c39ac31d98742123b9f91a13b8d028。
+R3 30min 不能作为 R4/R5 长稳。原生构建目录 build/capture-native，sanitizer 为
+build/capture-asan；不要猜成 jetson-native。
 
-收尾检查：任务自有采集/验收进程结束，视频节点无占用，旧 edgevision.service 为 IDLE。
-没有替换内核或模块、升级 JetPack/CUDA、刷固件、重置 USB，也没有代用户关机。
-SSH 已关闭。新代码在本机/公开 fork；下次开工重新确认 SSH、L4T、稳定相机标识和 owner 后再开设备。
+相机按稳定 by-id 打开；旧 edgevision.service active、IDLE。R5 退出后视频无 owner，
+本轮 SSH 会话仍在，后续开发继续。原两个项目及其未提交工作保留。无内核替换、JetPack
+升级、USB reset 或刷固件。下一次开设备前重新核对 owner。
 
-## 明天从哪里继续
+## 当前下一步
 
-1. 阅读 m2-capture.md、progress 的 M2 行和 journal 的 EV-CAP-002；运行中断连恢复
-   不能直接复用“启动重试已验”的结论。保留原失败及所有重试计数。
-2. 完成新后端 30min 采集、运行中拔插/有限重连、HealthMonitor。
-3. 接入上游 DetectNet 个人输入适配，保留 GStreamer 对照；GPU 生命周期按核心契约。
-4. 关闭剩余 M2 门槛后进入 M3 冻结回归集与匹配内核源码准备。
+1. 用已修复的 build-baseline/aarch64 库接入新 V4L2 输入，保留上游 GStreamer 对照。
+2. 接好实际 GPU 完成与 lease 归还；后续执行层 initialize/submit/query/collect/
+   cancel_pending/shutdown 及超时取消需独立实测，模型状态与采集状态独立。
+3. 关闭剩余 M2 门槛，再进入 M3 固定20图回归、带标注集合与匹配内核源码准备。
 
-M3–M8 仍完整保留：真实 UVC 源码扩展/安装回退、CUDA 数值与 Nsight、ROS2、
-本地 VLM/模型驱动 Agent、实时 Web/RTSP、部署和 2h/12h 等验收尚未完成。
-vision_msgs 仍缺；静态展示不代表实时控制台；简历只采用已验证事实。
+M3–M8 完整保留；UVC 补丁安装回退、数值与 Nsight、ROS2、真实本地 VLM/Agent、
+实时 Web/RTSP、部署及2h/12h长稳都还未通过。vision_msgs 仍缺。静态页不是设备控制台。

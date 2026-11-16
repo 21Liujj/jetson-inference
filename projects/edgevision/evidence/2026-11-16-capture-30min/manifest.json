@@ -1,0 +1,7 @@
+{
+  "archive_sha256": "22eeedec3c1f74fe9110df9bb9a3a0d50a3bc2fe48549c4e408a402fae155ecf",
+  "scope": "capture-only R3; input archive and all file hashes included",
+  "source_commit": "01c17ba",
+  "supervised_elapsed_s": 1801.08766739,
+  "metadata_frames": 53999
+}

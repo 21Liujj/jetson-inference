@@ -75,5 +75,26 @@ int main() {
     until(router, [&] { return router.status().capture == CaptureState::Idle; });
     assert(io->opens == io->closes && io->maps == io->unmaps);
   }
+  {
+    auto io = std::make_shared<Fixture>(); V4L2Backend backend(io); ControlRouter router(backend);
+    auto request = start("disconnect"); request.capture->runtime_retry_delay_ms = 50;
+    auto original = router.submit(request, now());
+    until(router, [&] { return router.status().capture == CaptureState::Running; });
+    FrameLease held; assert(backend.consume(held, 1000));
+    io->disconnected.store(true);
+    until(router, [&] { return router.status().capture == CaptureState::Stopping; });
+    assert(io->opens == 1 && io->streamoffs.load() == 0); // retained lease blocks physical reopen
+    held.release();
+    until(router, [&] { return router.status().runtime_retries == 1 && !router.status().backend_resources_live; });
+    // One real worker reopen attempted while the injected device was absent.
+    io->disconnected.store(false);
+    until(router, [&] { return router.status().capture == CaptureState::Running; });
+    assert(router.status().generation == 3 && router.status().runtime_retries == 2);
+    assert(router.query(original.task_id)->state == TaskState::Done && router.query(original.task_id)->execution_generation == 1);
+    ControlRequest stop_request{"stop-after-recovery", 3, now() + 3000000000ULL, TaskCommand::StopCapture, {}};
+    assert(router.submit(stop_request, now()).accepted);
+    until(router, [&] { return router.status().capture == CaptureState::Idle; });
+    assert(io->opens == 3 && io->closes == 2 && io->maps == io->unmaps);
+  }
   std::puts("PASS real capture worker/router/queue/lease-drain/restart/cancel/open-failure contracts with explicit syscall fixture");
 }

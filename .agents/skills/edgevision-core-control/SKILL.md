@@ -22,3 +22,7 @@ description: 修改 EdgeVision 帧池租约、有界队列、TaskManager 或 Con
 验证入口：core-only CMake 与 `ctest`；所有权、状态和并发场景见
 [核心契约](../../../projects/edgevision/docs/m2-core.md)。涉及设备时再读 capture skill。
 真实问题追加到固定 debugging_journal，验证边界更新 progress，避免按测试目录名判断平台。
+
+HealthMonitor 入口是 `health_monitor.h` 与 `src/health_monitor.cc`。窗口有时间与容量
+双上限；跨 generation 清零，未测量返回 optional，捕获/消费/结果完成口径分开。
+活跃跨模块快照不做假原子守恒；最终停止后的严格核对仍由验收工具完成。

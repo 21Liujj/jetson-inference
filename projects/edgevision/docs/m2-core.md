@@ -37,7 +37,8 @@ uncommitted donor changes from the older published Git HEAD.
   Stopped acknowledgement. A partial-start exception also requires cleanup.
 - Startup recovery has a two-retry budget and control-owner backoff. Physical
   Stopped precedes each reopen; generation advances while request identity stays
-  fixed. Cancellation/expiry/stop can terminate backoff. Runtime recovery is pending.
+  fixed. Cancellation/expiry/stop can terminate backoff. Runtime recovery and bounded
+  HealthMonitor are now verified separately in [m2-runtime.md](m2-runtime.md).
 
 The completion interface deliberately does not declare GPU completion based on
 a timer. The CPU latch/fence fixtures test ownership contracts only. A CUDA event
@@ -62,9 +63,10 @@ ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 \
 
 Windows uses GCC 15.2.0/UCRT64 with CMake and Ninja selected explicitly; only the
 build process PATH is changed. Tests retain assertions even for a release build.
-Current result: Windows **5/5** core tests; Jetson **7/7** with ASan/UBSan and
+Current result (R4, Nov 16): Windows **7/7** core tests; Jetson **9/9** with ASan/UBSan and
 LeakSanitizer, including two Linux capture-worker/syscall-fixture tests.
-[Latest evidence](../evidence/2026-11-15-m2-capture/),
+[Latest recovery/health evidence](../evidence/2026-11-16-runtime-recovery/),
+[capture evidence](../evidence/2026-11-15-m2-capture/),
 [earlier core evidence](../evidence/2026-11-15-m2-core/) and
 [router-only checkpoint](../evidence/2026-11-15-m2-router/).
 CTest fixtures do not open the real camera or execute a GPU model. Separate
@@ -82,7 +84,7 @@ status reentry without a held router lock and rejection of a second control owne
 
 - Linux V4L2/eventfd worker and real first-frame/100-cycle tests are implemented.
   Enable with EDGEVISION_ENABLE_V4L2=ON on Linux. Runtime disconnect/reconnect,
-  HealthMonitor, new-backend 30min capture and the upstream DetectNet adapter remain.
+  HealthMonitor and R3 30min capture now have separate evidence in m2-runtime.md; the upstream DetectNet adapter remains.
 - FramePool raw index APIs are retained from the donor. Only the producer may use
   `slot_ref` before handoff; fabricating multiple leases for one slot or accessing
   a handed-off raw slot violates the owner contract. A fenced in-flight slot

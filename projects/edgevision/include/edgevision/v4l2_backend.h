@@ -1,6 +1,7 @@
 #pragma once
 #include "edgevision/frame_queue.h"
 #include "edgevision/v4l2_capture.h"
+#include "edgevision/health_monitor.h"
 #include <condition_variable>
 #include <deque>
 
@@ -9,6 +10,7 @@ struct CaptureSnapshot {
   uint64_t generation = 0, queue_replaced = 0;
   uint64_t queue_enqueued = 0, queue_consumed = 0, queue_aborted = 0;
   std::size_t queue_high_water = 0;
+  std::size_t queue_capacity = 0, pool_capacity = 0;
   CaptureFormat format;
   V4L2Capture::Counters io;
   std::size_t queue_depth = 0, pool_busy = 0;
@@ -27,6 +29,7 @@ class V4L2Backend final : public CaptureBackend {
   std::optional<CaptureEvent> poll_event() override;
   bool consume(FrameLease&, int timeout_ms);
   CaptureSnapshot snapshot() const;
+  CaptureHealthSample health_sample(uint64_t observed_mono_ns) const;
  private:
   struct Start { CaptureConfig config; uint64_t generation; };
   void worker_loop();
