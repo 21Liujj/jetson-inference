@@ -1,8 +1,12 @@
-# Initial operation=detect; uses the same ControlRouter as services/CLI/Agent.
+# Operations: detect, snapshot, describe, plan, resume_detector.
+# All use the same ControlRouter and bounded physical executor.
 string<=64 request_id
 uint64 generation
 string<=32 operation
 uint32 timeout_ms
+string<=64 snapshot_id
+string<=1600 prompt
+uint32 freshness_ms 500
 ---
 bool success
 uint64 task_id

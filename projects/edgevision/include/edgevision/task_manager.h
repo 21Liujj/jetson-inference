@@ -9,11 +9,16 @@
 namespace edgevision {
 
 enum class TaskCommand { StartCapture, StopCapture, CaptureSnapshot, DetectSnapshot,
-                         DescribeSnapshot, GetRecentMetrics, CreateReport, RunInspection };
+                         DescribeSnapshot, GetRecentMetrics, CreateReport, RunInspection,
+                         PlanTool, ResumeDetector };
 enum class TaskState { Queued, Running, Done, Failed, Expired, Canceled };
 enum class AdmissionError { None, InvalidRequest, Busy, RecordBudget, Conflict,
                             StaleGeneration, DeadlineExceeded, UnsupportedCommand, InvalidParameters };
 
+struct ExecutionInput {
+  std::string snapshot_id, prompt;
+  uint32_t freshness_ms = 500;
+};
 struct TaskRequest {
   std::string request_id;
   uint64_t generation = 0;
@@ -22,6 +27,7 @@ struct TaskRequest {
   // Canonical, schema-validated parameters from the control boundary. Never
   // executed as shell text. The manager only compares and retains these bytes.
   std::string parameters;
+  ExecutionInput input;
 };
 struct TaskRecord {
   uint64_t id = 0;

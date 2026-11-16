@@ -9,6 +9,11 @@ struct ExecutorFixture final : ExecutionBackend {
   std::function<void()> inspect;
   unsigned submissions=0, cancels=0, shutdowns=0;
   bool reject=false, throw_submit=false, throw_collect=false;
+  bool agent=false;
+  bool supports_command(TaskCommand c)const noexcept override {
+    return c==TaskCommand::DetectSnapshot || (agent && (c==TaskCommand::CaptureSnapshot || c==TaskCommand::PlanTool || c==TaskCommand::DescribeSnapshot || c==TaskCommand::ResumeDetector));
+  }
+  bool automatic_model_switching()const noexcept override{return agent;}
   ExecutionReply initialize(InferenceConfig) override { state.model=ModelState::Ready; return {true,""}; }
   ExecutionReply submit(ExecutionJob job) override {
     if (inspect) inspect(); ++submissions;
@@ -40,6 +45,23 @@ static void running(ControlRouter& router,Fixture& camera) {
   assert(router.query(a.task_id)->state==TaskState::Done && router.status().capture==CaptureState::Running);
 }
 int main() {
+  {
+    Fixture camera;ExecutorFixture executor;executor.agent=true;ControlRouter router(camera,&executor);
+    assert(router.initialize({"fixture","labels",250}).accepted);
+    ControlRequest plan{"plan",0,10000,TaskCommand::PlanTool,{}, {"","read status",500}};
+    auto a=router.submit(plan,1);assert(a.accepted);router.poll(2);
+    assert(executor.active && executor.active->command==TaskCommand::PlanTool && executor.active->input.prompt=="read status");
+    assert(router.status().capture==CaptureState::Idle && camera.starts==0);
+    auto changed=plan;changed.input.prompt="stop capture";assert(router.submit(changed,3).error==AdmissionError::Conflict);
+    assert(router.cancel(a.task_id,4));router.poll(5);assert(!router.collect(a.task_id));
+    executor.finish();router.poll(6);assert(router.collect(a.task_id)->state==TaskState::Canceled);
+    auto snapshot=router.submit({"snapshot-no-camera",0,10000,TaskCommand::CaptureSnapshot,{}},7);
+    assert(snapshot.accepted);router.poll(8);assert(router.collect(snapshot.task_id)->error_code=="CAPTURE_NOT_RUNNING");
+    ControlRequest stored{"stored",0,10000,TaskCommand::DetectSnapshot,{}, {"g0-f0-t1","",500}};
+    auto image=router.submit(stored,9);assert(image.accepted);router.poll(10);
+    assert(executor.active && executor.active->input.snapshot_id=="g0-f0-t1");
+    executor.finish();router.poll(11);assert(router.collect(image.task_id)->state==TaskState::Done);
+  }
   {
     Fixture camera;ExecutorFixture executor;ControlRouter router(camera,&executor);running(router,camera);
     executor.inspect=[&]{(void)router.status();}; // no backend call under router lock

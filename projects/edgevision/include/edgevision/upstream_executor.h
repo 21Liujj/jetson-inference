@@ -3,6 +3,7 @@
 #include "edgevision/v4l2_backend.h"
 #include <condition_variable>
 #include <functional>
+#include <atomic>
 
 namespace edgevision {
 // One bounded job/completion slot; no second logical task manager. The capture
@@ -16,6 +17,8 @@ class UpstreamExecutor final : public ExecutionBackend {
                             std::shared_ptr<PreviewCache> inference_preview = {});
   ~UpstreamExecutor() override;
   ExecutionReply initialize(InferenceConfig) override;
+  bool supports_command(TaskCommand)const noexcept override;
+  bool automatic_model_switching()const noexcept override{return vlm_enabled_.load();}
   ExecutionReply submit(ExecutionJob) override;
   ExecutionSnapshot query() const override;
   std::optional<ExecutionCompletion> collect() override;
@@ -34,6 +37,7 @@ class UpstreamExecutor final : public ExecutionBackend {
   std::optional<ExecutionCompletion> completion_;
   ExecutionSnapshot state_;
   bool closing_ = false, cancel_requested_ = false;
+  std::atomic<bool> agent_enabled_{false},vlm_enabled_{false};
   std::thread worker_;
 };
 } // namespace edgevision

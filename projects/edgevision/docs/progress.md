@@ -15,7 +15,7 @@ different definitions and are not carried over as completed stages.
 | M4 UVC extension | board_verified | GPL frame/stream patch, 172 import CRCs, stock/disabled/enabled normal/slow/start-stop matrices, raw traces and parser; real unplug 7.3799s recovery, 1,803 consumed records correlated; actual stock rollback after all phases. Observational overhead only; no driver bug-fix or precise overhead-bound claim |
 | M5 CUDA and async optimization | board_verified (numerical/functional and duration/repetition performance); resource comparison pending | 48 preprocess cases and 200-image model gates; real GPU timeline and seven lifecycle cases pass. Five offline configurations ×3×300s, 646,305 completions; raw rows/percentiles verified. Runtime P1; P2 offline. CPU/GPU utilization, per-process RSS and readable-power comparison remain; missing telemetry is explicit |
 | M6 ROS2 | board_verified (functional); formal performance pending | Three native Humble packages; actual topics, paired source image, diagnostics, service and Action success/failure/GPU cancel/deadline; slow subscriber and private bag/replay pass. Windows 11/11, target sanitizer13/13. Four 20s exploratory publication comparisons retained; ≥5-minute formal gates remain |
-| M7 VLM/Agent | in progress | Qwen3-VL-2B artifacts audited and independent actual VQA passed after explicit plugin-path fix; shared tools, model-driven planning, 20 tasks and three traces remain |
+| M7 VLM/Agent | board_verified (partial tool chain); Agent acceptance incomplete | R2 native 15/15 and three ROS packages; real snapshot/same-frame detect/VQA/detector restoration and physical shutdown. Original OOM and planner failures retained; model still chooses incorrect/repeated tools. Fixed 22 tasks, three complete traces, model-task cancel/deadline/competition and formal resource/interference gates remain |
 | M8 system delivery | planned | Live Web/RTSP, bounded logs, deployment and failure recovery; 30min/2h/12h endurance |
 
 The static showcase is documentation, not the M8 live device console. Existing
@@ -38,6 +38,7 @@ execution but is not a model-accuracy or optimization benchmark.
 - CUDA numerical regression, memory paths and real timeline: [m5-gpu-pipeline.md](m5-gpu-pipeline.md).
 - Five-configuration, three-repeat, five-minute GPU comparison: [formal evidence](../evidence/2026-11-16-gpu-formal/manifest.json).
 - ROS2 common control, real data and original runtime-loader failure: [m6-ros2.md](m6-ros2.md).
+- Local model/shared tools, actual partial runtime and remaining Agent gates: [m7-agent.md](m7-agent.md).
 - Serial upstream GPU input adapter: [m2-inference.md](m2-inference.md).
 - Runtime recovery/health and R3 capture endurance: [m2-runtime.md](m2-runtime.md).
 - 30-minute repaired baseline: [summary and raw evidence](../evidence/2026-11-15-30min/summary.json).

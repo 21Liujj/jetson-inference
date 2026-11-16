@@ -21,3 +21,16 @@ description: 开发 EdgeVision 本地 VLM、模型驱动 Agent、工具 schema�
 
 开发 Agent 所用的仓库 SKILL 与产品 Agent 所调用的运行时工具分开维护；
 新增工具的真实入口形成后再补该入口的调用说明，禁止用说明文件冒充已实现功能。
+
+## 当前代码入口与验收边界
+
+- 先看docs/m7-agent.md和evidence/2026-11-16-agent-checkpoint。原生构建/底层工具通过，
+  完整Agent尚未验收；tests/agent_tasks_v1.json固定22任务，prompt-only探针不计其成绩。
+- agent/edgevision_agent通过真实ROS Action走同一TaskManager；apps/vlm_bridge.cpp复用只读
+  SDK，VlmProcess负责进程生命周期，AgentTools负责快照及模型协议。没有第二个相机入口。
+- 模型输出格式、工具选择、目标完成、回答依据分别计分。registered-tool-id-v2中工具选择
+  来自模型，参数由host注册schema构造；修改提示须记录revision并保留失败，不放松解析伪装通过。
+- 8GB预算验证时先确认已释放全部实际GPU对象，再在唯一CUDA owner上释放本进程context；
+  其他线程不得持有CUDA对象，绝不reset在途工作。资源计数和RSS/PSS/系统可用量不可混为总内存。
+- prepare_vlm_assets默认保持原engine profile，仅在新目录组织所需资产；不改donor目录。
+  缓存engine导出谱系与可选资产问题见journal EV-VLM-002/003，不能靠缩小JSON字段绕过profile验证。

@@ -520,3 +520,67 @@ M5三轮各1000次和M6四组20秒均是有效原始对照，但复核施工方�
 5分钟、关键配置重复3次。先前将其称为阶段性能完成，口径偏满。已更正README/progress和
 派生summary，原始timings、配置与运行日志不变；数值/功能验收仍有效，正式性能门槛明确待补。
 后续不以重复次数代替单轮持续时间，也不把几个短窗口P99平均后当作长窗口尾延迟。
+
+## EV-VLM-002 · 2026-11-16 · 小模型的受约束选择与内存边界
+
+自有JSONL适配器实际调用旧工程的C++ Runtime，独立R1/R2让模型生成原始JSON计划，出现重复的多个JSON对象。
+严格解析拒绝了这些输出，没有执行工具；原始失败保留在板端m7-adapter-probe-r1/r2，不能通过放松解析或预置计划把失败包装成成功。
+R3采用registered-tool-id-v2：模型max_tokens=1选择注册工具编号0..8，host按固定schema构造参数和版本化计划。
+实际中文“查看相机状态”选择get_status，同一适配器真实图片问答仍返回棕熊；非法max_tokens=0被拒绝。
+R3仅是独立模型和协议验证，不是完整自然语言任务验收。参数来自host注册schema的事实必须写入轨迹。
+
+独立VLM两轮观测到最小MemAvailable仅98,844/94,948KiB，并发生换页。共驻检测模型的预算尚未通过，
+不能承诺同时常驻或无检测影响。正在实现同一物理worker串行卸载/加载、子进程waitpid确认后切回检测；
+新自有assets目录降低运行时KV/input预算的方案尚未执行，不能将配置修改当作实测节省内存。
+
+参考donor SDK源码可见profiling容器跨请求累积，因此其tokens/s不能直接作为自有单次请求指标。
+记录自有CLOCK_MONOTONIC时间，并拟每进程最多32请求回收。模型切换、取消和内存回收仍需实机验证。
+
+本机审查还发现“get_recent_metrics返回累计status却标10秒窗口”和“异常丢失失败工具task_id”的风险。
+已改为有界向前实际采样窗口并保留失败回执。Python接口模拟测试9/9通过，明确标为transport-fixture，
+不计入20个真实任务或模型正确率。面试追问：为什么协议约束不能替代语义验收？逻辑取消与杀进程后的GPU释放如何确认？
+
+### R4 · 配置字段不是可以任意缩小的运行时预算
+
+新资产目录把max_input_len/max_kv_cache_capacity/max_kv_pool_pages改为1024/1024/8，engine和旧目录不动。
+原生SDK初始化明确报Paged KV profile mismatch，past_key_values_0要求的形状与序列化engine profile不符；
+6.297秒正常失败退出，尚未产生模型响应。原始run/stdout/resources保留在m7-adapter-budget-r4。
+这是已证实的配置与engine契约不匹配，不是OOM，也不能靠跳过SDK校验宣称内存优化成功。
+prepare_vlm_assets默认改为保持original profile；reduced-candidate必须显式选择并标为未验候选。
+需要缩小固定KV profile时必须重新构建并独立回归engine。当前继续验证原profile的串行模型调度。
+
+## EV-VLM-003 · 2026-11-16 · 串行卸载仍需核对实际分配与模型语义
+
+M7 runtime R2实际快照和同帧检测完成，加载VLM时ROS节点被SIGKILL，未收到物理shutdown确认。
+内核日志确认global OOM：21:37:39由edgevision_vlm_触发，杀死pid25598 edgevision_node。此轮失败，
+不能把Action超时当作普通DDS超时。所有测试子进程已退出，未改旧edgevisiond服务或全局内存策略。
+
+只读审计发现donor `engines/visual/action/action.engine`是指向`visual.engine`的symlink。SDK先加载
+785MiB视觉engine，再尝试把这个可选文件加载为Alpamayo Action expert，第二次分配后才因模型配置
+解析失败。该专家不用于本项目VQA/工具规划；新自有assets-r3不导入可选action目录，旧资产保持原样。
+独立R5真实问答/工具选择/非法预算负例通过（10.293s）。这排除了不需要的瞬态分配，不代表缩小KV profile。
+
+runtime R3的实际snapshot→同帧detect→模型plan→describe→resume_detector均返回，capture继续推进，
+最终收到物理shutdown确认。但采样MemAvailable最小仍只有16,572KiB；parent/child采样RSS分别为
+1,300,156/1,467,200KiB，不能相加当唯一物理占用或GPU分配。该组合没有长稳或资源预算通过结论。
+正在实现仅在唯一CUDA owner销毁全部detector/event/stream且前序物理完成后，释放本进程保留CUDA
+context并trim空闲allocator；候选修复尚待下一版实机验证，绝不对在途GPU工作执行reset。
+
+该轮总体验收仍失败：Agent连续6次重复get_status，随后到达步骤预算。模型输出合法工具编号不等于
+规划语义正确；不将格式正确率写成任务完成率。独立提示对照12例只做真实模型选择、不执行工具：
+中文短提示4/6，英文短提示1/6，全部原响应保留；它们不计入固定22任务集成绩。下一版显式记录提示
+revision，并将真实已完成工作以简明上下文传给模型，原始失败不覆盖。
+
+测试工具首轮误用了colcon隔离安装前缀，哈希检查前即失败、节点未启动；修正为包级安装路径后另建R2。
+本BSP缺少/proc/task/children，R2资源采样记录错误而未得到child指标；R3改为读取/proc/stat的PPID，
+只保留自有节点直接子进程。缺失采样不补零，不用R2无效数据推断峰值。
+
+donor processed_chat_template保留domain_lora_v1_merged来源字符串；本地base权重匹配HF缓存并不能
+证明缓存engine由同一base权重导出。当前身份以实际engine/config/plugin/SDK对象哈希为准，架构为
+Qwen3-VL-2B，完整engine导出谱系仍未重建，不继承旧工程性能、精度或稳定性数字。
+
+R2候选源码实机R4复测：相同五个底层操作均返回，记录2次本进程CUDA context释放，切回后继续
+完成检测，最终节点exit0且物理shutdown确认。采样MemAvailable最低158,412KiB；该短窗口与旧轮
+系统状态不同，不能称为精确内存节省量或正式资源预算通过。Agent仍失败：中文短提示选择不必要的
+start_capture，统一状态机拒绝STATE_CONFLICT。后续独立二元完成判断实验也只有4/6正确，存在
+过早判断完成的错误，尚未接入产品，不能以它隐藏未完成步骤。修复与验收继续，22任务尚未正式运行。

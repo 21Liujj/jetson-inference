@@ -16,7 +16,9 @@ bool TaskManager::terminal(TaskState s) {
 bool TaskManager::valid_request(const TaskRequest& r) {
   if (r.request_id.empty() || r.request_id.size() > 64 || r.parameters.size() > 2048 || !r.deadline_mono_ns)
     return false;
-  if (r.command < TaskCommand::StartCapture || r.command > TaskCommand::RunInspection) return false;
+  if (r.command < TaskCommand::StartCapture || r.command > TaskCommand::ResumeDetector ||
+      r.input.snapshot_id.size()>64 || r.input.prompt.size()>1600 || r.input.prompt.find('\0')!=std::string::npos ||
+      !r.input.freshness_ms || r.input.freshness_ms>5000) return false;
   for (unsigned char c : r.request_id)
     if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') ||
           c == '-' || c == '_' || c == '.' || c == ':')) return false;
@@ -24,7 +26,8 @@ bool TaskManager::valid_request(const TaskRequest& r) {
 }
 bool TaskManager::same_request(const TaskRequest& a, const TaskRequest& b) {
   // A retry cannot extend the original deadline. Return the original record.
-  return a.command == b.command && a.generation == b.generation && a.parameters == b.parameters;
+  return a.command == b.command && a.generation == b.generation && a.parameters == b.parameters &&
+    a.input.snapshot_id==b.input.snapshot_id && a.input.prompt==b.input.prompt && a.input.freshness_ms==b.input.freshness_ms;
 }
 TaskAdmission TaskManager::submit(TaskRequest request, uint64_t now, uint64_t generation, bool allow_new) {
   if (!valid_request(request)) return {false, false, 0, AdmissionError::InvalidRequest};

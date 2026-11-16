@@ -1,0 +1,486 @@
+{
+  "actual-checkpoint-scripts/m7_runtime_probe.py": {
+    "bytes": 8572,
+    "sha256": "7e0bae424e7af5fb7f00319e276279ebd2ffed55dd72eaebb8f0e9ba1b17e023"
+  },
+  "actual-checkpoint-scripts/prepare_vlm_assets.py": {
+    "bytes": 3569,
+    "sha256": "8d9f2143b9026bb6715b3974c3813068e408c91a2f4fc1d160614cb6553130ac"
+  },
+  "actual-checkpoint-scripts/vlm_planner_probe.py": {
+    "bytes": 4899,
+    "sha256": "f351d0aa008138c05cb7b50e56b7307d14adfe2a5d0652362c5c6c7b5ac84b96"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-budget-r4/requests.json": {
+    "bytes": 1366,
+    "sha256": "40fa2d2fd9f76818350b62c1a90cc9f4fe35e1f49b00677e91d69d7f6491f73e"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-budget-r4/resources.csv": {
+    "bytes": 1194,
+    "sha256": "bc49e2db74ed49bdec2c214f2ae73dff7f4d4e14e8fde5f5cb95145864371d2a"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-budget-r4/responses.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-budget-r4/run.json": {
+    "bytes": 798,
+    "sha256": "1608d6601a9a388a5041de8142b192069d1a5843ba963e9328528a0328de237e"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-budget-r4/stdout.log": {
+    "bytes": 6876,
+    "sha256": "f731380158f09106c465b7c16141337fde20612d9b626aae876a0ffd1666b415"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-no-action-r5/requests.json": {
+    "bytes": 1369,
+    "sha256": "38cb38e4db29a8603d93aeab49511dafb26833e01807432dfb0c82bac0b9f588"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-no-action-r5/resources.csv": {
+    "bytes": 1906,
+    "sha256": "a9f8eb24efb5d32d308396a669785a2e3761ee2a20ade5f9fb5641a2dbe1142c"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-no-action-r5/responses.json": {
+    "bytes": 1549,
+    "sha256": "e4898c97c3966512091987db64083860db51dc8c4794fc881f75ff578893322e"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-no-action-r5/run.json": {
+    "bytes": 802,
+    "sha256": "3f7f28c61ae9c943a81773230a02e38ea8fe520ce7ae63008f89c8377ed2a781"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-no-action-r5/stdout.log": {
+    "bytes": 14200,
+    "sha256": "9d35e96a8fc3e9c7fefd777da1cb618950250708ad3291e662b8c7b9f5deb9a6"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r1/requests.json": {
+    "bytes": 1516,
+    "sha256": "bf7782ce21ed24ab3cc4644abac173b3348eb0c63a1ece4378ab542c25d8c0c5"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r1/resources.csv": {
+    "bytes": 2936,
+    "sha256": "842b65868d5c37b3cbcc3fade2a3438237dff6c05503415bdad2f0e91e519b05"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r1/responses.json": {
+    "bytes": 1852,
+    "sha256": "28ccb754cfcc9d760d38b73e6de6ab66d1db999510960f539fb9534fb0f63f5f"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r1/run.json": {
+    "bytes": 660,
+    "sha256": "09fc52bfb3a3a94d64ac5ed8e64819778f89683f4694c5836467f74fceaccef1"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r1/stdout.log": {
+    "bytes": 16881,
+    "sha256": "253da76a7907fd5e27d0eecf884c74ce7ba148f1e3afd84052acfb65c4726117"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r2/requests.json": {
+    "bytes": 1642,
+    "sha256": "0209958c06c407ad7cfdcdc49cd53c99ac327143082bfba854a36576e87d2ead"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r2/resources.csv": {
+    "bytes": 2613,
+    "sha256": "9bea9faffee3d18573adc29842d84cf5f1e091e707488f41f136ca1f8d851d60"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r2/responses.json": {
+    "bytes": 1700,
+    "sha256": "ef97816ac6b72c2b03860eaf1980bbfb2351e8949ab540475391e9c3ddee6557"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r2/run.json": {
+    "bytes": 660,
+    "sha256": "4928ac4e6d3b6cab902c8a8c10bae5869a12f9833ef2339fd235061ae049ee48"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r2/stdout.log": {
+    "bytes": 16729,
+    "sha256": "c9fa263980472cf8c6f9aff83cff6a4e14f2c94c4b53f585cb6d975da4e82753"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r3/requests.json": {
+    "bytes": 1365,
+    "sha256": "3c4e4fc343f064cbf2376bbf2a8afefe189702628078cf54a25dd1c8bd0e534d"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r3/resources.csv": {
+    "bytes": 2224,
+    "sha256": "6a9daed82dbc76e4b422803077ba0b1fcde5a6afbba77e51c458f2f15c67168e"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r3/responses.json": {
+    "bytes": 1543,
+    "sha256": "f398ec69c58802a66afeaafafcabd62b11a0de6880ddf0c5137e2f07107e3454"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r3/run.json": {
+    "bytes": 660,
+    "sha256": "dbbf467f3c0c3fa2c7c190311f2cbc2de6c5a7c2baa113af3c58526e1cd61093"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-adapter-probe-r3/stdout.log": {
+    "bytes": 16218,
+    "sha256": "4e8b74a047e487aef2c68335e79983c4b916ce9be1cc4ffe0c699546a7ee2b3f"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-legacy-gpu-r1/events.jsonl": {
+    "bytes": 7959,
+    "sha256": "70e5b97b896da1d7b68ee5d98617888f7595351e32e2a818dab235f037ff5765"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-legacy-gpu-r1/summary.json": {
+    "bytes": 313,
+    "sha256": "959af08ab7310c5227f434b44f3277b1667c788582f2cb747dc73671a0fdcf71"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-native-build-r1/0-build.log": {
+    "bytes": 1327,
+    "sha256": "05d268d295bd5dfb015c2559f21afdc32f3fc1489c054dcad73e99f7242b7385"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-native-build-r1/1-build.log": {
+    "bytes": 48550,
+    "sha256": "639dcea2ad86675283a0962c35cfdbda5fd5def8361f98d5f991ce3c0ddd13cf"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-native-build-r1/run.json": {
+    "bytes": 810,
+    "sha256": "d11df77e17323dea63955bce7668b6828cb504a077db171ee95ca3f541e0fffc"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-native-build-r1/source-manifest.json": {
+    "bytes": 27442,
+    "sha256": "8b2ababa6ef9d6744791437286cb5522b84bd0dea17b773eed908e8189e2a85d"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-native-build-r2/0-build.log": {
+    "bytes": 336,
+    "sha256": "74cd8c57ed96d824c2b771b29fcf592de3fef62f7624297082f98fc423344fec"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-native-build-r2/1-build.log": {
+    "bytes": 12785,
+    "sha256": "d8ad93c14321827028c7f7de57017e88c90887f0c0509609d782a6c08f2d227f"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-native-build-r2/run.json": {
+    "bytes": 810,
+    "sha256": "d11df77e17323dea63955bce7668b6828cb504a077db171ee95ca3f541e0fffc"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-native-build-r2/source-manifest.json": {
+    "bytes": 27899,
+    "sha256": "51f11eb97d4c37046267cd12c5a47f38b32346bd034890a4daf7cda4af5994bd"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-planner-prompts-r1/requests.json": {
+    "bytes": 11951,
+    "sha256": "ad3b92e18467233575a83ea49983dd4bdb4316053d5ebf3bd8e51c4034af6568"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-planner-prompts-r1/result.json": {
+    "bytes": 9814,
+    "sha256": "4fe09e87bc499b3075293d742bbb67adefd22a7bc1536c6b84826123f0ea01fe"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-planner-prompts-r1/stdout.log": {
+    "bytes": 18471,
+    "sha256": "e4a601ca6f6f72525aef0d0cc775bbd3faf4ba7343a072937160d4062321593b"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-planner-prompts-r2/requests.json": {
+    "bytes": 16710,
+    "sha256": "2f95fe6eae2785baf7b8f110bca0ba4d960185bbbe41282c3fa7658ea487ed6f"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-planner-prompts-r2/result.json": {
+    "bytes": 14737,
+    "sha256": "d2261fe68652c404c795d820044aadc5093dab45a22dd47cca9203c352b7bc9d"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-planner-prompts-r2/stdout.log": {
+    "bytes": 21430,
+    "sha256": "a690870fb087ccd56f17d14e9b7e4ba2fcdc76424d9d56cc8a003beebd062481"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_bringup/command.log": {
+    "bytes": 6660,
+    "sha256": "2c83c7ac7e9cdb551776d65646da3f0d7198f41db494cc253722fdd855aaa5fa"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_bringup/stderr.log": {
+    "bytes": 134,
+    "sha256": "412fe1e2ef15e9f5c12c5b4a591b4654c771257a45809db39a9146d38d66fd59"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_bringup/stdout.log": {
+    "bytes": 3687,
+    "sha256": "731f63f2094df2ea03ecdd375e9eab8e97683ef9b171839e595d2e49a89b3230"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_bringup/stdout_stderr.log": {
+    "bytes": 3821,
+    "sha256": "4b75fe1a3ab1a93c3e9e204d9da88cb851f9fd3187d03f023b2c3dfe8ca31fd6"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_bringup/streams.log": {
+    "bytes": 10913,
+    "sha256": "d5db2492a7fc9d5dde2059551824de696339fb8e01433192078436a6faf62b77"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_interfaces/command.log": {
+    "bytes": 2286,
+    "sha256": "96f92253d7448a40aeb09683ab19c2fdf1b68dfecf291219edab20e3ef01c9e8"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_interfaces/stderr.log": {
+    "bytes": 134,
+    "sha256": "412fe1e2ef15e9f5c12c5b4a591b4654c771257a45809db39a9146d38d66fd59"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_interfaces/stdout.log": {
+    "bytes": 57754,
+    "sha256": "e44d215a9f61701d6b6eea7e697be828020bba56d9284c3ef90b82edd254d799"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_interfaces/stdout_stderr.log": {
+    "bytes": 57888,
+    "sha256": "9d53ee27a67e9dabb8988b426fad1498be0b213058c7f1698944fb4351a8d89c"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_interfaces/streams.log": {
+    "bytes": 63657,
+    "sha256": "35e26e89e797333654ac1ac40de5306f4dc70afad6b2725048b3712dbd29cb16"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_ros/command.log": {
+    "bytes": 5464,
+    "sha256": "e758e17b0d040c3e24b6523bbfc667f265141d6ced23ca1f1d07ff6f299a7a90"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_ros/stderr.log": {
+    "bytes": 40469,
+    "sha256": "a25b95ddbd6a68285572450c0b24101575effc362832a9c1c95e8cbbd07ea19b"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_ros/stdout.log": {
+    "bytes": 9889,
+    "sha256": "e353c23c9c7db24ccbd18c0adaa8763b98a3555b14293a537e12d20c3de3d38f"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_ros/stdout_stderr.log": {
+    "bytes": 50358,
+    "sha256": "2b4b786d56a4d3d6e302a7e12174756c3662325d84d07deff4adf4b2e874df03"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/edgevision_ros/streams.log": {
+    "bytes": 60250,
+    "sha256": "5f3c7ad0716f4dfe19a5b9260b8b9ac40694aeeef008b31987a8820a42efe314"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/events.log": {
+    "bytes": 208173,
+    "sha256": "d5b38cd8b742e81e7a9156c86c7502353387708da95db2dd61506bcad254b5c7"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon-logs/build_2026-11-16_21-23-45/logger_all.log": {
+    "bytes": 58508,
+    "sha256": "d5aa40d95409066c8237b2baa72b52746174eb051dfd1553d99164c8e690cdc0"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/colcon.log": {
+    "bytes": 41186,
+    "sha256": "f451f61334d3c48d8d590ec00451099a102da1726f3d364f8f85dca6d984539b"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r1/native-ctest.log": {
+    "bytes": 1831,
+    "sha256": "6d01e3aa25b8c33a7f5d5e179ee19205fc42afc78bbf65ce476219411ce7fa64"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_bringup/command.log": {
+    "bytes": 4090,
+    "sha256": "6fa0ac68f1fec4e4c2308b3a45b1e59c85d328ffb309c2cde619882ce3062d0e"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_bringup/stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_bringup/stdout.log": {
+    "bytes": 2846,
+    "sha256": "883c78159aca0ca9f5baf9881130ab40ea534bbd6407eb472d0b8a27ea2c2a81"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_bringup/stdout_stderr.log": {
+    "bytes": 2846,
+    "sha256": "883c78159aca0ca9f5baf9881130ab40ea534bbd6407eb472d0b8a27ea2c2a81"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_bringup/streams.log": {
+    "bytes": 7134,
+    "sha256": "ac428920a072ade5d5cd94fb20fda11be49c26d5711afb5e88931af36193976d"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_interfaces/command.log": {
+    "bytes": 1170,
+    "sha256": "6bfa177b37a95deb978591058d2e575d17a648a069167be3ff4f9ac664b9cc17"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_interfaces/stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_interfaces/stdout.log": {
+    "bytes": 44484,
+    "sha256": "f0c48a7355de5e247740b8a3ec503eab070040e9a3c444a7d5e91551bf62b201"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_interfaces/stdout_stderr.log": {
+    "bytes": 44484,
+    "sha256": "f0c48a7355de5e247740b8a3ec503eab070040e9a3c444a7d5e91551bf62b201"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_interfaces/streams.log": {
+    "bytes": 47913,
+    "sha256": "0c3f90d252fc8ce319df7654077332edd30e85cbda4a744cfe93543cedd965b9"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_ros/command.log": {
+    "bytes": 3298,
+    "sha256": "57afd0fed0af963e52498a2d5d6fe6f5fbcdec63e1356832a572c7a6328d2bf1"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_ros/stderr.log": {
+    "bytes": 4884,
+    "sha256": "9fd4b38405be027f238bf6cb354d0b1858b2c72c2290b7f999644c6205c77032"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_ros/stdout.log": {
+    "bytes": 6236,
+    "sha256": "6539951b0c218269870232fac5d7dd6006080c18ec14adc18465b70aa40d0ff3"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_ros/stdout_stderr.log": {
+    "bytes": 11120,
+    "sha256": "be817aed38249c7a80907e6f5e0299b9d330b9b1b646afb928cda27fc67ef9c4"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/edgevision_ros/streams.log": {
+    "bytes": 15449,
+    "sha256": "88c995b8446adf01b55e022b6f597b0e8d33e4927a998cb7a9ad4fdb288d52c2"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/events.log": {
+    "bytes": 111759,
+    "sha256": "4c2f8ff4fe120b32f9a3a791b5808ea05bafc105c23ac3d100bc0756dd41d293"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon-logs/build_2026-11-16_22-05-27/logger_all.log": {
+    "bytes": 52238,
+    "sha256": "c9e0f0622cd28b59df579783e941c9916f4f4278e4ebad9b1dd044f63d264888"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/colcon.log": {
+    "bytes": 5213,
+    "sha256": "9ecd9c4b82b18d018684bc5ec5f9b651cacc2f28db224e0eee18afd9b8a0482d"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-ros-build-r2/native-ctest.log": {
+    "bytes": 1831,
+    "sha256": "fe7efb09bd5414da2e4d0024767fc53909042f3fce7af63228cc2060c0b00a0d"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r2/failure.json": {
+    "bytes": 86,
+    "sha256": "0666270fae5c531a15a9e4070895aa23d9366709866348de607641dc923a755d"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r2/initial-status.json": {
+    "bytes": 1424,
+    "sha256": "435d18a3703600d4268070a0d63ae7267b733193f14ca50b7fa6eccc5341d42b"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r2/node.log": {
+    "bytes": 4416,
+    "sha256": "6f821df043ffc4de142409ea7cb2e2b6b038243097e100845acb16035ac41c13"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r2/receipts.json": {
+    "bytes": 2134,
+    "sha256": "090b05409856991a3cb91a649ef2f7c2833f46179e3d41c1268f22cba83a7b25"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r2/resources.jsonl": {
+    "bytes": 31363,
+    "sha256": "e6a1709a0626336dc50f33b98e2bb5f63b0d509ce05dd7fa640500e8aabdc187"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r2/run.json": {
+    "bytes": 2801,
+    "sha256": "914826fe70b2a02ab954c7a5427589090b7e8042afc2533d99ab34c3b605ebca"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r2/snapshots/vlm.log": {
+    "bytes": 11448,
+    "sha256": "431ad4e1c0662c7f126062ab297997f6839a99fa015183bb3f143558ce9256ae"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/after-switch-status.json": {
+    "bytes": 1432,
+    "sha256": "6cf7fd4159457e27c031409b40347e0c0fe44dc8b3c88b5b9d63bbef6bea1cc0"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/agent-status-result.json": {
+    "bytes": 26405,
+    "sha256": "d224d2d3e4849ec57bd24a31b24b228ec8ff92ba6e8bb116df42a71e3e6bf072"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/failure.json": {
+    "bytes": 53,
+    "sha256": "6ed91672d3f9faea25f9fe58d4b23fe74f91a2c3f633ee6f1286d693bcafd302"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/initial-status.json": {
+    "bytes": 1402,
+    "sha256": "6d989466d4b1b7c489fd292db09c8a5b2a6fba6e05f8d2899cd03ebb440e9064"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/node.log": {
+    "bytes": 13835,
+    "sha256": "e5442bb68b426610683df25ec4c8762bd9d01472add380e18c394f145e4a0cf2"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/receipts.json": {
+    "bytes": 5124,
+    "sha256": "95f043eb7ceea680e7ab25dabe2967e5752cf63d7273ad5a2cdee2ff43f47ce0"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/reports/ag-43fa7102a50d9dbfa7b458f24b0dacde/trace.json": {
+    "bytes": 18154,
+    "sha256": "a00305275f68e98bca9a23b1646f48b0b189417ef7921fbc667bbfddaac0012d"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/resources.jsonl": {
+    "bytes": 206339,
+    "sha256": "65cd5b6fea7ea9c408c9627f541d87162851685c34e57c7314d7c990db8427f2"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/run.json": {
+    "bytes": 2787,
+    "sha256": "553b38423e0093bb51dbac9678af542f5dedba48077c941fea626c665eac1fac"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r3/snapshots/vlm.log": {
+    "bytes": 30154,
+    "sha256": "7959b7c53bbbf828a3a9090f0c2d2f6ede609d5a291f2829417d2ef0e25a921f"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/after-switch-status.json": {
+    "bytes": 1470,
+    "sha256": "e4b938a7d8062eb440bc4147908fd9f93c381fe09f520ec3a89e566f820c2906"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/agent-status-result.json": {
+    "bytes": 4905,
+    "sha256": "f3d828320f8ce1acc52484550be364463b7edaf13f75e207b7225a0e68e47a09"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/failure.json": {
+    "bytes": 369,
+    "sha256": "9c465c1d5c2ef0c78f40f07e646656a1908073ea90d1a2cd6ac8de2e22165b67"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/initial-status.json": {
+    "bytes": 1454,
+    "sha256": "0972b035c23a8c18e5623b893df0961c240ab4b2fa54f390c5087b118b170a26"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/node.log": {
+    "bytes": 13835,
+    "sha256": "b56e79bc082a53c8df4a59a562ca4a161fb217d8fde4262fbef41ca3bc0c149f"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/receipts.json": {
+    "bytes": 5372,
+    "sha256": "a6f3211b76a096a0360a8add4e4e1f8ed735519b991c8499183cc4e4196496a9"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/reports/ag-43fa7102a50d9dbfa7b458f24b0dacde/trace.json": {
+    "bytes": 3460,
+    "sha256": "589325dc982d7a9340a005db41ba6afbfc284f065c38b034f9999f3abcb36123"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/resources.jsonl": {
+    "bytes": 146833,
+    "sha256": "d23eba205fe4492d4a6b13146c5a0de5ca7cd683f7e46c4c8d623039a124ec64"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/run.json": {
+    "bytes": 2787,
+    "sha256": "e6e1d88660b37021a49742b55a6fd038885534ac19c1be852befa8dd370854d7"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-runtime-smoke-r4/snapshots/vlm.log": {
+    "bytes": 27260,
+    "sha256": "70e1559a474fdc428012c754d696a9e216d51eb679855fa3f474b64705afe73f"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-source-r1.zip": {
+    "bytes": 223208,
+    "sha256": "dbade280f5e845a81406f055a5a59f0b214e73399295abd8ba7922eb18deb37e"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-source-r2.zip": {
+    "bytes": 230231,
+    "sha256": "2b85768ef6acf9d2427e03a240d062c114d935bc837cbd16729a4d3a758050f7"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-vlm-assets-r1/llm/config.json": {
+    "bytes": 1704,
+    "sha256": "f13bb6737ded70aa5b733acaed2d3311aa61a54e1f445150203b6ce8cceceb5e"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-vlm-assets-r1/manifest.json": {
+    "bytes": 2389,
+    "sha256": "465f182c9ef5ea0e1357ec3715cf1096505f1115212b4b4a778e0299d6fecbbf"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-vlm-assets-r2/llm/config.json": {
+    "bytes": 1704,
+    "sha256": "ca800d17c4dbe909c8b7cf9829372480c8d246fd842ac8e0a1631402839f4192"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-vlm-assets-r2/manifest.json": {
+    "bytes": 2322,
+    "sha256": "574ef89debe138fb942399843d8648d1e87cb2ee4a3bf57ebe8f11815e31cfcb"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-vlm-assets-r2/visual/config.json": {
+    "bytes": 1078,
+    "sha256": "c3e498b632ef795f55cb07dee31be22a6f24e508f8cd9a3c5d1fc3c8b8e38303"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-vlm-assets-r3/llm/config.json": {
+    "bytes": 1704,
+    "sha256": "ca800d17c4dbe909c8b7cf9829372480c8d246fd842ac8e0a1631402839f4192"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-vlm-assets-r3/manifest.json": {
+    "bytes": 2513,
+    "sha256": "1df6fc6e15b0a340baf41a0b34bcb1dfe46cf82536ea7c1962f2ebac91849443"
+  },
+  "projects/edgevision/artifacts/2026-11-16/m7-vlm-assets-r3/visual/config.json": {
+    "bytes": 1078,
+    "sha256": "c3e498b632ef795f55cb07dee31be22a6f24e508f8cd9a3c5d1fc3c8b8e38303"
+  },
+  "projects/edgevision/build/vlm-native-r1/build.log": {
+    "bytes": 802,
+    "sha256": "d9ecbbd94138fb346a99ca42bfcc482cc92a43c379abb42287f90d53e1345126"
+  },
+  "projects/edgevision/build/vlm-native-r1/manifest.json": {
+    "bytes": 3123,
+    "sha256": "f8483675665900858af4bc40912e8543c5de30015230b716c2190b6786420deb"
+  }
+}

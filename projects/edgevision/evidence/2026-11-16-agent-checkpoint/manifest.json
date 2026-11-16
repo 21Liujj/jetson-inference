@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "stage": "M7 partial checkpoint; acceptance incomplete",
+  "files": {
+    "m7-predeparture-process-check.json": {
+      "bytes": 136,
+      "sha256": "9337ea8b97f5b1657d3a91568e31e221bddd0b7b8a14d3076ab7fb7e1e14946e"
+    },
+    "m7-runtime-r2-kernel-oom.json": {
+      "bytes": 1303,
+      "sha256": "8c8f353b20b8321bb45e5ac2d714af67ba65b7d422ba56264486b46cb083e6ae"
+    },
+    "m7-runtime-r4-review.json": {
+      "bytes": 1725,
+      "sha256": "c5901828525650b7d95959eaf295db93ae0d0a98a48f0e7080608315b7241f1f"
+    },
+    "raw-file-manifest.json": {
+      "bytes": 24241,
+      "sha256": "481d2be2686fd99caff85758f1924b7379b634d422c8a61f1bda164fdc5a1936"
+    },
+    "raw-target-evidence.zip": {
+      "bytes": 679693,
+      "sha256": "40d0e34e91237ef6eed9eafa55fdd368406c4ddee9b04e70f0b5b1722e900195"
+    },
+    "summary.json": {
+      "bytes": 1758,
+      "sha256": "c53fa9dd634ae78310fbe4589b5b07d66bdcf200dd968d3d0ef8944160e74f72"
+    }
+  }
+}

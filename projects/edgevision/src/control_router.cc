@@ -54,7 +54,10 @@ void ControlRouter::require_owner_locked() {
 ExecutionReply ControlRouter::initialize(InferenceConfig config) {
   { std::lock_guard<std::mutex> lock(mu_); require_owner_locked();
     if (shutting_down_) return {false, "RUNTIME_SHUTTING_DOWN"}; }
-  return executor_ ? executor_->initialize(std::move(config)) : ExecutionReply{false, "NO_EXECUTOR"};
+  auto reply=executor_ ? executor_->initialize(std::move(config)) : ExecutionReply{false, "NO_EXECUTOR"};
+  if(reply.accepted){const bool switching=executor_->automatic_model_switching();
+    std::lock_guard<std::mutex> lock(mu_);automatic_model_switching_=switching;}
+  return reply;
 }
 std::optional<TaskRecord> ControlRouter::collect(uint64_t id) const {
   auto record = tasks_.query(id);
@@ -83,13 +86,26 @@ void ControlRouter::shutdown(uint64_t now) {
 }
 TaskAdmission ControlRouter::submit(ControlRequest request, uint64_t now) {
   if (request.command != TaskCommand::StartCapture && request.command != TaskCommand::StopCapture &&
-      !(request.command == TaskCommand::DetectSnapshot && executor_))
+      !(executor_ && executor_->supports_command(request.command)))
     return {false, false, 0, AdmissionError::UnsupportedCommand};
   if ((request.command == TaskCommand::StartCapture && (!request.capture || !valid_config(*request.capture))) ||
       (request.command != TaskCommand::StartCapture && request.capture))
     return {false, false, 0, AdmissionError::InvalidParameters};
+  const auto& input=request.input;
+  if(input.snapshot_id.size()>64 || input.prompt.size()>1600 || input.prompt.find('\0')!=std::string::npos ||
+     !input.freshness_ms || input.freshness_ms>5000)return {false,false,0,AdmissionError::InvalidParameters};
+  for(unsigned char c:input.snapshot_id)
+    if(!((c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='-'||c=='_'))return {false,false,0,AdmissionError::InvalidParameters};
+  const bool text_command=request.command==TaskCommand::PlanTool || request.command==TaskCommand::DescribeSnapshot;
+  if((text_command && input.prompt.empty()) || (!text_command && !input.prompt.empty()) ||
+     (request.command==TaskCommand::DescribeSnapshot && input.snapshot_id.empty()) ||
+     (request.command!=TaskCommand::DetectSnapshot && request.command!=TaskCommand::DescribeSnapshot && !input.snapshot_id.empty()))
+    return {false,false,0,AdmissionError::InvalidParameters};
+  const auto execution_parameters="execution-v2:"+std::to_string(unsigned(request.command))+":"+
+    std::to_string(input.freshness_ms)+":"+std::to_string(input.snapshot_id.size())+":"+input.snapshot_id+":"+
+    std::to_string(input.prompt.size())+":"+input.prompt;
   TaskRequest task{request.request_id, request.generation, request.command, request.deadline_mono_ns,
-                   request.capture ? canonical(*request.capture) : request.command == TaskCommand::StopCapture ? "stop-v1" : "detect-snapshot-v1"};
+                   request.capture ? canonical(*request.capture) : request.command == TaskCommand::StopCapture ? "stop-v1" : execution_parameters,input};
   std::lock_guard<std::mutex> lock(mu_);
   const auto stop = pending_stop_ ? tasks_.query(*pending_stop_) : std::nullopt;
   const bool queued_stop = stop && stop->state == TaskState::Queued;
@@ -134,13 +150,17 @@ void ControlRouter::finish_locked(bool success, const std::string& error, uint64
   }
 }
 std::optional<ControlRouter::Action> ControlRouter::dispatch_locked(const TaskRecord& task, uint64_t now) {
-  if (task.request.command == TaskCommand::DetectSnapshot) {
-    if (state_.capture != CaptureState::Running || (state_.model != ModelState::Ready && state_.model != ModelState::Busy)) {
-      tasks_.complete(task.id, false, "", state_.capture != CaptureState::Running ? "CAPTURE_NOT_RUNNING" : "MODEL_NOT_READY", now);
+  if (task.request.command != TaskCommand::StartCapture && task.request.command != TaskCommand::StopCapture) {
+    const bool live=task.request.command==TaskCommand::CaptureSnapshot ||
+      (task.request.command==TaskCommand::DetectSnapshot && task.request.input.snapshot_id.empty());
+    const bool needs_model=task.request.command==TaskCommand::DetectSnapshot;
+    if ((live && state_.capture != CaptureState::Running) ||
+        (needs_model && !automatic_model_switching_ && state_.model != ModelState::Ready && state_.model != ModelState::Busy)) {
+      tasks_.complete(task.id, false, "", live && state_.capture != CaptureState::Running ? "CAPTURE_NOT_RUNNING" : "MODEL_NOT_READY", now);
       return std::nullopt;
     }
     inference_task_ = task.id; execution_cancel_sent_ = false;
-    return Action{Action::Kind::Detect, state_.generation, task.id, {}};
+    return Action{Action::Kind::Detect, state_.generation, task.id, {},task.request.command,task.request.input};
   }
   state_.active_task = task.id;
   if (task.request.command == TaskCommand::StartCapture) {
@@ -265,7 +285,7 @@ void ControlRouter::execute(std::optional<Action> action, uint64_t now) {
   if (!action) return;
   if (action->kind == Action::Kind::Detect) {
     ExecutionReply reply;
-    try { reply = executor_->submit({action->task, action->generation, tasks_.query(action->task)->request.deadline_mono_ns}); }
+    try { reply = executor_->submit({action->task, action->generation, tasks_.query(action->task)->request.deadline_mono_ns,action->command,action->input}); }
     catch (...) {
       // Possible partial acceptance: retain the physical slot until completion.
       std::lock_guard<std::mutex> lock(mu_);
@@ -338,7 +358,10 @@ void ControlRouter::poll_executor(uint64_t now) {
     if (!inference_task_ || completion->task_id != *inference_task_) { ++state_.stale_events; return; }
     if (completion->generation != state_.generation)
       tasks_.fail_running(*inference_task_, "STALE_GENERATION", now);
-    else if (state_.capture != CaptureState::Running)
+    else if (state_.capture != CaptureState::Running &&
+      (tasks_.query(*inference_task_)->request.command==TaskCommand::CaptureSnapshot ||
+       (tasks_.query(*inference_task_)->request.command==TaskCommand::DetectSnapshot &&
+        tasks_.query(*inference_task_)->request.input.snapshot_id.empty())))
       tasks_.fail_running(*inference_task_, "CAPTURE_NOT_RUNNING", now);
     tasks_.complete(*inference_task_, completion->success, std::move(completion->result), std::move(completion->error), now);
     inference_task_.reset(); execution_cancel_sent_ = false;

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "stage": "M7",
+  "complete": false,
+  "simulated": false,
+  "scope": "native builds, CPU/transport fixtures, actual GPU legacy regression, independent VLM and partial real runtime; no formal Agent task-set score",
+  "source_r2_sha256": "2b85768ef6acf9d2427e03a240d062c114d935bc837cbd16729a4d3a758050f7",
+  "target_native_tests": {
+    "source": "r2",
+    "passed": 15,
+    "total": 15,
+    "sanitizers": false
+  },
+  "ros_packages_built": 3,
+  "legacy_real_gpu_cases": {
+    "source": "r1",
+    "passed": 7,
+    "total": 7
+  },
+  "runtime_r4_low_level_operations": [
+    "snapshot",
+    "same-frame detect",
+    "real model tool selection",
+    "same-frame VQA",
+    "resume detector"
+  ],
+  "runtime_r4_agent_status": "FAILED: model selected unnecessary start_capture while running; STATE_CONFLICT preserved",
+  "runtime_r4_physical_shutdown_ack": true,
+  "runtime_r4_node_exit_code": 0,
+  "runtime_r4_sampled_mem_available_min_kib": 158412,
+  "runtime_r4_cuda_context_releases": 2,
+  "formal_tasks_executed": 0,
+  "frozen_task_set": "tests/agent_tasks_v1.json (22 cases)",
+  "remaining": [
+    "planner semantic correctness",
+    "22-task run and separate actual mode scores",
+    "three required complete traces",
+    "model/Agent cancellation, deadlines and ROS competition",
+    "memory budget and formal interference",
+    "final-stack endurance"
+  ],
+  "privacy": "No PNG/JPEG/RGB payload, full bag, weights, engines or credentials in this archive.",
+  "model_provenance": "Qwen3-VL-2B architecture; cached engine/checkpoint export lineage is not fully reconstructed; base weight hash alone does not establish engine lineage.",
+  "issues": "See fixed debugging_journal EV-VLM-001/002/003; all original failures retained."
+}

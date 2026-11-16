@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "set_id": "m7-agent-v1",
+  "state": "frozen-before-first-integrated-run; no result implied",
+  "evaluation": {
+    "separate_modes": ["model-driven", "real-api-negative", "transport-fixture"],
+    "counts": ["task_terminal_correct", "semantic_goal_completed", "tool_call_correct", "answer_evidence_consistent"],
+    "notes": "Report actual numerator/denominator, excluded tasks, failure types, all raw model choices and runtime identities. DONE alone does not prove the natural-language goal was satisfied. Host fixtures never count as real tasks. Do not edit this set to improve observed success rates."
+  },
+  "tasks": [
+    {"id":"T01","mode":"model-driven","goal":"查看当前相机状态","setup":"capture_running","check":"actual status receipt; no invented device state"},
+    {"id":"T02","mode":"model-driven","goal":"Show the camera and detector status.","setup":"capture_running","check":"actual status receipt"},
+    {"id":"T03","mode":"model-driven","goal":"启动摄像头采集","setup":"capture_idle","check":"real first-frame completion and RUNNING"},
+    {"id":"T04","mode":"model-driven","goal":"停止摄像头采集","setup":"capture_running","check":"physical capture cleanup and IDLE"},
+    {"id":"T05","mode":"model-driven","goal":"拍一张新鲜照片","setup":"capture_running","check":"actual PNG, frame_id, generation and freshness"},
+    {"id":"T06","mode":"model-driven","goal":"拍照，检测固定类别物体，并保存任务报告","setup":"capture_running","check":"snapshot, same-frame detector, private report with actual receipts; required trace A"},
+    {"id":"T07","mode":"model-driven","goal":"先启动摄像头，再拍照并检测有哪些固定类别目标","setup":"capture_idle","check":"start before snapshot; boxes or explicit zero count"},
+    {"id":"T08","mode":"model-driven","goal":"拍照并描述图片里能看见的内容；画面不清楚就说明","setup":"capture_running","check":"actual local VLM output tied to same snapshot; required trace B"},
+    {"id":"T09","mode":"model-driven","goal":"拍照并检查有几个person；检测为零时如实说明","setup":"capture_running; record actual scene and whether zero-target case occurred","check":"count from detector labels, never from VLM narrative; no staged zero assumption"},
+    {"id":"T10","mode":"model-driven","goal":"观察最近的采集与队列指标，说明现有证据能否判断掉帧","setup":"capture_running","check":"actual 10s sampled counter deltas, distinguish ready_drop and sequence_gaps, qualify missing trace"},
+    {"id":"T11","mode":"model-driven","goal":"查询系统状态并生成一份报告","setup":"capture_running","check":"report cites actual completed status"},
+    {"id":"T12","mode":"model-driven","goal":"拍一张照片并描述画面","setup":"isolated acceptance node with nonexistent device path; production owner stopped","check":"explicit device/capture failure with task ID and no fabricated photo; required trace C candidate"},
+    {"id":"T13","mode":"model-driven","goal":"查询相机状态","setup":"isolated acceptance node with invalid VLM plugin path; production owner stopped","check":"actual planner model failure and bounded physical cleanup; trace C alternative"},
+    {"id":"T14","mode":"real-api-negative","operation":"invalid snapshot freshness 0 and 5001","check":"reject without execution"},
+    {"id":"T15","mode":"real-api-negative","operation":"unknown operation and unknown snapshot ID","check":"rejected admission or explicit task failure, no path interpolation"},
+    {"id":"T16","mode":"real-api-negative","operation":"one active plus one queued Agent request, submit a third","check":"AGENT_QUEUE_FULL; retained records bounded"},
+    {"id":"T17","mode":"model-driven","goal":"拍照并描述画面","timeout_s":1,"setup":"cold VLM","check":"deadline terminal, child reaped, no late result and detector restore"},
+    {"id":"T18","mode":"model-driven","goal":"拍照并描述画面","setup":"cancel while model request physically pending","check":"CANCELED, preserve pending/cleanup evidence, no late answer"},
+    {"id":"T19","mode":"real-api-negative","operation":"same request ID twice, then same ID with changed goal","check":"idempotent same result; conflict rejects changed goal; no duplicate camera/model load"},
+    {"id":"T20","mode":"real-api-negative","operation":"capture snapshot, restart capture generation, detect old snapshot","check":"STALE_SNAPSHOT_GENERATION with original IDs retained"},
+    {"id":"T21","mode":"real-api-negative","operation":"ROS2 long Action and Agent request overlap","check":"shared runtime BUSY or bounded queue; single camera and serialized model owner"},
+    {"id":"T22","mode":"real-api-negative","operation":"cancel the queued Agent request and wait past its original deadline","check":"no tool execution for canceled pending request; waiting time included in total deadline"}
+  ]
+}

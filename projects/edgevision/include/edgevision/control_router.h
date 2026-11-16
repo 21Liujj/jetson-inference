@@ -30,6 +30,7 @@ struct ControlRequest {
   uint64_t generation = 0, deadline_mono_ns = 0;
   TaskCommand command = TaskCommand::StartCapture;
   std::optional<CaptureConfig> capture;
+  ExecutionInput input;
 };
 enum class CaptureState { Idle, Starting, Running, Stopping, Recovering, Error };
 struct CaptureEvent {
@@ -97,7 +98,8 @@ class ControlRouter {
   static bool valid_config(const CaptureConfig&);
 
  private:
-  struct Action { enum class Kind { Start, Stop, Detect }; Kind kind; uint64_t generation, task; CaptureConfig config; };
+  struct Action { enum class Kind { Start, Stop, Detect }; Kind kind; uint64_t generation, task; CaptureConfig config;
+    TaskCommand command=TaskCommand::DetectSnapshot;ExecutionInput input; };
   static std::string canonical(const CaptureConfig&);
   static bool terminal(TaskState);
   std::optional<Action> dispatch_locked(const TaskRecord&, uint64_t now);
@@ -124,6 +126,7 @@ class ControlRouter {
   std::optional<uint64_t> pending_stop_;
   std::optional<uint64_t> inference_task_, preempted_stop_;
   bool execution_cancel_sent_ = false, shutting_down_ = false, executor_stopped_ = false;
+  bool automatic_model_switching_=false;
   // One queued and one active command: configuration storage is bounded too.
   std::unordered_map<uint64_t, CaptureConfig> configs_;
 };

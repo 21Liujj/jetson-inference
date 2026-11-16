@@ -39,10 +39,20 @@ bool external_id(const std::string& id){
   for(unsigned char c:id)if(!((c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='-'||c=='_'||c=='.'||c==':'))return false;
   return true;
 }
+std::optional<ev::TaskCommand> inspection_command(const std::string& operation){
+  if(operation=="detect")return ev::TaskCommand::DetectSnapshot;
+  if(operation=="snapshot")return ev::TaskCommand::CaptureSnapshot;
+  if(operation=="describe")return ev::TaskCommand::DescribeSnapshot;
+  if(operation=="plan")return ev::TaskCommand::PlanTool;
+  if(operation=="resume_detector")return ev::TaskCommand::ResumeDetector;
+  return std::nullopt;
+}
 
 class EdgeVisionNode final:public rclcpp::Node {
  public:
   EdgeVisionNode():Node("edgevision") {
+    std::string boot_id;std::ifstream boot("/proc/sys/kernel/random/boot_id");std::getline(boot,boot_id);
+    runtime_instance_=boot_id.substr(0,64)+"-"+std::to_string(mono());
     // ament installs executables with a different loader search path. Refuse an
     // old system jetson-inference before starting the model worker.
     for(const char* name:{"libjetson-inference.so","libjetson-utils.so"}){
@@ -60,6 +70,11 @@ class EdgeVisionNode final:public rclcpp::Node {
     model_=declare_parameter<std::string>("model","");labels_=declare_parameter<std::string>("labels","");
     image_hz_=declare_parameter<double>("image_hz",5.0);detect_hz_=declare_parameter<double>("detection_hz",5.0);
     auto_start_=declare_parameter<bool>("auto_start",true);
+    agent_config_.snapshot_root=declare_parameter<std::string>("snapshot_root","");
+    agent_config_.vlm_binary=declare_parameter<std::string>("vlm_binary","");
+    agent_config_.llm_engine_dir=declare_parameter<std::string>("vlm_llm_dir","");
+    agent_config_.visual_engine_dir=declare_parameter<std::string>("vlm_visual_dir","");
+    agent_config_.plugin_path=declare_parameter<std::string>("vlm_plugin","");
     const bool diagnostics=declare_parameter<bool>("publish_diagnostics",true);
     const bool paired=declare_parameter<bool>("publish_detection_image",true);
     publish_detections_=declare_parameter<bool>("publish_detections",true);
@@ -110,7 +125,8 @@ class EdgeVisionNode final:public rclcpp::Node {
     action_=rclcpp_action::create_server<Inspection>(this,"/edgevision/run_inspection",
       [this](const rclcpp_action::GoalUUID&,std::shared_ptr<const Inspection::Goal> goal){
         bool idle=false;
-        if(goal->operation!="detect" || !external_id(goal->request_id) || goal->timeout_ms<1 || goal->timeout_ms>30000 ||
+        if(!inspection_command(goal->operation) || !external_id(goal->request_id) || goal->timeout_ms<1 || goal->timeout_ms>30000 ||
+           !goal->freshness_ms || goal->freshness_ms>5000 ||
            !goal_reserved_.compare_exchange_strong(idle,true))return rclcpp_action::GoalResponse::REJECT;
         return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;},
       [](std::shared_ptr<Goal>){return rclcpp_action::CancelResponse::ACCEPT;},
@@ -128,10 +144,15 @@ class EdgeVisionNode final:public rclcpp::Node {
             {"preview_copied",preview_?preview_->copied():0},{"preview_busy_skips",preview_?preview_->skipped_busy():0},
             {"detection_results_published",results_published_.load()},{"paired_image_skips",pair_skips_.load()},
             {"latency_clock","CLOCK_MONOTONIC"},{"stamp_source","publication_ros_time"},{"camera_calibrated",false}};
+    j["runtime_instance"]=runtime_instance_;
     const auto execution=executor_->query();j["gpu_submissions"]=execution.gpu_submissions;
     j["gpu_completions"]=execution.gpu_completions;j["physical_busy"]=execution.physical_busy;
     j["gpu_task_id"]=execution.task_id?Json(*execution.task_id):Json(nullptr);
     j["gpu_submitted_mono_ns"]=execution.gpu_submitted_mono_ns;
+    j["vlm_model"]=text(execution.vlm_model);j["vlm_requests"]=execution.vlm_requests;j["vlm_error"]=execution.vlm_error;
+    j["active_backend"]=execution.active_backend;j["model_switches"]=execution.model_switches;
+    j["cuda_context_releases"]=execution.cuda_context_releases;
+    j["detector_unloaded_mono_ns"]=execution.detector_unloaded_mono_ns;j["detector_ready_mono_ns"]=execution.detector_ready_mono_ns;
     j["capture_fps"]=h.rate.valid_capture_fps?Json(*h.rate.valid_capture_fps):Json(nullptr);
     j["dequeue_to_result_p95_ns"]=h.dequeue_to_result.p95_ns?Json(*h.dequeue_to_result.p95_ns):Json(nullptr);
     j["dequeue_to_result_p99_ns"]=h.dequeue_to_result.p99_ns?Json(*h.dequeue_to_result.p99_ns):Json(nullptr);return j;}
@@ -178,7 +199,8 @@ class EdgeVisionNode final:public rclcpp::Node {
       box.bbox.size_x=r-l;box.bbox.size_y=d-t;msg.detections.push_back(std::move(box));}
     ev::Frame f;bool paired=inference_preview_ && inference_preview_->read(f) &&
       f.frame_id==data.at("frame_id").get<uint64_t>() && f.session_generation==data.at("generation").get<uint64_t>();
-    if(paired){publish_image(f,msg.header,paired_images_);publish_meta(f,msg.header,"detections",record.id,data.at("completed_mono_ns"));}
+    const char* source=record.request.input.snapshot_id.empty()?"detections":"snapshot_detection";
+    if(paired){publish_image(f,msg.header,paired_images_);publish_meta(f,msg.header,source,record.id,data.at("completed_mono_ns"));}
     else{
       ++pair_skips_;ev::FrameMeta meta;meta.frame_id=data.at("frame_id");meta.session_generation=data.at("generation");
       meta.host_dequeue_mono_ns=data.at("host_dq_ns");meta.width=data.at("width");meta.height=data.at("height");
@@ -187,7 +209,7 @@ class EdgeVisionNode final:public rclcpp::Node {
       meta.driver_timestamp_clock=data.at("driver_clock_monotonic").get<bool>()?ev::FrameMeta::TimestampClock::Monotonic:ev::FrameMeta::TimestampClock::Unknown;
       meta.driver_timestamp_source=static_cast<ev::FrameMeta::TimestampSource>(data.at("driver_timestamp_source").get<int>());
       meta.stride=data.at("stride");meta.bytesused=data.at("bytesused");meta.pixfmt_fourcc=data.at("fourcc");meta.publish_mono_ns=data.at("publish_mono_ns");
-      publish_meta(meta,msg.header,"detections",record.id,data.at("completed_mono_ns"));}
+      publish_meta(meta,msg.header,source,record.id,data.at("completed_mono_ns"));}
     ev::NvtxScope range("publish/ros-detections");detections_->publish(msg);++results_published_;
   }
   void publish_diagnostics(){
@@ -204,14 +226,15 @@ class EdgeVisionNode final:public rclcpp::Node {
   void action_step(uint64_t at){
     std::lock_guard<std::mutex> lock(goal_mu_);if(!goal_)return;
     if(!goal_task_){const auto g=goal_->get_goal();auto s=router_->status();
-      auto a=router_->submit({g->request_id,g->generation,at+uint64_t(g->timeout_ms)*1000000,ev::TaskCommand::DetectSnapshot,{}},at);
+      auto a=router_->submit({g->request_id,g->generation,at+uint64_t(g->timeout_ms)*1000000,*inspection_command(g->operation),{},
+        {g->snapshot_id,g->prompt,g->freshness_ms}},at);
       if(!a.accepted){auto r=std::make_shared<Inspection::Result>();r->state="FAILED";r->error_code="ADMISSION_"+std::to_string(unsigned(a.error));
         goal_->abort(r);goal_.reset();goal_reserved_=false;return;}goal_task_=a.task_id;}
     if(goal_->is_canceling())router_->cancel(goal_task_,at);
     if(auto done=router_->collect(goal_task_)){
       auto result=std::make_shared<Inspection::Result>();result->task_id=done->id;result->state=text(done->state);
       result->success=done->state==ev::TaskState::Done;result->error_code=done->error_code;result->result_json=done->result;
-      if(result->success)publish_result(*done);
+      if(result->success && goal_->get_goal()->operation=="detect")publish_result(*done);
       if(goal_->is_canceling())goal_->canceled(result);else if(result->success)goal_->succeed(result);else goal_->abort(result);
       goal_.reset();goal_task_=0;goal_reserved_=false;
     }else if(at>=next_feedback_){auto feedback=std::make_shared<Inspection::Feedback>();feedback->task_id=goal_task_;
@@ -220,7 +243,7 @@ class EdgeVisionNode final:public rclcpp::Node {
   }
   void control_loop(){
     try{
-      auto init=router_->initialize({model_,labels_,250,ev::DetectorKind::YoloV8Coco,ev::PreprocessMode::CudaFused});
+      auto init=router_->initialize({model_,labels_,250,ev::DetectorKind::YoloV8Coco,ev::PreprocessMode::CudaFused,agent_config_});
       if(!init.accepted)throw std::runtime_error(init.error);
       const auto started=mono();
       if(auto_start_)router_->submit({"ros-boot-"+std::to_string(started),0,started+30000000000ULL,ev::TaskCommand::StartCapture,config_},started);
@@ -246,6 +269,8 @@ class EdgeVisionNode final:public rclcpp::Node {
       {"worker_active",final.worker_active},{"resources_live",router_->status().backend_resources_live}}).dump()<<std::endl;
   }
   ev::CaptureConfig config_;std::string model_,labels_,frame_name_;double image_hz_=5,detect_hz_=5;bool auto_start_=true,publish_detections_=true;
+  ev::AgentBackendConfig agent_config_;
+  std::string runtime_instance_;
   std::shared_ptr<ev::PreviewCache> preview_,inference_preview_;std::unique_ptr<ev::V4L2Backend> capture_;
   ev::HealthMonitor health_;std::unique_ptr<ev::UpstreamExecutor> executor_;std::unique_ptr<ev::ControlRouter> router_;
   std::atomic<bool> closing_{false},goal_reserved_{false};std::thread owner_;
