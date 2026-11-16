@@ -44,12 +44,14 @@ def main():
     parser.add_argument('--iterations', type=int, default=1000)
     parser.add_argument('--warmup', type=int, default=60)
     parser.add_argument('--repeats', type=int, default=3)
+    parser.add_argument('--seconds', type=int, default=0, help='zero=count-only exploratory; >=300 formal window')
     args = parser.parse_args()
-    if not 1 <= args.repeats <= 5 or not 100 <= args.iterations <= 10000 or not 10 <= args.warmup <= 1000:
+    if not 1 <= args.repeats <= 5 or not 100 <= args.iterations <= 10000 or not 10 <= args.warmup <= 1000 or (args.seconds and not 1 <= args.seconds <= 1800):
         parser.error('INVALID_MATRIX_BUDGET')
     args.out.mkdir(parents=True, exist_ok=False)
     manifest = {'schema_version': 1, 'simulated': False, 'profiler': False,
                 'changes_power_or_clocks': False, 'argv': vars(args).copy(),
+                'formal_duration_requested': args.seconds>=300 and args.repeats>=3,
                 'binary_sha256': digest(args.binary), 'engine_sha256': digest(args.engine),
                 'model_sha256': digest(args.model), 'corpus_list_sha256': digest(args.corpus / 'inputs.tsv'),
                 'scope': 'offline fixed RGB corpus; same display NMS; not camera FPS'}
@@ -75,17 +77,18 @@ def main():
             for mode, memory in order:
                 label = f'r{repeat + 1}-{mode}-{memory}'
                 argv = [str(args.binary.resolve()), str(args.model.resolve()), str(args.corpus.resolve()),
-                        str((args.out / label).resolve()), mode, memory, str(args.iterations), str(args.warmup)]
+                        str((args.out / label).resolve()), mode, memory, str(args.iterations), str(args.warmup), str(args.seconds)]
                 record = {'label': label, 'argv': argv, 'before': conditions()}
                 with (args.out / f'{label}.log').open('wb') as log:
-                    run = subprocess.run(argv, stdout=log, stderr=subprocess.STDOUT, timeout=180)
+                    run = subprocess.run(argv, stdout=log, stderr=subprocess.STDOUT, timeout=max(180,args.seconds+90))
                 record.update(exit_code=run.returncode, after=conditions())
                 records.append(record)
                 (args.out / 'runs.json').write_text(json.dumps(records, indent=2) + '\n')
                 if run.returncode:
                     raise RuntimeError(f'MATRIX_RUN_FAILED:{label}:{run.returncode}')
                 summary = json.loads((args.out / label / 'summary.json').read_text())
-                if summary['completed'] != args.iterations or not summary['normal_exit']:
+                correct_count=summary['completed']==args.iterations if not args.seconds else summary['completed']>0 and summary['measured_ns']>=args.seconds*1000000000
+                if not correct_count or not summary['normal_exit']:
                     raise RuntimeError(f'MATRIX_COUNT_MISMATCH:{label}')
                 print(json.dumps({'label': label, **summary}), flush=True)
         (args.out / 'complete.json').write_text(json.dumps({'normal_exit': True, 'runs': len(records)}) + '\n')

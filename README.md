@@ -2,7 +2,7 @@
 
 基于 [jetson-inference](https://github.com/dusty-nv/jetson-inference) 二次开发，面向 USB 相机采集、UVC 追踪、CUDA/TensorRT 执行、ROS2 与本地视觉任务 Agent。
 
-**当前：M2–M4 基础验收完成；M5 数值/功能、M6 ROS2 功能已通过，正式长窗口性能待补；M7 Agent 开发中，M8 待验收。**
+**当前：M2–M4 基础验收完成；M5 数值/功能及五配置各三轮5分钟吞吐/延迟对照通过，资源对照待补；M6 ROS2 功能已通过、正式性能待补；M7 集成开发中，M8 待验收。**
 未修改上游在 TensorRT 10 下的崩溃已保留；修复版结果与原版分别记录。
 
 [展示页](https://21Liujj.github.io/jetson-inference/) · [实机基线](projects/edgevision/docs/baseline.md) · [进度](projects/edgevision/docs/progress.md) · [贡献边界](UPSTREAM.md) · [上游原版说明](README.upstream.md)
@@ -25,7 +25,7 @@
 | UVC源码扩展 | 新增帧完成/内部回收与stream追踪；172导入CRC匹配，原版/关闭/开启三组实测与实际回退通过 |
 | 内核与用户态关联 | 慢消费241帧=消费80+READY替换159+停止2；真实拔插7.38s恢复，1,803条消费全部关联 |
 | CUDA融合与数值回归 | 48例预处理通过；200图AP下降0.065个百分点，固定框匹配99.5% |
-| GPU离线对照 | 同输入三轮中位：P0 73.76 → P1 129.99 → P2 190.17 images/s；P2较P1吞吐提高、P99变差 |
+| GPU离线长窗口对照 | 五配置各3×300秒、646,305次完成；Pinned中位：P0 74.09 → P1 129.72 → P2 192.68 images/s；对应P99 14.751 / 11.549 / 14.377ms |
 | 异步与真实完成 | Nsight证实跨stream GPU区间重叠；融合相机1802次推理、7项GPU生命周期测试通过 |
 | ROS2 实机闭环 | 图像/检测/诊断、统一服务与Action；GPU在途取消/超时、慢订阅、受限bag与回放通过 |
 | 直接 V4L2 采集 | MMAP、真实协商、eventfd 停止；慢消费者与帧池耗尽分别计数 |
@@ -39,7 +39,7 @@
 | 退出与重启 | 正常退出后再次启动完成 203 次推理；错误 tensor 名明确失败 |
 | GPU 回归 | 完整输出及辅助输出两种场景，真实 enqueueV3、形状与有限值检查通过 |
 
-以上为分版本验收。M5的短窗口离线对照使用固定RGB、同engine与NMS、60次warmup和三轮×1000次；P1/P2边界、P95/P99及profile扰动见[GPU报告](projects/edgevision/docs/m5-gpu-pipeline.md)，ROS闭环与四组短窗口开销见[ROS2报告](projects/edgevision/docs/m6-ros2.md)。文档要求的正式性能每组≥5分钟及关键配置3次重复仍待完成。相机为30fps，离线吞吐不代表摄像头帧率。最终系统2小时/12小时长稳与不可恢复GPU破坏性故障注入尚无通过结论。
+以上为分版本验收。M5长窗口使用固定RGB、同engine与NMS、每轮排除60次warmup，逐帧核验计数和分位数；[原始记录与哈希](projects/edgevision/evidence/2026-11-16-gpu-formal/manifest.json)保留每轮和分钟窗口。P1/P2边界、资源采样缺项及profile扰动见[GPU报告](projects/edgevision/docs/m5-gpu-pipeline.md)，ROS闭环与四组短窗口开销见[ROS2报告](projects/edgevision/docs/m6-ros2.md)。M5资源对照和ROS正式长窗口仍待补。相机为30fps，离线吞吐不代表摄像头帧率。最终系统30分钟/2小时/12小时长稳与不可恢复GPU破坏性故障注入尚无通过结论。
 
 [原始日志与哈希清单](projects/edgevision/evidence/2026-11-15/manifest.json) · [完整文本证据包](projects/edgevision/evidence/2026-11-15/raw-text-evidence.zip) · [故障定位](projects/edgevision/docs/debugging_journal.md)
 
@@ -51,7 +51,7 @@
 |---|---|---|
 | 采集 | 单 owner V4L2、MMAP、有界帧池、启停与断连恢复 | M2 基础验收完成；分版本证据可追溯 |
 | 内核 | 匹配 L4T 的 UVC 帧完成 trace，关联用户态记录 | M4 实机验收完成，系统原模块已恢复 |
-| GPU | 数值回归、缓冲复用、stream/event、Nsight 对照 | M5数值/功能通过；长窗口性能待补 |
+| GPU | 数值回归、缓冲复用、stream/event、Nsight 对照 | 数值/功能和3×5分钟吞吐/延迟通过；资源对照待补 |
 | 机器人 | 图像、检测、诊断、服务与 Action | M6功能通过；正式发布开销验收待补 |
 | 多模态 | 本地 VLM、计划校验、真实工具与报告 | Qwen3-VL独立问答通过；M7工具闭环开发中 |
 | 交付 | Web/RTSP、日志限制、部署恢复与长期运行 | M8 待验收 |

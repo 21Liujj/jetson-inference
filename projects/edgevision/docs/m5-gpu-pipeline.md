@@ -104,6 +104,51 @@ The device reports mapped/host-register/managed support, two async engines and
 are not used. DMA-BUF import remains conditional on driver/import compatibility;
 neither is claimed as verified by this stage.
 
+## Five-minute windows and three repetitions
+
+The later duration-controlled comparison ran from 20:01:19 to 21:17:07 local time.
+Five configurations each completed three unprofiled windows of at least 300s,
+excluding 60 warmup jobs per run. All **646,305** measured CSV rows were checked:
+unique contiguous ordinals, start/end/latency consistency, finite stage timings,
+completion count, throughput and exact nearest-rank P50/P95/P99. This does not
+re-run the numerical output regression; the detector/kernel implementation is
+unchanged from the separately verified numerical source.
+
+| Configuration | Median images/s | P99 ms, each of three runs | Total samples |
+|---|---:|---|---:|
+| P0 CPU | 74.086 | 14.767 / 14.751 / 14.709 | 66,593 |
+| P1 pinned/device | 129.716 | 11.541 / 11.607 / 11.549 | 116,754 |
+| P1 mapped | 129.966 | 11.476 / 11.612 / 11.519 | 116,787 |
+| P2 pinned/device | 192.682 | 14.445 / 14.377 / 14.228 | 173,511 |
+| P2 mapped | 192.115 | 14.413 / 14.433 / 14.430 | 172,660 |
+
+P1 pinned improves median throughput about 75.1% and median per-run P99 about
+21.7% against P0. P2 pinned improves throughput a further 48.5% against P1 while
+its median per-run P99 increases about 24.5%. The raw distributions and minute
+start-time buckets are retained; a median of run quantiles is descriptive and
+does not replace a pooled distribution or a long-window P99.
+
+The 9,024 telemetry samples have a median interval of 0.504s. All recorded CPU
+min/max/current frequencies were 1.728GHz and GPU frequencies 1.020GHz. Highest
+readable thermal sample was 68.843°C; three inactive zones remained unavailable.
+System MemAvailable was 4,970,700–6,011,680KiB. This is system availability, not
+process RSS or GPU allocation size. **Per-process RSS, CPU/GPU utilization and
+power rails were not collected by this frozen sampler; the required resource
+comparison remains pending.** loadavg cannot substitute for CPU utilization.
+
+Latency ends before the per-row CSV write. Throughput includes the bounded CSV
+recorder and final physical drain; image/tensor dumping is disabled. The original
+summary's file-write phrase must be read with its explicit CSV-in-throughput flag.
+P0 GPU event zeros remain uninstrumented placeholders. No 190fps camera claim,
+ROS performance, Agent interference or final endurance result follows from this test.
+
+[Formal evidence and hashes](../evidence/2026-11-16-gpu-formal/manifest.json)
+include all 15 runs, 60s latency buckets, original conditions and run logs, the
+actual 89-file source ZIP, original supervised output and analysis script. Source
+ZIP SHA256: `5d846473fa160c4515549b7e6dc667e375a48ec0943f3c7981aa5b42aa8d78ec`;
+probe SHA256: `d5a9da9677da5461c29b4d930344fc6bfcfaf71f4933e8bcdc990b77da85bc42`.
+Only the benchmark duration controls changed from the prior functional source.
+
 ## Camera verification and reproduction
 
 The fused real USB run completed and published 1,802 inferences in its 60-second

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "stage": "M5 formal duration comparison",
+  "files": {
+    "raw-file-manifest.json": {
+      "bytes": 12204,
+      "sha256": "deebba2456eb2e759937a6a289f80571a24629cfb01530c343ae3397203bbbc4"
+    },
+    "raw-target-evidence.zip": {
+      "bytes": 20527295,
+      "sha256": "6610dd0688b9acb968212452e97ec596087eef6b9b2fd86c2d2d3bc6939af55c"
+    },
+    "review.json": {
+      "bytes": 40894,
+      "sha256": "6bb0e55f40e610d74425e1c6856f45e42dd5e6cc712c8b90f3c0e70dc0d08803"
+    },
+    "review_m5_formal.py": {
+      "bytes": 7168,
+      "sha256": "3b74636766bcdd6227cd2718d7e59c5ae28c40b45b421a8c139e568857e0f385"
+    },
+    "summary.json": {
+      "bytes": 3848,
+      "sha256": "25dcf68db3b022ac439c54889a7430fca51f240f8212aab1811059a26f22f17f"
+    },
+    "supervised-run.json": {
+      "bytes": 12935,
+      "sha256": "f8adeda58d558140d4c4be8730aedab5746fc904e723f268acf755740cad5e42"
+    }
+  }
+}

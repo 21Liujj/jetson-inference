@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "stage": "M5",
+  "scope": "offline fixed RGB corpus, same common display NMS; runtime camera remains P1",
+  "formal_duration_and_repetition_gate_passed": true,
+  "all_resource_gates_complete": false,
+  "runs_verified": 15,
+  "total_measured_completions": 646305,
+  "source_zip_sha256": "5d846473fa160c4515549b7e6dc667e375a48ec0943f3c7981aa5b42aa8d78ec",
+  "groups": {
+    "cpu-pinned": {
+      "runs": [
+        "r1-cpu-pinned",
+        "r2-cpu-pinned",
+        "r3-cpu-pinned"
+      ],
+      "samples": 66593,
+      "throughput_per_s_each": [
+        73.7932046304,
+        74.0857127445,
+        74.0943638677
+      ],
+      "throughput_per_s_median": 74.0857127445,
+      "p95_ms_each": [
+        14.352707,
+        14.350505,
+        14.314121
+      ],
+      "p99_ms_each": [
+        14.767209,
+        14.75055,
+        14.709461
+      ],
+      "p99_ms_median": 14.75055
+    },
+    "p1-pinned": {
+      "runs": [
+        "r1-p1-pinned",
+        "r2-p1-pinned",
+        "r3-p1-pinned"
+      ],
+      "samples": 116754,
+      "throughput_per_s_each": [
+        129.925231579,
+        129.526863244,
+        129.716475543
+      ],
+      "throughput_per_s_median": 129.716475543,
+      "p95_ms_each": [
+        11.375916,
+        11.438383,
+        11.389995
+      ],
+      "p99_ms_each": [
+        11.540965,
+        11.60706,
+        11.548976
+      ],
+      "p99_ms_median": 11.548976
+    },
+    "p1-mapped": {
+      "runs": [
+        "r1-p1-mapped",
+        "r2-p1-mapped",
+        "r3-p1-mapped"
+      ],
+      "samples": 116787,
+      "throughput_per_s_each": [
+        130.28989431,
+        129.023993051,
+        129.966278615
+      ],
+      "throughput_per_s_median": 129.966278615,
+      "p95_ms_each": [
+        11.326616,
+        11.449646,
+        11.365067
+      ],
+      "p99_ms_each": [
+        11.476057,
+        11.612147,
+        11.519151
+      ],
+      "p99_ms_median": 11.519151
+    },
+    "p2-pinned": {
+      "runs": [
+        "r1-p2-pinned",
+        "r2-p2-pinned",
+        "r3-p2-pinned"
+      ],
+      "samples": 173511,
+      "throughput_per_s_each": [
+        191.346228255,
+        192.682096134,
+        194.324392932
+      ],
+      "throughput_per_s_median": 192.682096134,
+      "p95_ms_each": [
+        14.294192,
+        14.204068,
+        14.027679
+      ],
+      "p99_ms_each": [
+        14.444602,
+        14.376522,
+        14.227686
+      ],
+      "p99_ms_median": 14.376522
+    },
+    "p2-mapped": {
+      "runs": [
+        "r1-p2-mapped",
+        "r2-p2-mapped",
+        "r3-p2-mapped"
+      ],
+      "samples": 172660,
+      "throughput_per_s_each": [
+        191.223289651,
+        192.176307375,
+        192.114865447
+      ],
+      "throughput_per_s_median": 192.114865447,
+      "p95_ms_each": [
+        14.242123,
+        14.279879,
+        14.26903
+      ],
+      "p99_ms_each": [
+        14.41288,
+        14.43294,
+        14.430156
+      ],
+      "p99_ms_median": 14.430156
+    }
+  },
+  "limitations": [
+    "Offline images/s is not USB camera FPS.",
+    "CSV writes excluded from per-frame latency but included in throughput. Image/tensor dumping disabled.",
+    "P0 event zeros mean not instrumented, not zero GPU execution time.",
+    "Group median P99 is descriptive; individual and minute-window distributions are retained.",
+    "No formal ROS2 or Agent-interference/endurance result is implied.",
+    "Resource comparison still requires CPU/GPU utilization, per-process RSS and readable power sampling."
+  ],
+  "board_wall_window": [
+    "2026-11-16T12:01:19.456952+00:00",
+    "2026-11-16T13:17:06.809934+00:00"
+  ],
+  "raw_archive_sha256": "6610dd0688b9acb968212452e97ec596087eef6b9b2fd86c2d2d3bc6939af55c"
+}
