@@ -18,6 +18,8 @@ description: 修改 EdgeVision 帧池租约、有界队列、TaskManager 或 Con
 - 重开由控制层增加 generation，原请求身份保持不变。恢复次数、退避、deadline
   和取消都有限；禁止在 backend 内偷偷重开但沿用旧 generation。
 - TaskManager 默认 1 个排队、1 个执行、256 条保留记录，不静默淘汰幂等历史。
+- release_terminal是显式内部结果保留边界，会删除对应幂等键；物理pending时拒绝。
+  不对客户端记录调用它；调用方必须保证内部request_id不被外部重试或碰撞。
 
 验证入口：core-only CMake 与 `ctest`；所有权、状态和并发场景见
 [核心契约](../../../projects/edgevision/docs/m2-core.md)。涉及设备时再读 capture skill。

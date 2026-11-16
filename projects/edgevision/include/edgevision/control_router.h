@@ -88,6 +88,7 @@ class ControlRouter {
   std::optional<TaskRecord> query(uint64_t task_id) const { return tasks_.query(task_id); }
   bool cancel(uint64_t task_id, uint64_t now_mono_ns);
   std::optional<TaskRecord> collect(uint64_t task_id) const;
+  bool release_internal_result(uint64_t task_id) { return tasks_.release_terminal(task_id); }
   void cancel_pending(uint64_t now_mono_ns);
   void shutdown(uint64_t now_mono_ns);
   void poll(uint64_t now_mono_ns);

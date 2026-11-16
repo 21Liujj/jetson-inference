@@ -1,0 +1,22 @@
+# schema_version 1. header.stamp is publication ROS time, never CLOCK_MONOTONIC.
+std_msgs/Header header
+uint32 schema_version
+string<=32 source
+string<=32 stamp_source
+uint64 capture_frame_id
+uint64 generation
+uint64 task_id
+uint32 driver_sequence
+uint32 driver_flags
+bool driver_timestamp_valid
+uint64 driver_timestamp_ns
+string<=32 driver_clock
+string<=32 driver_timestamp_source
+uint64 host_dequeue_mono_ns
+uint64 core_publish_mono_ns
+uint64 result_completed_mono_ns
+uint32 width
+uint32 height
+uint32 fourcc
+uint32 stride
+uint32 bytesused

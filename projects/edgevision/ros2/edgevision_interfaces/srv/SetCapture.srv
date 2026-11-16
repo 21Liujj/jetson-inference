@@ -1,0 +1,11 @@
+# config_id must be usb-yuyv-640x360-30. timeout_ms range 100..30000.
+string<=64 request_id
+uint64 generation
+bool enable
+string<=64 config_id
+uint32 timeout_ms
+---
+bool accepted
+bool duplicate
+uint64 task_id
+string<=64 error_code

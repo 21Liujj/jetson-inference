@@ -2,6 +2,7 @@
 #include "edgevision/frame_queue.h"
 #include "edgevision/v4l2_capture.h"
 #include "edgevision/health_monitor.h"
+#include "edgevision/preview_cache.h"
 #include <condition_variable>
 #include <deque>
 
@@ -22,7 +23,7 @@ struct CaptureSnapshot {
 // This is the real Linux backend. I/O injection is only for explicit tests.
 class V4L2Backend final : public CaptureBackend {
  public:
-  explicit V4L2Backend(std::shared_ptr<V4L2Io> io = {});
+  explicit V4L2Backend(std::shared_ptr<V4L2Io> io = {}, std::shared_ptr<PreviewCache> preview = {});
   ~V4L2Backend() override;
   BackendStartReply request_start(const CaptureConfig&, uint64_t generation) override;
   void request_stop(uint64_t generation) noexcept override;
@@ -45,6 +46,7 @@ class V4L2Backend final : public CaptureBackend {
   CaptureSnapshot snapshot_;
   std::atomic<bool> stop_{false};
   bool shutdown_ = false, signal_ready_ = false;
+  const std::shared_ptr<PreviewCache> preview_;
   std::thread worker_;
 };
 }  // namespace edgevision

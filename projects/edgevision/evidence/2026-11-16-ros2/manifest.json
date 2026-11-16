@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "stage": "M6",
+  "files": {
+    "events.jsonl": {
+      "bytes": 1766,
+      "sha256": "c762c21625f404dbfa3865c4ea73c6f92df7284ec9f93b81d0e494a10f17a2e7"
+    },
+    "functional-summary.json": {
+      "bytes": 1934,
+      "sha256": "1a7896f026220eec7837f0790f0684dc5af80c9053f1703d2c0726d05a2cd99c"
+    },
+    "raw-file-manifest.json": {
+      "bytes": 11763,
+      "sha256": "95adaeb38ca238433bb72a17a569daa3c4f51ce116f0a147c499917bbdb385f6"
+    },
+    "raw-target-evidence.zip": {
+      "bytes": 1102519,
+      "sha256": "78e55419700f8f4843db305cda16717bbda848aa45ac7dcc537cc74c786d45dd"
+    },
+    "runtime-guard-negative.json": {
+      "bytes": 146,
+      "sha256": "d1b3fbbfdfdfea25e8554794ae155c0f05a5e9aaea4da1735126422e916b6608"
+    },
+    "runtime-library-drift.json": {
+      "bytes": 29554,
+      "sha256": "43c76ce0e0a8e2f3ebb5a930edb152f013ce3cf8d5d52eaf542c4fb8c3365020"
+    },
+    "short-window-matrix.json": {
+      "bytes": 41996,
+      "sha256": "94b2d9f071aae8465e6355bd32413d17cb31377e48619f64cc61d7e616c47d03"
+    },
+    "summary.json": {
+      "bytes": 3029,
+      "sha256": "49a32b4fb10ff25057ecbba54bc866513b44207b4cbd753d8ab8479c925d4cb3"
+    }
+  }
+}

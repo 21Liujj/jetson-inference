@@ -9,6 +9,16 @@ static TaskRequest request(std::string id, uint64_t deadline = 100, uint64_t gen
 }
 int main() {
   {
+    TaskManager manager(1,1);
+    auto a=manager.submit(request("internal"),1,1);assert(a.accepted);
+    assert(!manager.release_terminal(a.task_id));assert(manager.take(2,1));
+    assert(manager.cancel(a.task_id,3));assert(!manager.release_terminal(a.task_id));
+    assert(manager.complete(a.task_id,true,"discarded","",4));
+    assert(manager.release_terminal(a.task_id) && !manager.query(a.task_id));
+    auto b=manager.submit(request("next"),5,1);
+    assert(b.accepted && b.task_id>a.task_id); // IDs never reused after retention
+  }
+  {
     TaskManager manager;
     auto a = manager.submit(request("a"), 1, 1);
     assert(a.accepted && !a.duplicate);

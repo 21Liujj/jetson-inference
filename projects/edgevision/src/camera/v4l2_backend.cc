@@ -12,7 +12,8 @@ CaptureEvent event(CaptureEvent::Kind kind, uint64_t generation, std::string err
   CaptureEvent e; e.kind = kind; e.generation = generation; e.error_code = std::move(error); return e;
 }
 }
-V4L2Backend::V4L2Backend(std::shared_ptr<V4L2Io> io) : capture_(std::move(io)), worker_(&V4L2Backend::worker_loop, this) {}
+V4L2Backend::V4L2Backend(std::shared_ptr<V4L2Io> io, std::shared_ptr<PreviewCache> preview)
+    : capture_(std::move(io)), preview_(std::move(preview)), worker_(&V4L2Backend::worker_loop, this) {}
 V4L2Backend::~V4L2Backend() {
   {
     std::lock_guard<std::mutex> lock(mu_);
@@ -131,6 +132,7 @@ void V4L2Backend::run(Start start) {
       if (result == V4L2Capture::Read::Frame) {
         if (!lease.mark_ready(mono_ns())) { failure = "FRAME_STATE_TRANSITION"; break; }
         const auto meta = static_cast<const FrameMeta&>(*lease);
+        if (preview_) preview_->offer(*lease);
         const auto pushed = queue->push(std::move(lease));
         if (pushed != FrameQueue::Push::Accepted && pushed != FrameQueue::Push::ReplacedOldest) {
           failure = "FRAME_QUEUE_REJECTED"; break;

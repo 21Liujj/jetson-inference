@@ -62,5 +62,7 @@
     "no final-stack endurance claim",
     "no destructive CUDA error injection",
     "no managed input or DMA-BUF acceptance"
-  ]
+  ],
+  "formal_performance_acceptance": false,
+  "formal_performance_remaining": "Spec 13.1: >=300 seconds per window; three key configuration repetitions"
 }

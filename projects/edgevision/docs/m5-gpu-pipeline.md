@@ -49,14 +49,17 @@ is not claimed. The default SSD and explicit CPU YOLO baseline remain available.
 Real camera GPU deadline, cancellation, priority-stop, restart and shutdown tests
 passed all seven cases; final frame-pool use and video mappings were zero.
 
-## Same-input unprofiled comparison
+## Same-input short-window unprofiled comparison
 
 Each variant used the same engine SHA `2925e839…0474519`, preloaded fixed RGB inputs
 and display NMS. Three rotated-order repetitions, 60 excluded warmups and 1,000
 measured completions per repetition. Values below are medians of the three run
-statistics, not pooled percentiles. Latency runs from host staging to actual GPU
+statistics, not pooled percentiles. These runs are shorter than the specification's
+≥5-minute formal windows; that final performance gate remains pending. Latency runs from host staging to actual GPU
 completion and common CPU NMS, including pipeline scheduling. File writes and model
-initialization are excluded. These are offline images/s, not USB camera FPS.
+initialization are excluded from per-frame latency. Throughput includes the bounded
+CSV timing recorder; dataset image/tensor writes are disabled in speed runs.
+These are offline images/s, not USB camera FPS.
 
 | Variant | Images/s | P95 ms | P99 ms |
 |---|---:|---:|---:|

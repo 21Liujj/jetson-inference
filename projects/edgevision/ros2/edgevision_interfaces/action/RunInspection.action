@@ -1,0 +1,16 @@
+# Initial operation=detect; uses the same ControlRouter as services/CLI/Agent.
+string<=64 request_id
+uint64 generation
+string<=32 operation
+uint32 timeout_ms
+---
+bool success
+uint64 task_id
+string<=32 state
+string<=128 error_code
+string<=16384 result_json
+---
+uint64 task_id
+uint64 generation
+string<=32 state
+bool execution_pending

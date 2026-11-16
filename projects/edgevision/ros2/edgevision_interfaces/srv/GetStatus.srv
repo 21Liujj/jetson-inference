@@ -1,0 +1,19 @@
+# task_id=0 queries overall status. Internal auto-detection tasks are released
+# after publication; external tasks retain their idempotency records (cap 4096).
+uint64 task_id
+---
+uint32 schema_version
+string<=32 capture_state
+string<=32 model_state
+uint64 generation
+bool resources_live
+uint32 queue_depth
+uint32 pool_busy
+string<=128 capture_error
+string<=128 model_error
+bool task_found
+string<=32 task_state
+bool execution_pending
+string<=128 task_error
+string<=16384 result_json
+string<=4096 metrics_json

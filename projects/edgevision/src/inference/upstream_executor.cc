@@ -21,6 +21,13 @@ std::string serialize(uint64_t task, const DetectionResult& result) {
       << ",\"frame_id\":" << result.frame.frame_id << ",\"sequence\":" << result.frame.driver_sequence
       << ",\"width\":" << result.frame.width << ",\"height\":" << result.frame.height
       << ",\"host_dq_ns\":" << result.frame.host_dequeue_mono_ns << ",\"completed_mono_ns\":" << result.completed_mono_ns
+      << ",\"driver_timestamp_valid\":" << (result.frame.driver_timestamp_ns ? "true":"false")
+      << ",\"driver_timestamp_ns\":" << result.frame.driver_timestamp_ns.value_or(0)
+      << ",\"driver_clock_monotonic\":" << (result.frame.driver_timestamp_clock==FrameMeta::TimestampClock::Monotonic?"true":"false")
+      << ",\"driver_timestamp_source\":" << unsigned(result.frame.driver_timestamp_source)
+      << ",\"driver_sequence\":" << result.frame.driver_sequence << ",\"driver_flags\":" << result.frame.driver_flags
+      << ",\"stride\":" << result.frame.stride << ",\"bytesused\":" << result.frame.bytesused
+      << ",\"fourcc\":" << result.frame.pixfmt_fourcc << ",\"publish_mono_ns\":" << result.frame.publish_mono_ns
       << ",\"detections_total\":" << result.boxes.size() << ",\"detections_truncated\":" << (included < result.boxes.size() ? "true" : "false") << ",\"detections\":[";
   for (std::size_t i=0; i<included; ++i) {
     const auto& b = result.boxes[i]; if (b.label.size()>128) throw std::runtime_error("RESULT_LABEL_BUDGET");
@@ -32,8 +39,10 @@ std::string serialize(uint64_t task, const DetectionResult& result) {
   auto text = out.str(); if (text.size()>16384) throw std::runtime_error("RESULT_BUDGET_EXCEEDED"); return text;
 }
 }
-UpstreamExecutor::UpstreamExecutor(V4L2Backend& capture, HealthMonitor* health, std::function<void()> hook)
-    : capture_(capture), health_(health), acceptance_gpu_work_(std::move(hook)), worker_(&UpstreamExecutor::worker_loop, this) {}
+UpstreamExecutor::UpstreamExecutor(V4L2Backend& capture, HealthMonitor* health, std::function<void()> hook,
+                                   std::shared_ptr<PreviewCache> preview)
+    : capture_(capture), health_(health), acceptance_gpu_work_(std::move(hook)), inference_preview_(std::move(preview)),
+      worker_(&UpstreamExecutor::worker_loop, this) {}
 UpstreamExecutor::~UpstreamExecutor() { shutdown(); if (worker_.joinable()) worker_.join(); }
 ExecutionReply UpstreamExecutor::initialize(InferenceConfig config) {
   std::lock_guard<std::mutex> lock(mu_);
@@ -97,6 +106,7 @@ void UpstreamExecutor::worker_loop() {
             { std::lock_guard<std::mutex> lock(mu_); skip = cancel_requested_ || closing_ || at>=job.deadline_mono_ns; }
             if (skip) { frame.release(); continue; }
             if (health_) health_->observe_consumed(*frame,at);
+            if (inference_preview_) inference_preview_->offer(*frame);
             auto result = detector->infer(std::move(frame),[&](const FrameLease& in_flight) {
               if (acceptance_gpu_work_) acceptance_gpu_work_(); // explicit acceptance injection only
               std::lock_guard<std::mutex> lock(mu_);

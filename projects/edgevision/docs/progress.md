@@ -13,8 +13,8 @@ different definitions and are not carried over as completed stages.
 | M2 capture/task framework | board_verified (baseline gates complete) | Windows 9/9; Jetson sanitizer 11/11. R3 capture 100 cycles/30min, R8 direct-input 60s, R10 shared task API, real GPU timeout/cancel/stop/shutdown, model failure and joint USB recovery all verified. Component source versions remain separate; no final-stack endurance claim |
 | M3 model and kernel preparation | board_verified | Matched unchanged UVC build, 155 import CRCs and actual stock rollback pass. 200-image FP16 AP drop 0.047 percentage point, fixed-box match 99.5%; 24 CPU letterbox cases byte-exact; 60s YOLO video, YOLO/SSD seven-case task retests, Windows10/10 and Jetson sanitizer12/12 pass; source and original failures archived |
 | M4 UVC extension | board_verified | GPL frame/stream patch, 172 import CRCs, stock/disabled/enabled normal/slow/start-stop matrices, raw traces and parser; real unplug 7.3799s recovery, 1,803 consumed records correlated; actual stock rollback after all phases. Observational overhead only; no driver bug-fix or precise overhead-bound claim |
-| M5 CUDA and async optimization | board_verified (scoped) | 48 preprocess cases and 200-image model gates pass; fixed-slot stream/event implementation, pinned/mapped P0/P1/P2 matrix and real GPU timeline; 60s camera and seven shared-executor lifecycle cases pass. Runtime uses P1; P2 is offline/component acceptance, not camera throughput |
-| M6 ROS2 | in progress | Three packages and copied preview/common control adapters written; Windows 11/11 pass. Native colcon build, real topic/service/Action, QoS/cancellation, bag and overhead gates remain |
+| M5 CUDA and async optimization | board_verified (numerical/functional); formal performance pending | 48 preprocess cases and 200-image model gates pass; fixed-slot event pipeline, short pinned/mapped P0/P1/P2 matrix and real GPU timeline; camera and seven lifecycle cases pass. Runtime P1; P2 offline. Spec §13.1 ≥5-minute windows/three key repetitions remain |
+| M6 ROS2 | board_verified (functional); formal performance pending | Three native Humble packages; actual topics, paired source image, diagnostics, service and Action success/failure/GPU cancel/deadline; slow subscriber and private bag/replay pass. Windows 11/11, target sanitizer13/13. Four 20s exploratory publication comparisons retained; ≥5-minute formal gates remain |
 | M7 VLM/Agent | in progress | Qwen3-VL-2B artifacts audited and independent actual VQA passed after explicit plugin-path fix; shared tools, model-driven planning, 20 tasks and three traces remain |
 | M8 system delivery | planned | Live Web/RTSP, bounded logs, deployment and failure recovery; 30min/2h/12h endurance |
 
@@ -36,6 +36,7 @@ execution but is not a model-accuracy or optimization benchmark.
 - YOLO model and fixed-input accuracy baseline: [m3-model.md](m3-model.md).
 - UVC extension and real frame correlation: [m4-uvc-trace.md](m4-uvc-trace.md).
 - CUDA numerical regression, memory paths and real timeline: [m5-gpu-pipeline.md](m5-gpu-pipeline.md).
+- ROS2 common control, real data and original runtime-loader failure: [m6-ros2.md](m6-ros2.md).
 - Serial upstream GPU input adapter: [m2-inference.md](m2-inference.md).
 - Runtime recovery/health and R3 capture endurance: [m2-runtime.md](m2-runtime.md).
 - 30-minute repaired baseline: [summary and raw evidence](../evidence/2026-11-15-30min/summary.json).
@@ -43,7 +44,8 @@ execution but is not a model-accuracy or optimization benchmark.
 
 ## Next three engineering steps
 
-1. Finish the native ROS2 build and real data/control/Action/bag/QoS acceptance.
+1. Complete the §13.1 formal ≥5-minute performance windows and three key repetitions;
+   existing M5/M6 short-window comparisons are exploratory, not final acceptance.
 2. Integrate the independently tested local Qwen3-VL runtime with bounded shared
    tools, constrained model planning, reports and the frozen 20-task matrix.
 3. Deliver the live console/RTSP, recovery and all final-stack endurance windows.

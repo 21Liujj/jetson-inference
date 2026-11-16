@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>edgevision_ros</name><version>0.1.0</version>
+  <description>One-camera-owner rclcpp adapter for the EdgeVision runtime.</description>
+  <maintainer email="maintainer@example.invalid">EdgeVision contributors</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend><depend>rclcpp_action</depend>
+  <depend>sensor_msgs</depend><depend>vision_msgs</depend>
+  <depend>diagnostic_msgs</depend><depend>edgevision_interfaces</depend>
+  <depend>nlohmann_json</depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

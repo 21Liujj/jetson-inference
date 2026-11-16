@@ -477,3 +477,46 @@ M4曾把未采集功耗状态误写为“DVFS未锁定”。M5查询发现板上
 和稳定性结论不直接继承。首个新工作目录运行因默认build/libNvInfer_edgellm_plugin.so相对路径
 失败，原日志保留。第二轮仅给该子进程设置EDGELLM_PLUGIN_PATH绝对路径，未改全局环境、
 未修改旧工程；真实图片问答正常退出。它仅证明独立VQA，尚不代表Agent工具闭环或组合内存验收。
+
+## EV-ROS-001 · 2026-11-16 · 构建进程的Python隔离与ament链接约定
+
+原生colcon首轮生成接口失败，调用链落到用户目录setuptools，而系统packaging不支持
+strip_trailing_zero参数。保留R1日志，仅在构建环境设置PYTHONNOUSERSITE=1，未升级或卸载
+用户Python包。三个package.xml显式声明ament_cmake build_type。
+R2又因ament_target_dependencies使用plain target_link_libraries而应用先用了PRIVATE签名失败；
+将应用target统一为plain，核心库仍保留其原有target作用域声明。R3三包原生构建通过。
+安装成功与运行通过分开，下一项实际暴露了独立的动态库问题。
+
+## EV-ROS-002 · 2026-11-16 · 安装产物加载旧动态库导致已修复缺陷重现
+
+首轮真实ROS服务测试超时，子进程SIGSEGV。GDB定位在/usr/local/lib/libjetson-inference.so的
+IExecutionContext::setTensorAddress。readelf/ldd显示构建目录有验证前缀RUNPATH，ament安装
+产物却没有；实际加载的是SHA555385b4…旧系统库，非SHAa2ea6868…修复版。头文件和链接时
+绝对路径均不能证明运行时加载对象，不能将它误判为ROS服务或新CUDA kernel缺陷。
+
+应用设置明确INSTALL_RPATH，并在初始化模型worker前用dlopen(RTLD_NOLOAD)/dlinfo核对
+实际加载库的canonical路径。修复后真实topics、服务、Action、GPU在途取消/超时与bag回放
+通过；子进程显式污染LD_LIBRARY_PATH时以错误码1拒绝启动，未再进入旧loader。
+原GDB/失败二进制来源、库哈希和两轮复测保留；系统库及全局loader配置未改动。
+
+面试追问：DT_NEEDED、RUNPATH和LD_LIBRARY_PATH各影响什么？为什么build成功但install崩溃？
+路径校验能证明哪些身份，为什么正式证据仍需哈希？部署时如何避免用系统旧库覆盖自己的修复？
+
+## EV-ROS-003 · 2026-11-16 · 任务周期、FIFO和结果帧龄
+
+四组20秒初探都约30次完成/秒，ROS关闭P95约8.12ms，诊断/5Hz/30Hz约62.30/42.91/57.01ms。
+后者是host DQ到核心结果完成，不含DDS接收；不能把差值直接称为DDS延迟或GPU推理时间。
+ROS封装以周期任务消费既有FIFO READY队列，直接基线则随帧消费。队列容量虽有界，仍可能
+保留较旧帧；需要按时间线区分排队、CPU调度与GPU执行。原数据保留，未把短窗口差异当精确开销。
+
+自动任务如果无限保留，会在256条记录后达到预算。新增显式release_terminal，只允许终态且
+物理完成的内部自动结果释放；外部记录不静默淘汰。测试覆盖逻辑取消但GPU仍在途时拒绝释放。
+客户端禁止使用内部request_id前缀，避免撞到自动记录并在其释放后失去查询。任务ID作用域为进程，
+跨重启还需配合运行实例记录，不能只用数字task_id关联整个历史。
+
+## EV-EVIDENCE-003 · 2026-11-16 · 短窗口对照不等于正式性能验收
+
+M5三轮各1000次和M6四组20秒均是有效原始对照，但复核施工方案13.1发现正式窗口要求至少
+5分钟、关键配置重复3次。先前将其称为阶段性能完成，口径偏满。已更正README/progress和
+派生summary，原始timings、配置与运行日志不变；数值/功能验收仍有效，正式性能门槛明确待补。
+后续不以重复次数代替单轮持续时间，也不把几个短窗口P99平均后当作长窗口尾延迟。

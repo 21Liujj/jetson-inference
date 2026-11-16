@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "EDGEVISION_ROS_FAILED: UPSTREAM_RUNTIME_PATH_MISMATCH:/usr/local/lib/libjetson-inference.so\n"
+}

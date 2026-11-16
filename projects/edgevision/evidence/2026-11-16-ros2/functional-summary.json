@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "simulated": false,
+  "pass": true,
+  "counts": {
+    "diagnostics": 25,
+    "detections": 84,
+    "metadata": 162,
+    "paired_image": 80,
+    "image": 69,
+    "replayed_image": 6
+  },
+  "node_runs": [
+    {
+      "label": "production",
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/install/ros2-r3/edgevision_ros/lib/edgevision_ros/edgevision_node",
+        "--ros-args",
+        "-p",
+        "device:=/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "-p",
+        "model:=/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-r1/yolov8n.onnx",
+        "-p",
+        "labels:=/home/nvidia/jetson-inference-edgevision/projects/edgevision/models/coco80-labels.txt",
+        "-p",
+        "auto_start:=false",
+        "-p",
+        "detection_hz:=5.0"
+      ],
+      "pid": 22618
+    },
+    {
+      "label": "gpu-acceptance-200ms",
+      "argv": [
+        "/home/nvidia/jetson-inference-edgevision/projects/edgevision/install/ros2-r3/edgevision_ros/lib/edgevision_ros/edgevision_gpu_acceptance_node",
+        "--ros-args",
+        "-p",
+        "device:=/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+        "-p",
+        "model:=/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-r1/yolov8n.onnx",
+        "-p",
+        "labels:=/home/nvidia/jetson-inference-edgevision/projects/edgevision/models/coco80-labels.txt",
+        "-p",
+        "auto_start:=false",
+        "-p",
+        "detection_hz:=0.0"
+      ],
+      "pid": 22712
+    }
+  ],
+  "feedback": [
+    {
+      "task_id": 3,
+      "state": "EXPIRED",
+      "execution_pending": true
+    },
+    {
+      "task_id": 3,
+      "state": "EXPIRED",
+      "execution_pending": true
+    }
+  ],
+  "images_and_bags_private": true,
+  "limits": "functional acceptance; not overhead matrix or final-stack endurance"
+}

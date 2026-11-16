@@ -60,6 +60,10 @@ class TaskManager {
   std::size_t queued() const;
   bool execution_busy() const;
   std::size_t records() const;
+  // Explicit retention boundary for collected internal telemetry tasks only.
+  // Removes request-id deduplication too; callers must never retry a released ID.
+  // Running or physically pending records cannot be released, even if terminal.
+  bool release_terminal(uint64_t id);
 
  private:
   void tick_locked(uint64_t now, uint64_t generation);

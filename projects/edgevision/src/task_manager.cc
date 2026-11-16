@@ -159,4 +159,11 @@ void TaskManager::cancel_pending(uint64_t now) {
 std::size_t TaskManager::queued() const { std::lock_guard<std::mutex> lock(mu_); return queue_.size(); }
 bool TaskManager::execution_busy() const { std::lock_guard<std::mutex> lock(mu_); return active_.has_value(); }
 std::size_t TaskManager::records() const { std::lock_guard<std::mutex> lock(mu_); return records_.size(); }
+bool TaskManager::release_terminal(uint64_t id) {
+  std::lock_guard<std::mutex> lock(mu_);
+  auto it=records_.find(id);
+  if(it==records_.end() || !terminal(it->second.state) || it->second.execution_pending ||
+     (active_ && *active_==id)) return false;
+  by_request_.erase(it->second.request.request_id); records_.erase(it); return true;
+}
 }  // namespace edgevision

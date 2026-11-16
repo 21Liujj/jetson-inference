@@ -12,7 +12,8 @@ class UpstreamExecutor final : public ExecutionBackend {
  public:
   // Optional code-only hook for explicitly labelled GPU acceptance injection.
   // Product control/configuration has no way to set or execute this callback.
-  explicit UpstreamExecutor(V4L2Backend&, HealthMonitor* = nullptr, std::function<void()> acceptance_gpu_work = {});
+  explicit UpstreamExecutor(V4L2Backend&, HealthMonitor* = nullptr, std::function<void()> acceptance_gpu_work = {},
+                            std::shared_ptr<PreviewCache> inference_preview = {});
   ~UpstreamExecutor() override;
   ExecutionReply initialize(InferenceConfig) override;
   ExecutionReply submit(ExecutionJob) override;
@@ -25,6 +26,7 @@ class UpstreamExecutor final : public ExecutionBackend {
   V4L2Backend& capture_;
   HealthMonitor* const health_;
   const std::function<void()> acceptance_gpu_work_;
+  const std::shared_ptr<PreviewCache> inference_preview_;
   mutable std::mutex mu_;
   std::condition_variable wake_;
   std::optional<InferenceConfig> config_;

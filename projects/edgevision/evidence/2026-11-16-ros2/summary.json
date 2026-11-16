@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "stage": "M6",
+  "acceptance": "board_verified_functional; formal_performance_pending",
+  "simulated": false,
+  "source_zip_sha256": "a2ab6669b472b5a1f4b51defc733285427f1d780244fd463439c84a174d4d66e",
+  "core_sanitizer_tests": {
+    "passed": 13,
+    "elapsed_s": 78.2
+  },
+  "host_core_tests": 11,
+  "functional": {
+    "schema_version": 1,
+    "simulated": false,
+    "pass": true,
+    "counts": {
+      "diagnostics": 25,
+      "detections": 84,
+      "metadata": 162,
+      "paired_image": 80,
+      "image": 69,
+      "replayed_image": 6
+    },
+    "node_runs": [
+      {
+        "label": "production",
+        "argv": [
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/install/ros2-r3/edgevision_ros/lib/edgevision_ros/edgevision_node",
+          "--ros-args",
+          "-p",
+          "device:=/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+          "-p",
+          "model:=/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-r1/yolov8n.onnx",
+          "-p",
+          "labels:=/home/nvidia/jetson-inference-edgevision/projects/edgevision/models/coco80-labels.txt",
+          "-p",
+          "auto_start:=false",
+          "-p",
+          "detection_hz:=5.0"
+        ],
+        "pid": 22618
+      },
+      {
+        "label": "gpu-acceptance-200ms",
+        "argv": [
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/install/ros2-r3/edgevision_ros/lib/edgevision_ros/edgevision_gpu_acceptance_node",
+          "--ros-args",
+          "-p",
+          "device:=/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+          "-p",
+          "model:=/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-r1/yolov8n.onnx",
+          "-p",
+          "labels:=/home/nvidia/jetson-inference-edgevision/projects/edgevision/models/coco80-labels.txt",
+          "-p",
+          "auto_start:=false",
+          "-p",
+          "detection_hz:=0.0"
+        ],
+        "pid": 22712
+      }
+    ],
+    "feedback": [
+      {
+        "task_id": 3,
+        "state": "EXPIRED",
+        "execution_pending": true
+      },
+      {
+        "task_id": 3,
+        "state": "EXPIRED",
+        "execution_pending": true
+      }
+    ],
+    "images_and_bags_private": true,
+    "limits": "functional acceptance; not overhead matrix or final-stack endurance"
+  },
+  "private_bag_bytes": 4204973,
+  "bag_replayed_image_messages": 6,
+  "slow_subscriber": {
+    "messages": 24,
+    "callback_sleep_s": 0.4,
+    "elapsed_s": 10.008442219001154
+  },
+  "formal_performance_acceptance": false,
+  "remaining": [
+    "each formal performance window >=300 seconds; key configurations repeated three times",
+    "final system endurance is M8"
+  ],
+  "image_review": "Actual owned RGB camera preview decoded and visually inspected; scene dark/blurred, detections empty. No private image or full bag in Git."
+}
