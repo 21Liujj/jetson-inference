@@ -1,0 +1,1638 @@
+{
+  "source_package_sha256": "4bc711dcdbd5a7025b0c3ad377872c5b3dabe39fabe8ae0ac747ac8e45e8e062",
+  "verified_source_files": 76,
+  "files": [
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-r1/yolov8n.onnx",
+      "bytes": 12851094,
+      "sha256": "e4b6513441dd6ba0976b5ab2b9702811f5a2265342baa0aca0c082cffdea7940"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-r1/yolov8n.onnx.1.1.100300.GPU.FP16.engine",
+      "bytes": 9028900,
+      "sha256": "2925e839f38ff81f186db6284e6e369c23399fdd50914b10526fd8a8c0474519"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-r1/yolov8n.onnx.sha256sum",
+      "bytes": 65,
+      "sha256": "d075b3e69764135f320eb4b8002803d3f9dd0ee6b5301a76c8d371e35edd7513"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/build-baseline/aarch64/lib/libjetson-inference.so",
+      "bytes": 1768224,
+      "sha256": "a2ea68689ac645d9962cbcdc82be31c439366d2fce559f59b41b6a4ce924025e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/build-baseline/aarch64/lib/libjetson-utils.so",
+      "bytes": 4230024,
+      "sha256": "307749ec3c242679d57405e782f0ad726dd7be1e04907c955a7b6baf0b1d42e7"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_yolo_tensor_probe",
+      "bytes": 57888,
+      "sha256": "cc1e4d891ea54a28ab99fabed884cff800ee2873339811f7f48b8407c3b78ff0"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_yolo_preprocess_probe",
+      "bytes": 41064,
+      "sha256": "c492fe57c763d6354bf3c8ba1514ee459912e1001de8b78e9bd951992a13d135"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_inference_probe",
+      "bytes": 270144,
+      "sha256": "ff41a41f3f40170055921057e7eac0207e51bec7d86ed531b3c9908cc9e196fe"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_executor_probe",
+      "bytes": 318048,
+      "sha256": "593df38e8d753b2bc26632f9bd58d83c5b426cb727cc6ef59133f9ffc5104a6f"
+    }
+  ],
+  "input_output_files": [
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000.rgb",
+      "bytes": 921600,
+      "sha256": "8dde4341a7a7b6a06f5ca4e50bf2aa5f66efe16fcafb2d8ae54d522d5ec92089"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000.u8",
+      "bytes": 1228800,
+      "sha256": "95b38a28c29a065d340e043811f04310a30ab7c7845b6574db677ead158cbf75"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000001.rgb",
+      "bytes": 691200,
+      "sha256": "65b095f8650bf6f8d9be6e7529fe0808bfd6068dad62aa31b2e02031e5e587d6"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000001.u8",
+      "bytes": 1228800,
+      "sha256": "d56ebfd6b7f15c030cab8f849eb20b57354d933f0311a379c3357d126a88adbe"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000002.rgb",
+      "bytes": 182991,
+      "sha256": "9317316414594f9c6c9c414d734eb2172dadf331f6ecf4e191ddd1a4e2d20a6b"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000002.u8",
+      "bytes": 1228800,
+      "sha256": "bae875806132f594ec536b979ab2bfd4198775eb679c4f32cbcda417c97925ca"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000003.rgb",
+      "bytes": 182991,
+      "sha256": "473ec0905931f3bfdb6a325082818cc5d4bf472770bda93b3b8aa0c22036f73b"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000003.u8",
+      "bytes": 1228800,
+      "sha256": "3507cac777873a844947f16d783e31d13f61e1f45193b5e433b4aedbe1edd46f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000004.rgb",
+      "bytes": 921117,
+      "sha256": "adbd0f4533f45f98c1d1e15b54fb6c88afdfc49e683d5cb0069c022651a711a9"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1000004.u8",
+      "bytes": 1228800,
+      "sha256": "73e8575cf2714c137ccd0344008283bf80d2ed05982fe28271b2a02ca4c7ba2c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/10092.u8",
+      "bytes": 1228800,
+      "sha256": "30e69a33f2ce6bf36a316328172142a51095273f1a432cadf83dc58cb7b5165a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/10363.u8",
+      "bytes": 1228800,
+      "sha256": "a3ebdd4cc044615ec01f417acf1f413045d9f323724fda1f1f0fb9e338fbafe8"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/10583.u8",
+      "bytes": 1228800,
+      "sha256": "bc5b047c781b55794e5b3521ee0464bd194cb6838f9a030486cba775b928fddc"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/10707.u8",
+      "bytes": 1228800,
+      "sha256": "a0da60e68ab9d2662fb1462472617e8ac4a6d361a497da7c6407e454ff1b341d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/107339.rgb",
+      "bytes": 129600,
+      "sha256": "1fa0c6e39479770377da211413d6ad46bbde648a4c0a65222a7b63a93d765964"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/107339.u8",
+      "bytes": 1228800,
+      "sha256": "be9c5e0c4105a571031badc5db40cc2570b4ff216c8caf76c60a8ec5ee3da71f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/10764.u8",
+      "bytes": 1228800,
+      "sha256": "4d3597f78c6af776a6448db1055f22a70f69f20e27fcb483934b99d8ba74f735"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/10977.u8",
+      "bytes": 1228800,
+      "sha256": "d3d6812faa512bc8562e84618ea5e3f5f5225fd1cdd06ef2c7957298757a8a88"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/10995.u8",
+      "bytes": 1228800,
+      "sha256": "c1c96e73093ebae4f3c57daa009e3ab463bd8886bc73f26d4036f58fbfc78a44"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11051.u8",
+      "bytes": 1228800,
+      "sha256": "4866b12e5fa0546c8f808d966c2207a180416057d482c3065138035d02e7b8db"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11122.u8",
+      "bytes": 1228800,
+      "sha256": "612452ea7fb30c70f98e089a8b3e085e879042f222cefa8b978b2f680f2eaa7d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11149.u8",
+      "bytes": 1228800,
+      "sha256": "9ff7d01e985b6bc4d1582fae7cd1c0291a059d2a0428d30557ef4eb51f18082c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11197.u8",
+      "bytes": 1228800,
+      "sha256": "72927e04c48ca4bcb9644d2ea34a9c7983e30665cd31ed87704a70d8b6af15b4"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11511.u8",
+      "bytes": 1228800,
+      "sha256": "81b912a00897cdf810da441301954f9b26e3e8f28eae9feddb9fedbac63b77b0"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11615.u8",
+      "bytes": 1228800,
+      "sha256": "8a3a5f546ab2d18bd86e3b704fda71a31f8c0128781231ac705a25a200a1ab2d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11699.u8",
+      "bytes": 1228800,
+      "sha256": "8683e4391332eb92d7742db50e928fd45a440e4f3aea75f229befe88158eedbd"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11760.u8",
+      "bytes": 1228800,
+      "sha256": "c2b4868c692a9a5cb87374f1cef961cde875d0d43a3a2f1d5364ebccf3dd6973"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/11813.u8",
+      "bytes": 1228800,
+      "sha256": "51b5c9bb847ee3ecb7f1d5cfe9f2463cb8000c02d18eb1b05a4d173a2b9d0401"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/12062.u8",
+      "bytes": 1228800,
+      "sha256": "5f6846af4745e4a6b9d35a4d876f6d7ec9c3161f76fa69b6d4c3c954bf901d3f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/12120.u8",
+      "bytes": 1228800,
+      "sha256": "2a600bf393b619bde2274cd6d78a44b5bf916c807ef26ac517a343c31365be41"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/12280.u8",
+      "bytes": 1228800,
+      "sha256": "86d1ba731d1d42d7a80fd672ddc289ef898cf9f49c28ebfad533c05ced09d8eb"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/12576.u8",
+      "bytes": 1228800,
+      "sha256": "8203578c7a727d4a6dbafec5ce8b56e2d86060861b5fa1667f8f2342d754c9f8"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/12639.u8",
+      "bytes": 1228800,
+      "sha256": "9d820509d7f981c3ea052571b07188b34027c3fa377837de44d3085181534046"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/12667.u8",
+      "bytes": 1228800,
+      "sha256": "75ce40134753d028a23134cb8e5efccefbd7d29c5b0a3d01b1fdb46064a97037"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/12670.u8",
+      "bytes": 1228800,
+      "sha256": "bed25e7b3304fe5e2603dc6f7d33a2475a29bd6d0196e196b647ac80220765bd"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1268.u8",
+      "bytes": 1228800,
+      "sha256": "525da35666860e98ee036597c0c21ce9b1c4c12b42fbbdcf83c1efc87964412b"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/12748.u8",
+      "bytes": 1228800,
+      "sha256": "19eef4af12104b07784d931f7508c0b3489119cf00aa13580ffcdc58f2c7ddd5"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1296.u8",
+      "bytes": 1228800,
+      "sha256": "c1ec0625c0ef1148dea15d257f2944cfad664aabac318fcced550fb7badc487d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13004.u8",
+      "bytes": 1228800,
+      "sha256": "787c50286e9239687a1e0ce50edc2775a213c64c83b8cd3bf8fc5e424aab55a6"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13177.u8",
+      "bytes": 1228800,
+      "sha256": "f8149bb5f2dd330ffd62b4e335d683f7667f4ec3bbf8a8d94be223650a1229db"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13201.u8",
+      "bytes": 1228800,
+      "sha256": "8bf8c998a04f7586929e1419db19d4a24377be254d623d34cd6d899dba2b001d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13291.u8",
+      "bytes": 1228800,
+      "sha256": "9eb98538bee9befe500425837c0ac72bf53fcc8ff3fc88871abb1635fdbd3b3a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13348.u8",
+      "bytes": 1228800,
+      "sha256": "f3fac2773472c3fac6726de4f5eec62f85dc1f91b28e6afc12894104cd5174e3"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1353.u8",
+      "bytes": 1228800,
+      "sha256": "15fc4217b6760e3de348a729b5c097d8c89ecb1dc9e7b4532891164936967a47"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13546.u8",
+      "bytes": 1228800,
+      "sha256": "0ba28788f3b08a5f1ce99c7c038de474cc865cebc061f1f3aa1a8a8a7f2cce07"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13597.u8",
+      "bytes": 1228800,
+      "sha256": "0b48b8f91426bb705d4310d20e1566e24b45199caeb9a937f04f53e45929cd14"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13659.u8",
+      "bytes": 1228800,
+      "sha256": "eb93584c4361ffaa3f3a3d4e5a0e36a23bfc90ea462fda9fb9e9a9ec0c66cc62"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13729.u8",
+      "bytes": 1228800,
+      "sha256": "a14dc3c08f2a020122a82be93ca1fecf4cf7da902bbc08761beec779fbcaac7e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13774.u8",
+      "bytes": 1228800,
+      "sha256": "1fa1117d00b3d7784c3c5ef441f793e4083d48022e992c9840fd1f4da8868991"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/139.u8",
+      "bytes": 1228800,
+      "sha256": "5d7c7adbe1df2deaf1b229587fcdff1878362d14af9d0cf4f782dff98d7abfda"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/13923.u8",
+      "bytes": 1228800,
+      "sha256": "2b1fe0fd4890d4465d337a19e1b323ffb604fa441ba83bdc9772973d393f6789"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/14007.u8",
+      "bytes": 1228800,
+      "sha256": "07ad19cdc47b1c20cfcd9b9a4d767599b0d62000de08de93697e4602ffc135d2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/14038.u8",
+      "bytes": 1228800,
+      "sha256": "4f76d7a00b626d89d39167777aa17cd0420a4fe65f100ca67fa6e3cccaf93bf1"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/14226.u8",
+      "bytes": 1228800,
+      "sha256": "3277c902f400a1d03224347fc695ca87e0e0061bb79e5fc13c304c8e14c6174f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1425.u8",
+      "bytes": 1228800,
+      "sha256": "79f938a854ea1a1d0c07de66dd17389f1038875963f6db8fdcdac1b935d61b59"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/14380.u8",
+      "bytes": 1228800,
+      "sha256": "4c77f8291bad9dc1f3d3fdfabb5c0eeadb6e9490ebdb568278fa6559058d5f6e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/14439.u8",
+      "bytes": 1228800,
+      "sha256": "047086a5f037236fd280db2a5325919bd441146e4611d897d245a768fc1d31c2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/14473.u8",
+      "bytes": 1228800,
+      "sha256": "c79a1be99726b5a5d621adeaf005522a7534de076e0c38d41804453989f2177a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/14831.u8",
+      "bytes": 1228800,
+      "sha256": "3f47ae90069c08ca8862954791754d43e79ecd8b41a2d591ed337b729e4a7d73"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/14888.u8",
+      "bytes": 1228800,
+      "sha256": "28d0b5ce3bc37edc48024c03633373fa5d5b53ea52300b7a069159b2f1b5dade"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1490.u8",
+      "bytes": 1228800,
+      "sha256": "e084e7dcd42aa17f6a6068bc8ddf09f6049e806adfb6895f8a8981bd9038038d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/149770.rgb",
+      "bytes": 87000,
+      "sha256": "9aac9071c018be6a31713ab32f8c672e30f24657ede501935d3ae571b86642a2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/149770.u8",
+      "bytes": 1228800,
+      "sha256": "ef95500075fa9ae0623a4129781c308ff63fd54ced84dcfbb474339ddccb6b42"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1503.u8",
+      "bytes": 1228800,
+      "sha256": "a7a03f3fc6f5d8b3ac997b32c6c1e8adc017ab1e0455c6c54e5ea9fd72e5a9a4"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15079.u8",
+      "bytes": 1228800,
+      "sha256": "977b69fc717064b53803cab234bb77b80b4e90b270892fe47a83d0abb7985f65"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15254.u8",
+      "bytes": 1228800,
+      "sha256": "26baa7a1240977f9891bfdd40b8a521aae4003848bb33d26465971b2448fe99c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15272.u8",
+      "bytes": 1228800,
+      "sha256": "e3dad659ba0585a70ab3e99829829a30194fa78344b2fa0805e1b2c826564749"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15278.u8",
+      "bytes": 1228800,
+      "sha256": "ba757e371821888c9b69332daa8763b2af0df60678a77a3833824ec38fb49691"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1532.u8",
+      "bytes": 1228800,
+      "sha256": "94482d5cb6359a5bcbf7fda6ba7cead8b145a2362e6199f6e2a68e8f24102ff2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15335.u8",
+      "bytes": 1228800,
+      "sha256": "d15b6927505f87fba977e6e127d58c801f087d7b6f45856aac12c5eeb9d031c4"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15338.u8",
+      "bytes": 1228800,
+      "sha256": "7f9d9f00fd1ab06b8546ded6d7f536207ad6e008831e5794e867e0727d684c31"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15440.u8",
+      "bytes": 1228800,
+      "sha256": "5e94c47b8dbb599fc904174ede378e36f186945a644b83eabfc9464dbcc4ab57"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15497.u8",
+      "bytes": 1228800,
+      "sha256": "eaba2a992fdaf11cbeb419bdb4904cbede7e8b0e55d74c93d9062a7cda1d7399"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15517.u8",
+      "bytes": 1228800,
+      "sha256": "403cf43e0aea4986d0d43df0f7bd013f9a0827fe5409bd27eb153f3eb5bb26ab"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15597.u8",
+      "bytes": 1228800,
+      "sha256": "55c8aa0dae3832466e53595fd61a2db19909172bd8884e9f18460a2a8661f0b1"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15660.u8",
+      "bytes": 1228800,
+      "sha256": "e96c049432c8d980d7461b4eb4cfb4dadb0698967cd2322a70282168a45ea344"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15746.u8",
+      "bytes": 1228800,
+      "sha256": "9067dbfbfd9cc5d0027f880d4e7a752e97bd4e4853c0fab2cfd2f2880b6002f1"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15751.u8",
+      "bytes": 1228800,
+      "sha256": "e5f89d2e65733e5b61887c82262ed317698ea2ac264eba002c4854ef47d2d35a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1584.u8",
+      "bytes": 1228800,
+      "sha256": "7449888b8acb82f0dcbff0be1479c568eb066f04e4b236841c23ab28dae83ec7"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/15956.u8",
+      "bytes": 1228800,
+      "sha256": "222e16ab8b384382c58b458110176ced6c432a16f4f8db0711d4fa3eb9f788dd"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/16010.u8",
+      "bytes": 1228800,
+      "sha256": "43156d066442cb0440e0ede4d2360f66cc6d8e4e808d2562a89e33bd5117cdf4"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/16228.u8",
+      "bytes": 1228800,
+      "sha256": "3f1c911994007fe7e6e3efdbcb8f165a5f6a1c9e8ca40d10fb5b2ec1b3620a36"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/16249.u8",
+      "bytes": 1228800,
+      "sha256": "efa1322e110631094976cd0f8a386fb3aa417c68e32d5f64f44608b6764389a2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/16439.u8",
+      "bytes": 1228800,
+      "sha256": "3697f1d00cab9b58ab82e19fc04ec60a61a1f02bdd01f84c14a2512384234b52"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/16451.u8",
+      "bytes": 1228800,
+      "sha256": "9edcc85830fdf7ffe06bf7d5b41413594d7e3adac7fa5332d8cf5b04f76ca6c1"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/16502.u8",
+      "bytes": 1228800,
+      "sha256": "36c576a9821c5d05a0b9ed8a6bb999ada93c2e2f150fc5e88e5030d9a1e466bb"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/16598.u8",
+      "bytes": 1228800,
+      "sha256": "b3abb73ad9fb51aa67b0a4668973f878fe7bbf9ad90415edc845ba8e44c58d02"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1675.u8",
+      "bytes": 1228800,
+      "sha256": "966696b10307e291f3efec2c60e13b344a16df60443a01e3d8dd7799f53e39dc"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/16958.u8",
+      "bytes": 1228800,
+      "sha256": "32e9cc5e3d9347a50050c420e4bed3a2e2248aca2ffbce50107e5801973d5d24"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17029.u8",
+      "bytes": 1228800,
+      "sha256": "f342f8061d743b788119dc2000e29b689404d07d30f7c842f0705d410a75b13d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17031.u8",
+      "bytes": 1228800,
+      "sha256": "16183e77f3ba1f67b91648a7003ff1e54021553ee620417350f55103e2847548"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17115.u8",
+      "bytes": 1228800,
+      "sha256": "6f1c5e82ffe794e5d76133f83a150566ae8187823a0b846d5a7e96c66265454f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17178.u8",
+      "bytes": 1228800,
+      "sha256": "4fe746914b6d1f3d2ae34b3746ee7303b65f4ef67cf664da3ba344c139003c14"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17182.u8",
+      "bytes": 1228800,
+      "sha256": "c60e0bdb804df97d10483d4e72517baff1a03b541ff5594ccbc4a0c9a01568d5"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17207.u8",
+      "bytes": 1228800,
+      "sha256": "219a6100e85f96cd5bb1416ef7c1bcb010a9e75c6ff9637da9296abe421cd91a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17379.u8",
+      "bytes": 1228800,
+      "sha256": "eb24f26dd0709a823485ada24f2f99bbbb392190631552ac16d9b362a3caea10"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17436.u8",
+      "bytes": 1228800,
+      "sha256": "08d7e845b33cc98c971452cc48e3005ecd46bf40203aa703a2609caa3a57d3d4"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1761.u8",
+      "bytes": 1228800,
+      "sha256": "0659006b7d7d79812bf9a012b005e448f21242a9913d55bf04ab3e689010fb39"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17627.u8",
+      "bytes": 1228800,
+      "sha256": "eab5b3e42498c870fb0d985dec39820291a8f8255f850e6e5d890e4d0ec40cbc"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17714.u8",
+      "bytes": 1228800,
+      "sha256": "111f1b2d782a025d5723afda053ec50e3f74b425e7c95fbadace767a16966d71"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17899.u8",
+      "bytes": 1228800,
+      "sha256": "bb93f7a33c8abd00fcd8102eb23262946af28b68a41704f7d5e4804489b36351"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17905.u8",
+      "bytes": 1228800,
+      "sha256": "bfe927a2645c5e66e54990e2403f94bace44ce7d8ad7b45657f56a62d557080f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/17959.u8",
+      "bytes": 1228800,
+      "sha256": "9d32e78c9dde817d541e919f2a5886e85f0d37a9a77a1b965892265755a97e19"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/18150.u8",
+      "bytes": 1228800,
+      "sha256": "d2c1a76bf8e6fe2d735e009d99f96896132ca1b17a6ccb65556c67edb464f92d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1818.u8",
+      "bytes": 1228800,
+      "sha256": "fe8a8da624e701311cc567b8b2ad3bfac10b670e4f120a509f762193cb1ce01a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/18193.u8",
+      "bytes": 1228800,
+      "sha256": "a5348a4d224b2f8aee1d984ef3bb640d37ec6b1637410024686bdccf086c1e1f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/18380.rgb",
+      "bytes": 817920,
+      "sha256": "a392ef71b4c08318e8dcbda74ee98139a4e18652eff27a6f4fcfb434345b625e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/18380.u8",
+      "bytes": 1228800,
+      "sha256": "5532cc58190ea84419f71f8559e375ebc28fa305bfd0b4540b850ac02c9c173c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/18491.u8",
+      "bytes": 1228800,
+      "sha256": "be9776eac1adbe362befb083822a75abf68787ab73390f29f1a4ce99caf8b29d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/18519.u8",
+      "bytes": 1228800,
+      "sha256": "3377c1b02117b6f822164ae0e65eb07f2777b74303535b0cd2411ee8df306cd4"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/18575.u8",
+      "bytes": 1228800,
+      "sha256": "2c1c2d2274cec873e2e63ceb2416f450f7c36dd71e419983b1398ad234e5a826"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/1993.u8",
+      "bytes": 1228800,
+      "sha256": "7bd37f9b97299e2154b75ab7174f09932d2e86b466dbd57ab265650db1afaf53"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2006.u8",
+      "bytes": 1228800,
+      "sha256": "246e54b33bb88f6e3564579b484bb28ed29133d6ac5ba7116e7818cbc3fe21be"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/205333.rgb",
+      "bytes": 314880,
+      "sha256": "195a3ee546b62cb08101b869fe9e532e29b59b61fde9c61e28aefd648b03a221"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/205333.u8",
+      "bytes": 1228800,
+      "sha256": "a96236f1932a5abecc0ac1d050231df755b45967463541094163b0beaa091b2d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2149.u8",
+      "bytes": 1228800,
+      "sha256": "77d6e2a9a753a4769ac0d74fc602a180ab7dd026b5777fe8dc48c17dd7bed600"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2153.u8",
+      "bytes": 1228800,
+      "sha256": "a087ecbf52f8592b425b429fc5e8b297ff06746e709ab4c441465d0a3cd5fa05"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2157.u8",
+      "bytes": 1228800,
+      "sha256": "aa6fb5200d30b921835a5676e59a019b741c7b25fc779dc5f50b97a30d28cf44"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2261.u8",
+      "bytes": 1228800,
+      "sha256": "fd3862c1a3e4312b4ae15977b133ed5c3b1fe46e338ef1645b91d51ce4073ca1"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2299.u8",
+      "bytes": 1228800,
+      "sha256": "7a5344bfbd1a25a956460cd1a5cbb6b3e9c82645b9933816af9983b2165e7359"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2431.u8",
+      "bytes": 1228800,
+      "sha256": "88b8f806685a331401b6f03d809fdd071a713b035fe2986c66ac4fa1ce87f005"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2473.u8",
+      "bytes": 1228800,
+      "sha256": "c8687dc3f97534c59dc14d0d3a5a4f1de76890813e3c35115e34e52060a081bf"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2532.u8",
+      "bytes": 1228800,
+      "sha256": "59aaf52d8acf695f755336120ea4b5766253db765c5fb6c11d4e58a217492a87"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2587.u8",
+      "bytes": 1228800,
+      "sha256": "325e40217e68faddc6a965e515949358a8d139ddfc5024cf75cee2b1db76ee4a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2592.u8",
+      "bytes": 1228800,
+      "sha256": "3aae6513664dd5283e4d6740ef183407207afd159647ed9c2d3f9beed6f132e8"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2685.u8",
+      "bytes": 1228800,
+      "sha256": "4d9514d0f3385f904d252629220e949e740f23a5aebce7985eb6f4b8f853215d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/285.rgb",
+      "bytes": 1125120,
+      "sha256": "7589d16900e5d36c2cd7b2937335322d2d0e6b7235ea65bc9066d79d1be0abf4"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/285.u8",
+      "bytes": 1228800,
+      "sha256": "e54e054eac10d53458d7743c56a7eb1afdfc52c28d3f8eb8e10c695c20955437"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/2923.u8",
+      "bytes": 1228800,
+      "sha256": "0d1435d17a4db8ed0563dbde6bf44eab4080784bc55ad127af1da94bb2aa164d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/298251.rgb",
+      "bytes": 305280,
+      "sha256": "54386049b9481c98b1ea851e2b74d9e79d064bfce574994dc4c685f954d4e1a2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/298251.u8",
+      "bytes": 1228800,
+      "sha256": "4080829adc8709b969f6d7db5bc3c6184b7cc8eadbc83bfff8bdd78a6bdb6bc5"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/303566.rgb",
+      "bytes": 817920,
+      "sha256": "011011e213f26814c0efb8babf2168b3e3fcfc623aee1f00e5180d93a9a1c239"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/303566.u8",
+      "bytes": 1228800,
+      "sha256": "5b383b3456a249359105d0159aadb4eeb1fc2f9939d4fed81c8555bc6f3bf096"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/3156.u8",
+      "bytes": 1228800,
+      "sha256": "2c87b92683dcc01ce96c38f6700813770bfd93ff826306c0b6c61b9114850eb5"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/3255.u8",
+      "bytes": 1228800,
+      "sha256": "fb91cd054e85e0585a122d7c1860c6a50cbfac38407ce39166f0661370c41bb2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/342971.rgb",
+      "bytes": 551040,
+      "sha256": "016f9aac1959e323f40f5f6538bcd472fdfcbdd4b8d8340bc56ab559da263adf"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/342971.u8",
+      "bytes": 1228800,
+      "sha256": "f9d423dd772133cb833d47872bd224725d182634521a6c31f4ccdfada6679aba"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/3501.u8",
+      "bytes": 1228800,
+      "sha256": "4e2370fb5b9da1e41f115263096f51860f1ddbe7232c65f4ef8f94d1780d92c8"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/3553.u8",
+      "bytes": 1228800,
+      "sha256": "a435cf9e523950ed43279ef6dda87ba7627db37a7b4f08783f08b57af420d490"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/3661.u8",
+      "bytes": 1228800,
+      "sha256": "aedc57b9e9f0560880adbf18951d797adc79642dffa7f3c495345e405cdb6a1c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/3845.u8",
+      "bytes": 1228800,
+      "sha256": "33e1468cbc99d1a3b8c77161ed28dd587fefd54f6005086558c138693ec4d554"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/3934.u8",
+      "bytes": 1228800,
+      "sha256": "12e09df663c5ceae67cf07002419efca8f19f1f0ecf62fee1778aef8a6103403"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/4134.u8",
+      "bytes": 1228800,
+      "sha256": "1a7e8299a01b56bfaa9b2c51710b4a8824eb15cee552b94230fd6702021b9a9b"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/42102.rgb",
+      "bytes": 472320,
+      "sha256": "fbb2afb56398b4753223a2105e8b7392b5a7d1ea6eed33264c9439c33f7cd60e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/42102.u8",
+      "bytes": 1228800,
+      "sha256": "d2437d42d94e511781a37f6b3aebf1c8764e0656bceb597ba347491fb3a55259"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/435081.rgb",
+      "bytes": 750000,
+      "sha256": "a1fb749ee6df229cb9d42e223e7dd1e2bcf4a82ce843501f26fda5a82459acfa"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/435081.u8",
+      "bytes": 1228800,
+      "sha256": "d67495a312b2cece3aa083ecf6486dd586faea164e48e04656b668c2acce1f12"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/4395.u8",
+      "bytes": 1228800,
+      "sha256": "16a70258ed64e54df1387e633ac86b7793a0f078992e8e3e3b2d6f50766fa7d0"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/4495.u8",
+      "bytes": 1228800,
+      "sha256": "df7389338b61d086031d5b4d0d1920a60747f03a9678a861b7437bd0550a849c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/449661.rgb",
+      "bytes": 324480,
+      "sha256": "ebc80389a7755e34a1b61c03cd9222c95c31d8acd2a6dc7265de12281f83fe42"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/449661.u8",
+      "bytes": 1228800,
+      "sha256": "65a76187684fb3fad388c2c1655a13de899e6f5a868a6a115397bf18fe97a5ce"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/452515.rgb",
+      "bytes": 336000,
+      "sha256": "1afd577c432a94cee66be25306953e8c94fa5cbd065c42c89d1101abbdd56468"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/452515.u8",
+      "bytes": 1228800,
+      "sha256": "8c026fa873b4dc3937dc9646b619a5b21c70eaffd3e9e63e1a1573274bfdb63c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/456394.rgb",
+      "bytes": 116160,
+      "sha256": "ce689fb7b492d971cf5ad72b696bfe7a8bc9f7f2ab529140e95963eb8a4584ca"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/456394.u8",
+      "bytes": 1228800,
+      "sha256": "d3774dee8f0e31069b602060917c4620d9255b6829e15528c65b36fc8c1dfcf7"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/470924.rgb",
+      "bytes": 921600,
+      "sha256": "a33bba32f64f1b29dad1949e6e4a48339dfb7893bd70956f170425e743aca2be"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/470924.u8",
+      "bytes": 1228800,
+      "sha256": "99404e8776b5e09cea809b4dbe33c343b4c4a852dfdb84860c16760ab1f1e59e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/4765.u8",
+      "bytes": 1228800,
+      "sha256": "c6915bbf477028c8bbea73750676f6034b13a12cf3bc5d99a51ff90e5c9b0136"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/4795.u8",
+      "bytes": 1228800,
+      "sha256": "d3c14e33316baa36e07beda28e598d236d0b1817b3937476200d1577b156fbf2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/485237.rgb",
+      "bytes": 334080,
+      "sha256": "f461b34df2990ebc24e1f42a1f06532f933aaf3eeeda0a2aaf0190ee91c99454"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/485237.u8",
+      "bytes": 1228800,
+      "sha256": "df8852d9c3c02afd11acdd6391f84cf77f1d2fa00b9209dddda6d741378eca65"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5001.u8",
+      "bytes": 1228800,
+      "sha256": "956248326a6236e21e73f8d1342c676b820c4c42b5cddcf5f7a7bdc7429a42ee"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5037.u8",
+      "bytes": 1228800,
+      "sha256": "fe3dcb6d10794ade15ac7a20c3501bc3e9cdfc4f60e13cd4486cfcaa10a3a79f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5060.u8",
+      "bytes": 1228800,
+      "sha256": "085bbdbad5692b3c58ddcb9220e22eb500f2e5d1728d930d2ad5f0aa957495dd"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/511760.rgb",
+      "bytes": 568320,
+      "sha256": "dc4e62188583e3493863ab8a7481423df9517bf5dab35cc7c8df8ba74f8811d8"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/511760.u8",
+      "bytes": 1228800,
+      "sha256": "6b2305b0a250bb8389de97655ad8897673c497782528956ed35c7e7b3da8db42"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5193.u8",
+      "bytes": 1228800,
+      "sha256": "093a19e0ebc5ba772b4a8f97003c35a6f2f7362b5c86153497d7c500da041bbc"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/536343.rgb",
+      "bytes": 138075,
+      "sha256": "fa68b8b8a2ba16d3eade1f9a44a6d007e5d983854eb497fb0914cf0b62cc7cb3"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/536343.u8",
+      "bytes": 1228800,
+      "sha256": "a5880e0ebe75b4c811ac514cf58ef254ae1fc0bd1d1aa20148caf0fe2f68d1c3"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5477.u8",
+      "bytes": 1228800,
+      "sha256": "6956c2c0db8875c9a1dbaf39c7c1b1a1c52f68251a232377dc4040f0204decfd"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5503.u8",
+      "bytes": 1228800,
+      "sha256": "43db9fec9407df608fbbf18c922847c8e432dcb05bd689e3f8f2a33c06c4bddf"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5529.u8",
+      "bytes": 1228800,
+      "sha256": "44ef34cd3eae02e531a2afbb8fe45ac3d4d800e65eca7d261a6c2d44da720751"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5586.u8",
+      "bytes": 1228800,
+      "sha256": "0f1824bae60bdb6fcb770651c0bd34fb01862830b62aa14269d615df9be9505a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5600.u8",
+      "bytes": 1228800,
+      "sha256": "ab3d561bd046b4ad1fc4284f64d883bb3a1a9b1b3a63542fb2d89c9fe31b5dec"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/5992.u8",
+      "bytes": 1228800,
+      "sha256": "1ecc69af84ad5124b5c65cd49b27ba6bddbac0817e834b4d0dc00f6a363df862"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6012.u8",
+      "bytes": 1228800,
+      "sha256": "7b7840f89f3c72f4f95a297ae5252515a27689d1b1ac1d8cde622dccc811bdba"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6040.u8",
+      "bytes": 1228800,
+      "sha256": "5e27778fd06670d67ec8f1ad3b417d4679ddc5a1613e469b7612254a245bcb97"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6213.u8",
+      "bytes": 1228800,
+      "sha256": "9070ca5d58dc8e402dda48a6f173db4c51cd3e76c667d2ee5ce923fe105fab9e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/632.u8",
+      "bytes": 1228800,
+      "sha256": "83e2c6bc8b73653c95314848c86515095139dc24759f9e1857379b8682eb8453"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6460.u8",
+      "bytes": 1228800,
+      "sha256": "fa5246a141117552f083d7759fc9c55b9379f626c0c2585f7c0f04238a48151f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6471.u8",
+      "bytes": 1228800,
+      "sha256": "82d96790eabb147a8f69641bd682c893ff4b7c278559cb7f6bbd7e873cb9fe6f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6614.u8",
+      "bytes": 1228800,
+      "sha256": "34a3350cc1f42fa2ecb502b17aa4e7c84ec1c7542e7f4d62834411ba56836274"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6723.u8",
+      "bytes": 1228800,
+      "sha256": "02bee15ca00bdab9ccf2d8ffba4c35318ee30a7a30f2e33d1d1feb8af826ce09"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6763.u8",
+      "bytes": 1228800,
+      "sha256": "6a9a3339183bbf63bc008b5f7add21c917c81d03b1c373d336b02d8e26863f69"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6771.u8",
+      "bytes": 1228800,
+      "sha256": "3fcb0680987ac9ff76348908d6d4c5224d0a082909809b86736945659091ba13"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6818.u8",
+      "bytes": 1228800,
+      "sha256": "8f4c5e0b253e1ff7cb565daa2cde740336792c96b0b61421be86327b373e40ed"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6894.u8",
+      "bytes": 1228800,
+      "sha256": "87b94f6db4deeee345922fd7b68b46aa97455316d0606a34c95727f24d9c30fc"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/6954.u8",
+      "bytes": 1228800,
+      "sha256": "7fe7f272744fdb06c2347185e5e881983aad485560e641939152d89bd85a594b"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7088.u8",
+      "bytes": 1228800,
+      "sha256": "38eab0e2c70cfe18c39cc725f1136d69f6e49342dacf379c695bd3fcdf8a4f72"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7108.u8",
+      "bytes": 1228800,
+      "sha256": "1bc6964842c6a525602ffb0b373730ceffa702f9e7667c4d1e6828637326bef0"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/724.u8",
+      "bytes": 1228800,
+      "sha256": "8d7fa8207ee431e97d8bc108c6bfd24d93812ab8cd089c88f32c76d63b7b8e22"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7278.u8",
+      "bytes": 1228800,
+      "sha256": "9cf11b32205c8222c712fa593dc293d1ac048b68b0dd35220cd83dcd9e1fc5ea"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7281.u8",
+      "bytes": 1228800,
+      "sha256": "e4c10db52c690b4b325cc696e4235f72402e37804d10457158e47832059244ce"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7386.u8",
+      "bytes": 1228800,
+      "sha256": "8f2f7f60dca1274a05776cac688a069f8b93f99dc6af1d6afb4064170d5ed2d1"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7511.u8",
+      "bytes": 1228800,
+      "sha256": "6e28f605f20e2ffad73e5250d67cbb0f2e0e2ef27408a6acf7ab4f1fa7f3e8d2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7574.u8",
+      "bytes": 1228800,
+      "sha256": "7cfca4c0b62b1e850831181c6fe69545e2e7da31a26292157f4987fb929270af"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/776.rgb",
+      "bytes": 821760,
+      "sha256": "4a562e0c87727efb4d94c4c08a8bda24953b8c4df06d4a186555f9fbd5f67be3"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/776.u8",
+      "bytes": 1228800,
+      "sha256": "79a5d00956b7ae7ca9e185294343803cf2a9c9f0a9b7a00e384fe286e520a1cb"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7784.u8",
+      "bytes": 1228800,
+      "sha256": "7b985ddb51eb8f581c1bf8c59c4aa1c9e3bd9ba3d9c2e84ec1e57b4198ef84f4"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7795.u8",
+      "bytes": 1228800,
+      "sha256": "8d2ce408abd332e0f660ada90b98929d100f140dbdaca8bd1aadfe5f099baa34"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7816.u8",
+      "bytes": 1228800,
+      "sha256": "377b23eb8b5218936aab903ba833ccf0183a57445b5013aaebb7c0c306b92d3c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7818.u8",
+      "bytes": 1228800,
+      "sha256": "a96abedf6fa5cf3046c28ee78c95b0fcd37c151fe6e3d059a208c00bbd8d834d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/785.u8",
+      "bytes": 1228800,
+      "sha256": "ae93a6b8b6d5e9807bcd3da3fa9d5efc1b8d6ca9da9c2c141f91b44dd43fc2fb"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7888.u8",
+      "bytes": 1228800,
+      "sha256": "cd1b6c9d8dda196666e2c033da780e619a48ad279b7228c05e945782981d2c54"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7977.u8",
+      "bytes": 1228800,
+      "sha256": "e67878a11a0316506a63cd0a0f021a0c7fefa0a1e3aa0b4cf1b5baad9e01c860"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/7991.u8",
+      "bytes": 1228800,
+      "sha256": "4a836809435a8cfd4b94f11dc60fa8dc38e33195c6e24923f3408bdada45d869"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/802.u8",
+      "bytes": 1228800,
+      "sha256": "1ddc9eddabc2901592f2663dd256e849c7cea4f65bbb3bfd86717324768919ac"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8021.u8",
+      "bytes": 1228800,
+      "sha256": "b97a61b50a54ed6cc46a38864dcad6c6645faaf5a70a73fc73a2ca96d452da0a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8211.u8",
+      "bytes": 1228800,
+      "sha256": "13785dc3193f2ab463c30a3c02cdde61295b4de91ff84af2b960b33329fcdb5b"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8277.u8",
+      "bytes": 1228800,
+      "sha256": "a7299df821b5e21e45aeed239415b0983ef70a58ec3c83490b87c8f6e1b7c8c9"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8532.u8",
+      "bytes": 1228800,
+      "sha256": "299f185abe8e9864870349ea626731f97b491d241a96fd1f8838746221a9e7d6"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8629.u8",
+      "bytes": 1228800,
+      "sha256": "827f2e348c05d833329dd165c15950ceb1818f4d88072181bbabcb2cb5c3155d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8690.u8",
+      "bytes": 1228800,
+      "sha256": "31c55785fa89ab83ff4a7154d35169ab6cf85d4dbf6648379e95494d2e8d754a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/872.u8",
+      "bytes": 1228800,
+      "sha256": "eb7edcc72deed4e3fc7b9aebbe3dffd1cc5f9ecd1b75c985d4ef454532fe5832"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8762.u8",
+      "bytes": 1228800,
+      "sha256": "fa3772b1f84fefaad225da3eddf9f0e2cf2d138d563360b55f2f1fe6533c2173"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8844.u8",
+      "bytes": 1228800,
+      "sha256": "38b8a90091497da72ef219de8fce5a03c0932c2fdefcffc21754200801a3e7cc"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/885.rgb",
+      "bytes": 819840,
+      "sha256": "ec2bc2c057436629cd7f9d9f604d1a3977f53a2303f8a926ed6b874c69866e9a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/885.u8",
+      "bytes": 1228800,
+      "sha256": "cb90dce560e76acebdbf0819e3dfbad7a83d1d846f469583c0c0f48fb354d6f9"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/8899.u8",
+      "bytes": 1228800,
+      "sha256": "444fc31c65536909946fee5510973c4fa7d4a99f4328ee40563410d1af74486a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9378.u8",
+      "bytes": 1228800,
+      "sha256": "df9b0cafbe0e9bd107691bf6ba6b73e0fa7b2c39bcf2cc939c799a5d79b52aee"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9400.u8",
+      "bytes": 1228800,
+      "sha256": "c89a413546cfe1f631439c9f66e00db21ede3bb1b182dad1a747942f57efbc8d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9448.u8",
+      "bytes": 1228800,
+      "sha256": "c149180410e6bebdd1013582752ee1eef245862c78a6f72bc091d28395ac463e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9483.u8",
+      "bytes": 1228800,
+      "sha256": "68292b9e0b521a27c0fe562a6d3dbac25cbecf396010163ad28a1973081285bf"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9590.u8",
+      "bytes": 1228800,
+      "sha256": "8e0eeaa61136a22d5b0bf4aee532a9a749e1b876ba2fb19feb54c7823389c30a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9769.u8",
+      "bytes": 1228800,
+      "sha256": "b915588f9e204b833afc2940a1e102315eb9c0db090225cb01e97d8fae944b67"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9772.u8",
+      "bytes": 1228800,
+      "sha256": "0cd930b9337eeaf31b92578fe110d79f834c3bebaaef6283511ba571fb4cb492"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9891.u8",
+      "bytes": 1228800,
+      "sha256": "c16ce7985480b0c991484e80d19abae4645016a8e09be3acbd45cb8971c221ca"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/9914.u8",
+      "bytes": 1228800,
+      "sha256": "264d04f97c847d58698266ba548c5905504b4185ccca6f87226815d7f2c552b6"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/corpus/inputs.tsv",
+      "bytes": 4932,
+      "sha256": "1fe6c014893eb60f8afe063ff3cc7e2168a4a8fde86748b7ba5a5aca4512a8af"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/1000.f32",
+      "bytes": 2822400,
+      "sha256": "2ee7d89b48c39de30f4e4af5174f614a8ab868b648db10ac03bdd847750704f7"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/1000001.f32",
+      "bytes": 2822400,
+      "sha256": "11a86ab0d2d38f01170be24f055272e97e87ca5b4e49605d63beeeba5129c7dd"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/1000002.f32",
+      "bytes": 2822400,
+      "sha256": "6118a7eacf37ee2b3e4b0a70942d6c93055ec7b2fee4a57d935d673ae02c7ce2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/1000003.f32",
+      "bytes": 2822400,
+      "sha256": "e2472a39f53524aabbea1601d363d5597222cd535aae4b38fe7938de285ac898"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/1000004.f32",
+      "bytes": 2822400,
+      "sha256": "997ddf7722aca751f15560e7c3cac90f02bc25a9663006e9298dfd37c8ab5f49"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/107339.f32",
+      "bytes": 2822400,
+      "sha256": "7df4e04ea27c7cd394a9a80cc40010c5995712ec842a8a23d315a44d580d00c5"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/149770.f32",
+      "bytes": 2822400,
+      "sha256": "4e2a0191fdbbe662e7fe4dcdc2c35bc962e73178a7b480f808533c704fbc667a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/18380.f32",
+      "bytes": 2822400,
+      "sha256": "96cbf8e9a15f5e6eabe79c836817e8f8253f0eba7edb1f988605a51048b2966c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/205333.f32",
+      "bytes": 2822400,
+      "sha256": "290618c73e246a348b4f4ad9f9ad1fad053e9d9a07a10e9788470be4eebd9a71"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/285.f32",
+      "bytes": 2822400,
+      "sha256": "828e24aa7ae1cdaf301b29f5c6983ae2785157ab6dddc3d6bb64c1f396d36134"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/298251.f32",
+      "bytes": 2822400,
+      "sha256": "f78fe0570fbc07fe3573518cd5cb6c5f1cdd71bed31cba4e50568b9af96da68f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/303566.f32",
+      "bytes": 2822400,
+      "sha256": "c1b97a2026bffc69ff631ee02cf0b268ec41caef0a82bef588adf5f048924eaf"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/342971.f32",
+      "bytes": 2822400,
+      "sha256": "189c9434782e3214b74d1a7138a9836d3ccf1d95bb958c0c0c0f6d60dea8ec7b"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/42102.f32",
+      "bytes": 2822400,
+      "sha256": "515527c4599784e6a33783fe92b4a767c6a6b0fcc19c16473711241f4b12b3a1"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/435081.f32",
+      "bytes": 2822400,
+      "sha256": "dd1b6a80cf70bec82c65015df17723d4f3d15535b54605acb0e01aedea687cc2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/449661.f32",
+      "bytes": 2822400,
+      "sha256": "85682a22f4e21034850052eb380963339948833c6a599b768e1efa97d5e5e664"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/452515.f32",
+      "bytes": 2822400,
+      "sha256": "666b43d814fbb02ec4d28fd60efc91a0017c43ad9849193bd97faadba6ec3f8e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/456394.f32",
+      "bytes": 2822400,
+      "sha256": "a059d0d052111078dba107bd4a6d3d77df8eda8088a65ea14bc6bbdc49de1f78"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/470924.f32",
+      "bytes": 2822400,
+      "sha256": "5936f961b1c86ab9984671f7bdb06f142cd689e2f482adf6b63645f705ce0b69"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/485237.f32",
+      "bytes": 2822400,
+      "sha256": "15aa6a9ac44df447e2184fff00dfff1cc138642fe06b0f82dd74883a68a68e60"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/511760.f32",
+      "bytes": 2822400,
+      "sha256": "6b8facb204615f37dcc9be0c53654c3afdbeda7e0e8035cfa4badf1db4248a7a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/536343.f32",
+      "bytes": 2822400,
+      "sha256": "10b1463d3e506d2bfc441167212f0e35bcaea47f23b2cd581b76c9454c49fffc"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/776.f32",
+      "bytes": 2822400,
+      "sha256": "e117f2df525728527a46a5458e4bc2ab479f2bec00f0f5a80f5dd0451b804d66"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/885.f32",
+      "bytes": 2822400,
+      "sha256": "5f1551cacb4f0173ec77649ba6a97c8496abc0a567bc0812f00ce8565b561b8a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/detections.jsonl",
+      "bytes": 2373789,
+      "sha256": "a3d921a10472fa9e2fe1d3a1e8e83efb659942f818854ac662763bc46ee1f022"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r1/summary.json",
+      "bytes": 53,
+      "sha256": "591fce5583f318c31d1c86737ca7771797902ed3a2549d92cdf75da795162891"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/1000.f32",
+      "bytes": 2822400,
+      "sha256": "2ee7d89b48c39de30f4e4af5174f614a8ab868b648db10ac03bdd847750704f7"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/1000001.f32",
+      "bytes": 2822400,
+      "sha256": "11a86ab0d2d38f01170be24f055272e97e87ca5b4e49605d63beeeba5129c7dd"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/1000002.f32",
+      "bytes": 2822400,
+      "sha256": "6118a7eacf37ee2b3e4b0a70942d6c93055ec7b2fee4a57d935d673ae02c7ce2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/1000003.f32",
+      "bytes": 2822400,
+      "sha256": "e2472a39f53524aabbea1601d363d5597222cd535aae4b38fe7938de285ac898"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/1000004.f32",
+      "bytes": 2822400,
+      "sha256": "997ddf7722aca751f15560e7c3cac90f02bc25a9663006e9298dfd37c8ab5f49"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/107339.f32",
+      "bytes": 2822400,
+      "sha256": "7df4e04ea27c7cd394a9a80cc40010c5995712ec842a8a23d315a44d580d00c5"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/149770.f32",
+      "bytes": 2822400,
+      "sha256": "4e2a0191fdbbe662e7fe4dcdc2c35bc962e73178a7b480f808533c704fbc667a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/18380.f32",
+      "bytes": 2822400,
+      "sha256": "96cbf8e9a15f5e6eabe79c836817e8f8253f0eba7edb1f988605a51048b2966c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/205333.f32",
+      "bytes": 2822400,
+      "sha256": "290618c73e246a348b4f4ad9f9ad1fad053e9d9a07a10e9788470be4eebd9a71"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/285.f32",
+      "bytes": 2822400,
+      "sha256": "828e24aa7ae1cdaf301b29f5c6983ae2785157ab6dddc3d6bb64c1f396d36134"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/298251.f32",
+      "bytes": 2822400,
+      "sha256": "f78fe0570fbc07fe3573518cd5cb6c5f1cdd71bed31cba4e50568b9af96da68f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/303566.f32",
+      "bytes": 2822400,
+      "sha256": "c1b97a2026bffc69ff631ee02cf0b268ec41caef0a82bef588adf5f048924eaf"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/342971.f32",
+      "bytes": 2822400,
+      "sha256": "189c9434782e3214b74d1a7138a9836d3ccf1d95bb958c0c0c0f6d60dea8ec7b"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/42102.f32",
+      "bytes": 2822400,
+      "sha256": "515527c4599784e6a33783fe92b4a767c6a6b0fcc19c16473711241f4b12b3a1"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/435081.f32",
+      "bytes": 2822400,
+      "sha256": "dd1b6a80cf70bec82c65015df17723d4f3d15535b54605acb0e01aedea687cc2"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/449661.f32",
+      "bytes": 2822400,
+      "sha256": "85682a22f4e21034850052eb380963339948833c6a599b768e1efa97d5e5e664"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/452515.f32",
+      "bytes": 2822400,
+      "sha256": "666b43d814fbb02ec4d28fd60efc91a0017c43ad9849193bd97faadba6ec3f8e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/456394.f32",
+      "bytes": 2822400,
+      "sha256": "a059d0d052111078dba107bd4a6d3d77df8eda8088a65ea14bc6bbdc49de1f78"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/470924.f32",
+      "bytes": 2822400,
+      "sha256": "5936f961b1c86ab9984671f7bdb06f142cd689e2f482adf6b63645f705ce0b69"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/485237.f32",
+      "bytes": 2822400,
+      "sha256": "15aa6a9ac44df447e2184fff00dfff1cc138642fe06b0f82dd74883a68a68e60"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/511760.f32",
+      "bytes": 2822400,
+      "sha256": "6b8facb204615f37dcc9be0c53654c3afdbeda7e0e8035cfa4badf1db4248a7a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/536343.f32",
+      "bytes": 2822400,
+      "sha256": "10b1463d3e506d2bfc441167212f0e35bcaea47f23b2cd581b76c9454c49fffc"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/776.f32",
+      "bytes": 2822400,
+      "sha256": "e117f2df525728527a46a5458e4bc2ab479f2bec00f0f5a80f5dd0451b804d66"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/885.f32",
+      "bytes": 2822400,
+      "sha256": "5f1551cacb4f0173ec77649ba6a97c8496abc0a567bc0812f00ce8565b561b8a"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/detections.jsonl",
+      "bytes": 2373789,
+      "sha256": "a3d921a10472fa9e2fe1d3a1e8e83efb659942f818854ac662763bc46ee1f022"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/fp16-r4/summary.json",
+      "bytes": 53,
+      "sha256": "591fce5583f318c31d1c86737ca7771797902ed3a2549d92cdf75da795162891"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/1000.u8",
+      "bytes": 1228800,
+      "sha256": "95b38a28c29a065d340e043811f04310a30ab7c7845b6574db677ead158cbf75"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/1000001.u8",
+      "bytes": 1228800,
+      "sha256": "d56ebfd6b7f15c030cab8f849eb20b57354d933f0311a379c3357d126a88adbe"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/1000002.u8",
+      "bytes": 1228800,
+      "sha256": "bae875806132f594ec536b979ab2bfd4198775eb679c4f32cbcda417c97925ca"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/1000003.u8",
+      "bytes": 1228800,
+      "sha256": "3507cac777873a844947f16d783e31d13f61e1f45193b5e433b4aedbe1edd46f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/1000004.u8",
+      "bytes": 1228800,
+      "sha256": "73e8575cf2714c137ccd0344008283bf80d2ed05982fe28271b2a02ca4c7ba2c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/107339.u8",
+      "bytes": 1228800,
+      "sha256": "be9c5e0c4105a571031badc5db40cc2570b4ff216c8caf76c60a8ec5ee3da71f"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/149770.u8",
+      "bytes": 1228800,
+      "sha256": "ef95500075fa9ae0623a4129781c308ff63fd54ced84dcfbb474339ddccb6b42"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/18380.u8",
+      "bytes": 1228800,
+      "sha256": "5532cc58190ea84419f71f8559e375ebc28fa305bfd0b4540b850ac02c9c173c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/205333.u8",
+      "bytes": 1228800,
+      "sha256": "a96236f1932a5abecc0ac1d050231df755b45967463541094163b0beaa091b2d"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/285.u8",
+      "bytes": 1228800,
+      "sha256": "e54e054eac10d53458d7743c56a7eb1afdfc52c28d3f8eb8e10c695c20955437"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/298251.u8",
+      "bytes": 1228800,
+      "sha256": "4080829adc8709b969f6d7db5bc3c6184b7cc8eadbc83bfff8bdd78a6bdb6bc5"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/303566.u8",
+      "bytes": 1228800,
+      "sha256": "5b383b3456a249359105d0159aadb4eeb1fc2f9939d4fed81c8555bc6f3bf096"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/342971.u8",
+      "bytes": 1228800,
+      "sha256": "f9d423dd772133cb833d47872bd224725d182634521a6c31f4ccdfada6679aba"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/42102.u8",
+      "bytes": 1228800,
+      "sha256": "d2437d42d94e511781a37f6b3aebf1c8764e0656bceb597ba347491fb3a55259"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/435081.u8",
+      "bytes": 1228800,
+      "sha256": "d67495a312b2cece3aa083ecf6486dd586faea164e48e04656b668c2acce1f12"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/449661.u8",
+      "bytes": 1228800,
+      "sha256": "65a76187684fb3fad388c2c1655a13de899e6f5a868a6a115397bf18fe97a5ce"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/452515.u8",
+      "bytes": 1228800,
+      "sha256": "8c026fa873b4dc3937dc9646b619a5b21c70eaffd3e9e63e1a1573274bfdb63c"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/456394.u8",
+      "bytes": 1228800,
+      "sha256": "d3774dee8f0e31069b602060917c4620d9255b6829e15528c65b36fc8c1dfcf7"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/470924.u8",
+      "bytes": 1228800,
+      "sha256": "99404e8776b5e09cea809b4dbe33c343b4c4a852dfdb84860c16760ab1f1e59e"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/485237.u8",
+      "bytes": 1228800,
+      "sha256": "df8852d9c3c02afd11acdd6391f84cf77f1d2fa00b9209dddda6d741378eca65"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/511760.u8",
+      "bytes": 1228800,
+      "sha256": "6b2305b0a250bb8389de97655ad8897673c497782528956ed35c7e7b3da8db42"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/536343.u8",
+      "bytes": 1228800,
+      "sha256": "a5880e0ebe75b4c811ac514cf58ef254ae1fc0bd1d1aa20148caf0fe2f68d1c3"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/776.u8",
+      "bytes": 1228800,
+      "sha256": "79a5d00956b7ae7ca9e185294343803cf2a9c9f0a9b7a00e384fe286e520a1cb"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/885.u8",
+      "bytes": 1228800,
+      "sha256": "cb90dce560e76acebdbf0819e3dfbad7a83d1d846f469583c0c0f48fb354d6f9"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/pixels.jsonl",
+      "bytes": 1791,
+      "sha256": "aeb566d2cbfbd561ecb39b565074c1f865d5c72082789191f85600840927df12"
+    },
+    {
+      "path": "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m3-model-target-r1/preprocess-r4/summary.json",
+      "bytes": 59,
+      "sha256": "d5e9d71e3694fc87d3d0b365b37346da8395a4839b191d4e7e7e0b1aa9cbff57"
+    }
+  ],
+  "R1_R4_output_identical": true,
+  "preprocess_max_abs_u8": 0,
+  "preprocess_max_mean_abs_u8": 0,
+  "summaries": {
+    "m3-yolo-video-r4": {
+      "scope": "direct V4L2 to upstream serial GPU baseline; no async optimization",
+      "model_kind": "yolov8-coco",
+      "completed_inferences": 1803,
+      "published_results": 1802,
+      "empty_results": 1803,
+      "stale_or_stopped_results": 1,
+      "copied_frames": 1863,
+      "pool_drop": 0,
+      "ready_drop": 60,
+      "sequence_gaps": 0,
+      "final_pool_busy": 0,
+      "stop_ns": 11874712,
+      "pre_stop_capture": "RUNNING",
+      "pre_stop_model": "BUSY",
+      "failure": ""
+    },
+    "m3-yolo-executor-r5": {
+      "scope": "real camera / common task manager / upstream GPU executor lifecycle",
+      "cases_passed": 7,
+      "explicit_cuda_delay_injection_ms": 200,
+      "delay_records": 4,
+      "gpu_submissions": 6,
+      "gpu_completions": 6,
+      "generation": 2,
+      "pool_busy": 0,
+      "video_maps": 0,
+      "max_control_poll_ns_observed": 19969,
+      "shutdown_complete": true,
+      "failure": ""
+    },
+    "m3-ssd-executor-r5": {
+      "scope": "real camera / common task manager / upstream GPU executor lifecycle",
+      "cases_passed": 7,
+      "explicit_cuda_delay_injection_ms": 200,
+      "delay_records": 4,
+      "gpu_submissions": 6,
+      "gpu_completions": 6,
+      "generation": 2,
+      "pool_busy": 0,
+      "video_maps": 0,
+      "max_control_poll_ns_observed": 26113,
+      "shutdown_complete": true,
+      "failure": ""
+    }
+  }
+}

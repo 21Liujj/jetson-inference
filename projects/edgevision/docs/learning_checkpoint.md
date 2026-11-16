@@ -1,57 +1,55 @@
-# Checkpoint · 2026-11-16 · M2 基础验收完成，继续 M3
+# Checkpoint · 2026-11-16 · M3/M4验收完成，持续M5→M6→M7
 
-用户明确要求持续施工，不在状态答复或M2验收后主动收工。先读AGENTS及相关领域SKILL；
-问题唯一正文debugging_journal.md。progress.md为验收真相源。
+用户要求持续实际施工：16:30–19:30健身期间继续，19:30回来检查。
+不要在状态答复、里程碑或证据归档后主动收工；不创建任务监视automation。
+当前方案M5/M6/M7无需人工，只有硬件掉线等才联系。先读AGENTS及相关领域skill，
+问题唯一正文debugging_journal.md，验收真相progress.md；M0–M8范围保留。
 
-## 已有证据
+## Git与现场
 
-- 主线指定jetson-inference个人fork，edgevision/v3.1；静态工具式网页走gh-pages。
-- M1原版TRT10崩溃保留，afee249修复固定SSD路径；30min USB 53,898次推理。
-- M2 R3：100次启停（3次受限启动重试）、30min纯采集53,999帧，原失败保留。
-- R8：新V4L2输入接上游DetectNet，复用M1 engine；60s完成1,802次，非精度/性能结论。
-- R10：统一initialize/submit/query/collect/cancel_pending/shutdown，检测与启停共用
-  一个TaskManager。Windows9/9、Jetson ASan/UBSan/LSan11/11；真实GPU7项生命周期
-  与模型失败负例通过。逻辑终态仍保留物理执行槽，真实event完成后才归还lease。
-- 用户配合联合拔插时真实GPU event仍pending；READY队列0、在途pool1。原任务775
-  物理完成后FAILED/CAPTURE_NOT_RUNNING且无结果；3次有限重开至gen4，新会话两个
-  检测DONE，首帧恢复7.5720s。参数5次/30s，测试历史4096；不是默认3次/15s结论。
-  本轮776次GPU提交/完成、1个故障任务无结果，最后IDLE/UNLOADED、pool0/maps0正常退出。
-- 显式CUDA测试负载请求200ms，默认构建关闭，不是M5预处理或性能优化。
-- 最新证据evidence/2026-11-16-executor/，原始源码/错误/复测与哈希已收本机；
-  按实际源码分版本验收，不把R3长采集当R10最终系统长稳。此前证据目录继续保留。
+- fork jetson-inference，edgevision/v3.1。M2源码860c6d3已推；M4代码/原始证据1229a84
+  在16:27已推GitHub。M3模型源码/证据本机齐备，准备提交。
+- gh-pages上次692df71仍展示M2完成/M3准备；后续只更新工具式页面事实状态。
+- 板端/home/nvidia/jetson-inference-edgevision为冻结上游父HEAD加SFTP源码，禁止pull/reset/clean。
+  原两个仓库及未提交工作保留。Windows上游大小写噪声不暂存。
+- 已实际进行原UVC→自编原版→原UVC、trace模块矩阵/真实拔插→原UVC。
+  目前系统UVC sysfs Build ID 4f3253a8a815a048b37be4908a51db4ef5b66053。
+  taint4096→12288，回退不清除；sig_enforce=N原策略未改，未重启/刷固件/改JetPack。
+- SSH私有helper会话82434、26078，凭据只在内存。稳定camera by-id见run.json。
+  原edgevisionrt服务保留，主线一个相机owner；板端无rg，用grep等回退。
 
-## 现场与构建身份
+## 已验事实
 
-板端/home/nvidia/jetson-inference-edgevision的Git HEAD仍是上游冻结父提交加SFTP源码，
-禁止blanket pull/reset/clean。模型、build-baseline和原两个工作区均保留。
-R10源码包SHA256：fc23d0a30fee0c8c329608aa0c9f2f648f9d52a9bf87c167e813d2229077b5c5。
-R10主执行probe SHA：321f0d64d51e711d1969638a8bcab57b8de9fb7d24fe9f6be5e15b675cc6cb2b。
-上游库仍为build-baseline/aarch64，M1 engine SHA为3cb11235…ab2fc4。
-模型manifest已纠正workspace：日志请求512MiB，TRT10上游未显式应用cap，见EV-GPU-002。
+- M1原版TRT10崩溃保留、afee249修复；30min真实推理53898次。
+- M2 R3：100启停、30min采集53999帧；R8直接输入60s1802次；R10统一任务、
+  真实GPU逻辑超时/取消/stop/shutdown及联合USB恢复见相应证据目录。
+- M3原UVC 155导入CRC/vermagic/srcversion匹配，三段5s151/150/151帧、真实回退。
+- M3 YOLO ONNX e4b651…dea7940，metadata8.3.159/torch2.5/opset12。
+  新engine2925e839f38ff81f186db6284e6e369c23399fdd50914b10526fd8a8c0474519。
+  200张子集ORT AP.394822295→TRT.394353343，下降.046895个百分点；框199/200。
+  图470924分数.252635→.249390跨.25阈值，原输出保留，未调整门槛。
+- CPU letterbox24例含RGB行padding/奇数尺寸/截断，与PC逐字节相同；host10/10，
+  target ASan/UBSan/LSan12/12（72.24s）。60s视频1803次全有效空，非相机精度证明；
+  发布1802，停止时1结果失效，pool0。R5 YOLO/SSD任务生命周期各7项通过。
+- R4测试错误要求restart只增1代，原失败保留；R5核对1+start_retries，生产策略未改。
+  最新完整源码R5 ZIP76文件SHA4bc711dcdbd5a7025b0c3ad377872c5b3dabe39fabe8ae0ac747ac8e45e8e062，
+  全部与板端实际文件核对。模型证据evidence/2026-11-16-yolo已收齐。
+- M4补丁4文件、172导入CRC匹配。原版/关闭/开启各正常、慢消费、启停，两轮矩阵通过。
+  R1并行engine构建；R2仅观察开销，不宣称零开销。慢消费241=80消费+159替换+2停止；
+  另有668字节error1内部回收无DQBUF。实际拔插7.3799s、1803消费全关联，
+  用户gen1→4映射kernel stream1→2。原始trace/回退在evidence/2026-11-16-uvc-trace。
 
-native为build/inference-native，采集原生为build/capture-native，目标sanitizer为
-build/capture-asan。nvcc不在非登录PATH，显式CMAKE_CUDA_COMPILER=/usr/local/cuda/bin/nvcc。
-验收CUDA target使用Shared runtime，不能带入R9混合cudart设置。Capture/GPU测试已退出、
-视频无owner；SSH工具会话仍在。未切换或安装内核模块、升级JetPack、USB reset或刷固件。
-下一次开设备前重新核对稳定设备与owner。
+## 当前M5与后续
 
-## 已开始的 M3 准备
-
-- 已只读核对目标5.15.148-tegra / L4T36.4.3、运行config、modinfo、headers与
-  Module.symvers。headers没有UVC .c。内核编译器Bootlin11.3，原生gcc11.4，需记录差异。
-- 官方R36.4.3 public_sources.tbz2已下载到本机artifacts/m3-kernel-r3643，
-  SHA256 2c177804679e3ed650dabec6fa958388579896f170570c6171a1b6c386669216；
-  嵌套kernel_src SHA256 0c314c5174d07149194e0a5a50d0f14a4ee5a4fe2cd1f382b471624cc1aa5184。
-  完整UVC源码13文件已提取，原Makefile版本5.15.148；本机计算哈希不是厂商发布哈希。
-- board inventory在artifacts/2026-11-16/m3-kernel-inventory；下载工具fetch_kernel_sources.py。
-- 旧board /home/nvidia/edgevisionrt/models 有yolov8n.pt、onnx与fp16 engine，已只读哈希；
-  后续先审计导出/预处理/I/O，再决定复用，不继承旧性能或mAP。PC有numpy/Pillow，
-  还没有onnx/onnxruntime/torch/cv2；新依赖放隔离目录，别升级板端CUDA软件栈。
-
-## 当前继续
-
-1. 把匹配的原UVC源码与manifest传板端，使用现有headers/Module.symvers构建未修改模块；
-   核对vermagic、srcversion、导入符号CRC，准备原模块备份与回退，之后才做实际加载验证。
-2. 审计既有YOLO模型、固定20图与参考输出；补最终模型manifest和数值/准确性基线。
-3. M3未完成。之后M4真实UVC trace补丁/安装回退、M5数值与Nsight、M6 ROS2、M7真实
-   本地VLM/Agent、M8实时Web/RTSP/部署及2h/12h都完整保留。vision_msgs仍缺。
+- 主线仍为修复tensorNet/DetectNet。YoloV8Coco显式选择，SSD默认保留。
+  M3 YOLO路径是GPU转RGB→下载CPU→OpenCV letterbox/CHW→上传GPU，串行屏障。
+- Nsight2024.5.4、CUDA12.6、OpenCV4.10已核对，nvpmodel MAXN_SUPER(mode2)。
+  P0初步profile在板端artifacts/2026-11-16/m5-p0-diagnostic-r1/p0.nsys-rep（2.3MB），
+  监督exit0、stats.csv已生成；无CPU采样、自定义NVTX阶段或正式锁频比较。
+- 下一步读P0统计，冻结融合RGB letterbox/CHW/normalize数值门槛，加NVTX、固定池、
+  pinned→device和mapped两路径，P0/P1/P2事件依赖及Nsight/吞吐/尾延迟比较。
+  一个推理context避免并发复用，逻辑取消不提前释放GPU仍在访问的内存。
+- M6 ROS2 Humble同进程封装统一核心，限频图像分支，一个相机owner；vision_msgs缺失。
+- M7尚未验收；HF cache有models--Qwen--Qwen3-VL-2B-Instruct，需核对权重完整性、
+  环境与真实推理，不把OWLViT检测当VLM问答。
+- M8实时Web/RTSP、部署恢复、30min/2h/12h完整保留；静态页不是实时控制台。

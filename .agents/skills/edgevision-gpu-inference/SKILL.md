@@ -42,3 +42,15 @@ setMemoryPoolLimit；不要重新把该数字写成已生效的内存上限。
 取消/过期只失效结果，物理完成后才发布completion。R10真实GPU与联合拔插验收见
 docs/m2-executor.md。gpu_acceptance_delay.cu是显式测试注入，默认关闭；不能当CUDA优化。
 该验收target显式使用Shared runtime和SM87，nvcc走绝对路径，不改变全局环境。
+
+M3 YOLO分支已验：models/yolov8n-coco.json是首轮前冻结契约，
+docs/m3-model.md及evidence/2026-11-16-yolo记录200张子集AP、24图逐字节CPU预处理、
+真实视频与YOLO/SSD任务复测。DetectorKind::SsdFruit仍是默认；YoloV8Coco显式选择，
+后者继承修复后的tensorNet，没有独立TRT loader。旧export仅metadata可审计，不冒称重导出。
+新engine为2925e839…0474519，FP16 builder flag不表示所有算子均半精度。
+R4测试错误假定重启只增一代；R5严格核对1+start_retries，生产恢复策略未改变。
+
+当前M5起点仍是串行GPU颜色转换→CPU letterbox→GPU tensor，见upstream_detector.cc。
+P0诊断profile在板端artifacts/2026-11-16/m5-p0-diagnostic-r1，nsys2024.5.4已实测可采集；
+它不是锁频正式benchmark。先冻结新数值门槛，再实现融合和P0/P1/P2相同输入对照，
+不能因为M3用了CUDA event就声称M5已经完成。框阈值翻转真实样例见journal EV-GPU-003。

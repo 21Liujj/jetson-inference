@@ -81,7 +81,7 @@ struct Harness {
        event=="stop_waits_for_inflight_lease" || event=="shutdown_keeps_gpu_resources")
       require(device_pending,"GPU_COMPLETED_BEFORE_EVIDENCE_SNAPSHOT");
     events<<"{\"mono_ns\":"<<now()<<",\"event\":"<<quote(event)<<",\"capture\":"<<quote(name(r.capture))
-      <<",\"generation\":"<<r.generation<<",\"model_state\":"<<int(r.model)<<",\"capture_resources_live\":"<<(r.backend_resources_live?"true":"false")
+      <<",\"generation\":"<<r.generation<<",\"start_retries\":"<<r.start_retries<<",\"model_state\":"<<int(r.model)<<",\"capture_resources_live\":"<<(r.backend_resources_live?"true":"false")
       <<",\"queue_depth\":"<<c.queue_depth<<",\"pool_busy\":"<<c.pool_busy<<",\"gpu_phase\":"<<int(e.phase)
       <<",\"gpu_submissions\":"<<e.gpu_submissions<<",\"gpu_completions\":"<<e.gpu_completions<<",\"gpu_event_pending\":"<<(device_pending?"true":"false")
       <<",\"gpu_submitted_mono_ns\":"<<e.gpu_submitted_mono_ns

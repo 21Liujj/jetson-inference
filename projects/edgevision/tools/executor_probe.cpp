@@ -5,13 +5,15 @@ using namespace edgevision::acceptance;
 int main(int argc,char** argv){
   std::string out;
   try{
-    std::string device,model,labels;bool missing=false;
+    std::string device,model,labels;bool missing=false; DetectorKind kind=DetectorKind::SsdFruit;
     for(int i=1;i<argc;++i){const std::string key=argv[i];if(key=="--missing-model"){missing=true;continue;}
       if(i+1>=argc)throw std::invalid_argument("option needs value");const std::string value=argv[++i];
-      if(key=="--device")device=value;else if(key=="--model")model=value;else if(key=="--labels")labels=value;else if(key=="--out")out=value;else throw std::invalid_argument("unknown option");}
+      if(key=="--device")device=value;else if(key=="--model")model=value;else if(key=="--labels")labels=value;else if(key=="--out")out=value;
+      else if(key=="--kind") { if(value=="yolov8")kind=DetectorKind::YoloV8Coco;else if(value!="ssd")throw std::invalid_argument("unknown model kind"); }
+      else throw std::invalid_argument("unknown option");}
     require(!device.empty()&&!model.empty()&&!labels.empty()&&!out.empty(),"INVALID_ARGUMENTS");
     require(std::filesystem::create_directories(out),"OUTPUT_ALREADY_EXISTS");
-    Harness h(device,out);require(h.router.initialize({model,labels,250}).accepted,"MODEL_INITIALIZE_REJECTED");h.start("start-initial");
+    Harness h(device,out);require(h.router.initialize({model,labels,250,kind}).accepted,"MODEL_INITIALIZE_REJECTED");h.start("start-initial");
     if(missing){
       h.wait([&]{return h.router.status().model==ModelState::Error;});auto a=h.detect("missing-model-detect");h.expect(a.task_id,TaskState::Failed);
       require(h.router.query(a.task_id)->error_code=="MODEL_NOT_READY"&&h.router.status().capture==CaptureState::Running,"MODEL_FAILURE_NOT_INDEPENDENT");
@@ -41,7 +43,9 @@ int main(int argc,char** argv){
       h.expect(stop.task_id,TaskState::Done);h.expect(stopped.task_id,TaskState::Canceled);
       require(h.capture.snapshot().pool_busy==0&&video_maps()==0,"CAPTURE_RESOURCES_NOT_RELEASED");h.log("stop_physically_done",stop.task_id);++h.cases;
       h.gate.enabled=false;const auto old_generation=h.router.status().generation;h.start("restart-after-gpu-stop");
-      require(h.router.status().generation==old_generation+1,"RESTART_DID_NOT_ADVANCE_GENERATION");
+      const auto restarted=h.router.status();h.log("restart_observed");
+      require(restarted.generation>old_generation && restarted.generation-old_generation==1+restarted.start_retries,
+              "RESTART_GENERATION_RETRY_ACCOUNTING_MISMATCH");
       auto fresh=h.detect("new-generation-detect");h.expect(fresh.task_id,TaskState::Done);h.log("new_generation_done",fresh.task_id);++h.cases;
       h.gate.enabled=true;auto shutdown_active=h.detect("gpu-shutdown");h.gpu_pending(shutdown_active.task_id);auto shutdown_waiting=h.detect("shutdown-waiting");
       h.router.shutdown(now());h.step();h.check_pending(shutdown_active.task_id,TaskState::Canceled,"shutdown_keeps_gpu_resources");

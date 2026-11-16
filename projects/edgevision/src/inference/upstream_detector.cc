@@ -1,5 +1,7 @@
 #include "edgevision/upstream_detector.h"
 #include "edgevision/image_layout.h"
+#include "edgevision/upstream_yolo.h"
+#include "edgevision/yolo_preprocess.h"
 #include <jetson-inference/detectNet.h>
 #include <jetson-utils/cudaColorspace.h>
 #include <chrono>
@@ -7,6 +9,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
 #include <thread>
 
 namespace edgevision {
@@ -70,6 +73,10 @@ struct DeviceBuffer {
 struct UpstreamDetector::Impl {
   std::thread::id owner = std::this_thread::get_id();
   std::unique_ptr<detectNet> net;
+  std::unique_ptr<UpstreamYolo> yolo;
+  std::vector<std::string> labels;
+  std::vector<uint8_t> cpu_rgb, tensor_bytes;
+  std::vector<float> tensor;
   MappedBuffer raw;
   DeviceBuffer rgb;
   void require_owner() const {
@@ -77,16 +84,29 @@ struct UpstreamDetector::Impl {
   }
   ~Impl() {
     if (owner != std::this_thread::get_id()) { std::fputs("GPU_OWNER_DESTRUCTION_MISMATCH\n", stderr); std::_Exit(70); }
-    if (net) completed_barrier();
+    if (net || yolo) completed_barrier();
   }
 };
 UpstreamDetector::UpstreamDetector() : impl_(new Impl) {}
 UpstreamDetector::~UpstreamDetector() = default;
-void UpstreamDetector::initialize(const std::string& onnx, const std::string& labels) {
+void UpstreamDetector::initialize(const std::string& onnx, const std::string& labels, DetectorKind kind) {
   impl_->require_owner();
-  if (impl_->net) throw std::logic_error("MODEL_ALREADY_INITIALIZED");
+  if (impl_->net || impl_->yolo) throw std::logic_error("MODEL_ALREADY_INITIALIZED");
   if (!std::filesystem::is_regular_file(onnx) || !std::filesystem::is_regular_file(labels))
     throw std::invalid_argument("MODEL_FILE_NOT_FOUND");
+  if (kind==DetectorKind::YoloV8Coco) {
+    std::ifstream file(labels); std::string line;
+    while (std::getline(file,line)) {
+      if (!line.empty() && line.back()=='\r') line.pop_back();
+      if (line.empty() || line.size()>128 || impl_->labels.size()==80 || line.find_first_of("\t\n")!=std::string::npos)
+        throw std::invalid_argument("INVALID_COCO_LABELS");
+      impl_->labels.push_back(line);
+    }
+    if (!file.eof() || impl_->labels.size()!=80) throw std::invalid_argument("EXPECTED_80_COCO_LABELS");
+    impl_->yolo=std::make_unique<UpstreamYolo>(); impl_->yolo->initialize(onnx);
+    return;
+  }
+  if (kind!=DetectorKind::SsdFruit) throw std::invalid_argument("UNSUPPORTED_MODEL_KIND");
   impl_->net.reset(detectNet::Create(nullptr, onnx.c_str(), 0.0f, labels.c_str(), 0.5f,
                                   "input_0", "scores", "boxes", 1, TYPE_FP16, DEVICE_GPU, true));
   if (!impl_->net) throw std::runtime_error("UPSTREAM_MODEL_LOAD_FAILED");
@@ -103,7 +123,7 @@ void UpstreamDetector::initialize(const std::string& onnx, const std::string& la
 }
 DetectionResult UpstreamDetector::infer(FrameLease frame, const SubmitObserver& gpu_submitted) {
   impl_->require_owner();
-  if (!impl_->net || !frame.valid() || frame.state() != SlotState::Ready) throw std::logic_error("MODEL_OR_FRAME_NOT_READY");
+  if ((!impl_->net && !impl_->yolo) || !frame.valid() || frame.state() != SlotState::Ready) throw std::logic_error("MODEL_OR_FRAME_NOT_READY");
   const auto bytes = packed_yuyv_bytes(*frame, frame->data.size());
   impl_->raw.reserve(bytes); impl_->rgb.reserve(std::size_t(frame->width) * frame->height * 3);
   pack_yuyv(*frame, impl_->raw.cpu, impl_->raw.bytes);
@@ -114,8 +134,22 @@ DetectionResult UpstreamDetector::infer(FrameLease frame, const SubmitObserver& 
     check(cudaConvertColor(impl_->raw.gpu, IMAGE_YUYV, impl_->rgb.pointer, IMAGE_RGB8,
                            frame->width, frame->height, cudaStream_t(0)), "UPSTREAM_YUYV_TO_RGB");
     if (gpu_submitted) gpu_submitted(frame);
-    detectNet::Detection* boxes = nullptr;
-    const auto count = impl_->net->Detect(impl_->rgb.pointer, frame->width, frame->height, IMAGE_RGB8, &boxes, detectNet::OVERLAY_NONE);
+    if (impl_->yolo) {
+      // M3 serial correctness baseline. M5 will profile and remove this GPU->CPU
+      // round trip with a numerically checked fused preprocess kernel.
+      impl_->cpu_rgb.resize(std::size_t(frame->width)*frame->height*3);
+      check(cudaMemcpy(impl_->cpu_rgb.data(),impl_->rgb.pointer,impl_->cpu_rgb.size(),cudaMemcpyDeviceToHost),"YOLO_RGB_DOWNLOAD");
+      const auto geometry=yolo_letterbox_rgb(impl_->cpu_rgb.data(),impl_->cpu_rgb.size(),frame->width,frame->height,
+                                             std::size_t(frame->width)*3,impl_->tensor_bytes);
+      impl_->tensor.resize(impl_->tensor_bytes.size());
+      for (std::size_t n=0;n<impl_->tensor.size();++n) impl_->tensor[n]=float(impl_->tensor_bytes[n])/255.f;
+      const auto raw=impl_->yolo->infer(impl_->tensor.data(),impl_->tensor.size());
+      for (const auto& b : decode_yolov8(raw.data(),raw.size(),geometry))
+        result.boxes.push_back({b.class_id,b.score,b.left,b.top,b.right,b.bottom,impl_->labels[b.class_id]});
+      completed_barrier(); fence->record(); fence->wait();
+    } else {
+      detectNet::Detection* boxes = nullptr;
+      const auto count = impl_->net->Detect(impl_->rgb.pointer, frame->width, frame->height, IMAGE_RGB8, &boxes, detectNet::OVERLAY_NONE);
     // Includes conversion, upstream preprocessing and any downstream GPU work.
     // Coarse synchronization is intentional for this correctness baseline.
     completed_barrier(); fence->record(); fence->wait();
@@ -127,6 +161,7 @@ DetectionResult UpstreamDetector::infer(FrameLease frame, const SubmitObserver& 
           !std::isfinite(b.Top) || !std::isfinite(b.Right) || !std::isfinite(b.Bottom) || b.Confidence < 0 || b.Confidence > 1 ||
           b.Right < b.Left || b.Bottom < b.Top) throw std::runtime_error("INVALID_DETECTION_RESULT");
       result.boxes.push_back({int(b.ClassID), b.Confidence, b.Left, b.Top, b.Right, b.Bottom, impl_->net->GetClassDesc(b.ClassID)});
+    }
     }
     result.completed_mono_ns = now();
     if (!frame.complete_if_ready()) throw std::logic_error("CUDA_FRAME_COMPLETION_NOT_OBSERVED");

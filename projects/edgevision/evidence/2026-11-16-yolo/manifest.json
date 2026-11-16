@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "path": "pc-reference-evidence.zip",
+      "bytes": 1395622,
+      "sha256": "5a4310576f31b9900ac4a7b2edea5e9aea3c8667258235570e1f9f76e8d6d2f9"
+    },
+    {
+      "path": "raw-target-evidence.zip",
+      "bytes": 2087036,
+      "sha256": "2bd4ef0495e915d76bb86fc831d48c103a5bdbd37428463ea66a95f9754683c7"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 2712,
+      "sha256": "9d9bc9f28a8eba1c545f44086015574827d015ae3cf16cd6d367132befda7307"
+    },
+    {
+      "path": "target-identity.json",
+      "bytes": 80395,
+      "sha256": "43c1a2be786c2c0a63704e1443892568e46611b52b1164001b9fc0abecb43934"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 #pragma once
 #include "edgevision/frame.h"
+#include "edgevision/model_kind.h"
 #include <optional>
 #include <string>
 
@@ -9,6 +10,7 @@ enum class ExecutionPhase { Idle, WaitingFrame, InFlight, CompletionReady, Stopp
 struct InferenceConfig {
   std::string onnx, labels;
   uint32_t max_frame_age_ms = 250;
+  DetectorKind kind = DetectorKind::SsdFruit;
 };
 struct ExecutionJob {
   uint64_t task_id = 0, generation = 0, deadline_mono_ns = 0;

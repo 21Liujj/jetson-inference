@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "status": "contract_frozen_before_M3_first_evaluation; acceptance_pending",
+  "model": "Ultralytics YOLOv8n COCO, existing personal EdgeVisionRT artifact",
+  "weight_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+  "onnx_sha256": "e4b6513441dd6ba0976b5ab2b9702811f5a2265342baa0aca0c082cffdea7940",
+  "provenance": {
+    "donor": "/home/nvidia/edgevisionrt/models/yolov8n.onnx",
+    "weight_source": "existing yolov8n.pt; original download log not retained",
+    "metadata_producer": "pytorch 2.5.0",
+    "metadata_exporter": "ultralytics 8.3.159",
+    "metadata_args": {"batch": 1, "half": false, "dynamic": false, "simplify": true, "opset": 12, "nms": false},
+    "license": "AGPL-3.0 (model metadata); weights and engine are not redistributed",
+    "upstream_model_docs": "https://docs.ultralytics.com/models/yolov8/",
+    "export_reproduction": "metadata audited; original export environment is not independently reconstructed"
+  },
+  "input": {"name": "images", "shape": [1, 3, 640, 640], "dtype": "float32", "layout": "NCHW", "color": "RGB", "normalization": "uint8 / float32(255)"},
+  "preprocess": {"size": 640, "resize": "OpenCV INTER_LINEAR uint8", "scale_up": true, "auto_stride": false, "padding": 114, "rounding": "Python round to nearest even; symmetric padding round(d/2 - 0.1), round(d/2 + 0.1)", "coordinate_inverse": "subtract actual left/top integer padding, divide by original min(640/w,640/h), clip to original image bounds"},
+  "output": {"name": "output0", "shape": [1, 84, 8400], "dtype": "float32", "layout": "4 cxcywh pixel channels then 80 independent class probability channels; no objectness"},
+  "postprocess": {"evaluation_confidence": 0.001, "display_confidence": 0.25, "iou_threshold": 0.7, "class_aware": true, "evaluation_multi_label": true, "display_multi_label": false, "max_candidates": 30000, "max_detections": 300, "stable_tie_break": "score descending, then anchor index, then class index", "coco_category_mapping": "sorted 80 COCO category IDs, not class_index+1"},
+  "first_evaluation_gates": {
+    "reference": "ONNX Runtime 1.20.1 CPUExecutionProvider, exact same frozen normalized inputs",
+    "finite_outputs_required": true,
+    "fixed_image_count_min": 20,
+    "annotated_image_count": 200,
+    "fp16_max_absolute_AP_drop": 0.005,
+    "AP_definition": "COCOeval bbox AP@[.50:.05:.95], area=all, maxDets=100, same selected image IDs; subset metric only",
+    "fixed_display_minimum_match_fraction": 0.98,
+    "fixed_display_match_iou_minimum": 0.95,
+    "fixed_display_score_absolute_error_maximum": 0.05,
+    "raw_output_error": "record absolute/RMS/percentile errors separately for coordinates and scores; not a universal elementwise relative tolerance near zero",
+    "threshold_policy": "retain first failures and investigate; do not relax gates after observing results"
+  },
+  "target": {"gpu": "Orin Nano 8GB", "tensorrt": "10.3.0.30", "cuda": "12.6", "precision": "FP16 compute, FP32 I/O", "foundation": "personal subclass of repaired upstream tensorNet; no independent TRT loader", "batch": 1, "allow_gpu_fallback": true, "workspace_bytes": null, "logged_workspace_request_bytes": 536870912, "explicit_workspace_limit_applied": false, "engine_sha256": null},
+  "excluded_claims": ["INT8", "full COCO accuracy", "CUDA optimization", "asynchronous execution overlap", "old engine equivalence"]
+}

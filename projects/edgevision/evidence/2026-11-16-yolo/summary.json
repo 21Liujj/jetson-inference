@@ -1,0 +1,75 @@
+{
+  "scope": "M3 YOLO static deployment and correctness; M5 async/performance not claimed",
+  "reference_AP": 0.3948222949543204,
+  "target_AP": 0.3943533431858395,
+  "AP_drop_percentage_points": 0.04689517684809408,
+  "fixed_match_fraction": 0.995,
+  "fixed_matched": 199,
+  "fixed_reference_boxes": 200,
+  "parser_failures": [],
+  "pass": true,
+  "preprocess_fixed_images": 24,
+  "preprocess_max_abs_u8": 0,
+  "reference_and_target_preprocess_byte_identical": true,
+  "Windows_CPU_tests": {
+    "passed": 10,
+    "total": 10
+  },
+  "Jetson_ASan_UBSan_LSan_tests": {
+    "passed": 12,
+    "total": 12,
+    "elapsed_s": 72.24
+  },
+  "model_summaries": {
+    "m3-yolo-video-r4": {
+      "scope": "direct V4L2 to upstream serial GPU baseline; no async optimization",
+      "model_kind": "yolov8-coco",
+      "completed_inferences": 1803,
+      "published_results": 1802,
+      "empty_results": 1803,
+      "stale_or_stopped_results": 1,
+      "copied_frames": 1863,
+      "pool_drop": 0,
+      "ready_drop": 60,
+      "sequence_gaps": 0,
+      "final_pool_busy": 0,
+      "stop_ns": 11874712,
+      "pre_stop_capture": "RUNNING",
+      "pre_stop_model": "BUSY",
+      "failure": ""
+    },
+    "m3-yolo-executor-r5": {
+      "scope": "real camera / common task manager / upstream GPU executor lifecycle",
+      "cases_passed": 7,
+      "explicit_cuda_delay_injection_ms": 200,
+      "delay_records": 4,
+      "gpu_submissions": 6,
+      "gpu_completions": 6,
+      "generation": 2,
+      "pool_busy": 0,
+      "video_maps": 0,
+      "max_control_poll_ns_observed": 19969,
+      "shutdown_complete": true,
+      "failure": ""
+    },
+    "m3-ssd-executor-r5": {
+      "scope": "real camera / common task manager / upstream GPU executor lifecycle",
+      "cases_passed": 7,
+      "explicit_cuda_delay_injection_ms": 200,
+      "delay_records": 4,
+      "gpu_submissions": 6,
+      "gpu_completions": 6,
+      "generation": 2,
+      "pool_busy": 0,
+      "video_maps": 0,
+      "max_control_poll_ns_observed": 26113,
+      "shutdown_complete": true,
+      "failure": ""
+    }
+  },
+  "source_package_sha256": "4bc711dcdbd5a7025b0c3ad377872c5b3dabe39fabe8ae0ac747ac8e45e8e062",
+  "verified_source_files": 76,
+  "engine_sha256": "2925e839f38ff81f186db6284e6e369c23399fdd50914b10526fd8a8c0474519",
+  "precision_note": "FP16 builder flag enabled; FP32 I/O; actual kernels may mix precision; no explicit TRT10 workspace cap",
+  "full_raw_numeric_storage": "Retained on development PC and Jetson under artifacts/m3-model-regression-r1 and artifacts/m3-model-target-r1, with hashes in target-identity.json; weights and images not distributed in Git"
+}
