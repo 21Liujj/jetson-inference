@@ -1,10 +1,10 @@
 'use strict';
 const base='https://github.com/21Liujj/jetson-inference/blob/edgevision/v3.1/';
 const stages=[
- ['USB / UVC / V4L2','M2 基础验收完成','直接 V4L2/MMAP、100 次启停、30 分钟纯采集及真实拔插恢复已验；停止后插回保持 IDLE。统一任务与真实GPU超时/取消/停止/联合拔插已验；当前准备M3模型与原模块基线，UVC trace待M4。','关键约束：相机单一 owner；sequence 缺口与应用丢弃分别统计。','projects/edgevision/src/camera/v4l2_capture.cc'],
- ['CUDA / TensorRT','M2 串行基线 / M5 待验收','已核对 CUDA 12.6 / TensorRT 10.3；修复兼容路径，新 V4L2 输入接入上游 DetectNet，60s 完成 1,802 次推理。后续优化要求数值回归、内存路径对照、事件流水线与 Nsight 时间线。','关键约束：提交成功不等于 GPU 完成；在途 buffer 保留到完成事件。','c/tensorNet.cpp'],
- ['ROS2 / Humble','M6 待验收','板端已安装 ROS2 Humble。图像、检测、帧元数据、诊断、启停服务和任务 Action 是正式交付范围；安装依赖不表示集成通过。','关键约束：相机只有一个 owner；ROS 时间域与采集单调时钟分别记录。','UPSTREAM.md'],
- ['本地 VLM / VisionAgent','M7 待验收','后续独立核验既有 EdgeQwen 模型接口，再接入结构化计划、受约束工具与真实任务轨迹。规则测试不能替代模型参与的正式验收。','关键约束：Agent 与 ROS2 共享任务管理；回答引用真实工具结果。','projects/edgevision/docs/spec/construction-plan-v3.1.md#11-视觉任务agent正式开发']
+ ['USB / UVC / V4L2','M2–M4 基础验收完成','直接 V4L2/MMAP、100 次启停、30 分钟采集和真实拔插恢复已验。UVC 新增帧/stream 事件，真实恢复测试中 1,803 条消费记录全部关联；测试后实际回退原模块。','关键约束：相机单一 owner；sequence 缺口与应用丢弃分别统计。','projects/edgevision/docs/m4-uvc-trace.md'],
+ ['CUDA / TensorRT','数值与长窗口对照通过 / 资源对照待补','48 例 CUDA 预处理、200 图模型回归及真实 GPU 生命周期通过。五配置各 3×300 秒，共 646,305 次完成；Pinned 离线中位 P0 74.09、P1 129.72、P2 192.68 images/s。P2 吞吐更高，尾延迟比 P1 差；利用率、RSS 和功耗对照待补。','关键约束：运行时使用 P1；P2 为离线组件对照，不能当摄像头帧率。','projects/edgevision/docs/m5-gpu-pipeline.md'],
+ ['ROS2 / Humble','M6 功能通过 / 正式性能待补','三个 Humble 包已在 Jetson 构建。真实图像、同帧检测、诊断、服务、Action 取消/超时、慢订阅与受限 bag 回放已验；安装时加载旧动态库的问题和修复保留原始证据。四组短窗口开销不替代正式性能。','关键约束：ROS2 与其他入口共享任务；ROS 发布时钟和采集单调时钟分开。','projects/edgevision/docs/m6-ros2.md'],
+ ['本地 VLM / VisionAgent','M7 集成验证中','Qwen3-VL-2B 已完成独立真实图像问答和模型工具选择。共享快照、进程管理、ROS Action 与 Python Agent 正在板端集成；完整任务集、三条真实轨迹、资源影响和故障验收仍待完成。','关键约束：模型真实参与；参数按 schema 校验，回答引用实际工具结果。','projects/edgevision/docs/progress.md']
 ];
 const tabs=Array.from(document.querySelectorAll('[data-stage]'));
 function selectTab(button){
