@@ -1,6 +1,7 @@
 #pragma once
 #include "edgevision/frame_lease.h"
 #include <memory>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -25,7 +26,8 @@ class UpstreamDetector {
   UpstreamDetector(const UpstreamDetector&) = delete;
   UpstreamDetector& operator=(const UpstreamDetector&) = delete;
   void initialize(const std::string& onnx, const std::string& labels);
-  DetectionResult infer(FrameLease);
+  using SubmitObserver = std::function<void(const FrameLease&)>;
+  DetectionResult infer(FrameLease, const SubmitObserver& gpu_submitted = {});
  private:
   struct Impl;
   std::unique_ptr<Impl> impl_;

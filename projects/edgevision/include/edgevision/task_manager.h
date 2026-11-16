@@ -47,10 +47,11 @@ struct TaskAdmission {
 class TaskManager {
  public:
   explicit TaskManager(std::size_t pending_capacity = 1, std::size_t record_capacity = 256);
-  TaskAdmission submit(TaskRequest, uint64_t now_mono_ns, uint64_t current_generation);
+  TaskAdmission submit(TaskRequest, uint64_t now_mono_ns, uint64_t current_generation, bool allow_new = true);
   std::optional<TaskRecord> take(uint64_t now_mono_ns, uint64_t current_generation);
   std::optional<TaskRecord> query(uint64_t id) const;
   bool cancel(uint64_t id, uint64_t now_mono_ns);
+  bool fail_running(uint64_t id, std::string error_code, uint64_t now_mono_ns);
   bool complete(uint64_t id, bool success, std::string result, std::string error_code,
                 uint64_t now_mono_ns);
   bool retarget_running(uint64_t id, uint64_t expected_generation, uint64_t next_generation);

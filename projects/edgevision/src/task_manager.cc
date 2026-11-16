@@ -26,7 +26,7 @@ bool TaskManager::same_request(const TaskRequest& a, const TaskRequest& b) {
   // A retry cannot extend the original deadline. Return the original record.
   return a.command == b.command && a.generation == b.generation && a.parameters == b.parameters;
 }
-TaskAdmission TaskManager::submit(TaskRequest request, uint64_t now, uint64_t generation) {
+TaskAdmission TaskManager::submit(TaskRequest request, uint64_t now, uint64_t generation, bool allow_new) {
   if (!valid_request(request)) return {false, false, 0, AdmissionError::InvalidRequest};
   std::lock_guard<std::mutex> lock(mu_);
   tick_locked(now, generation);
@@ -38,6 +38,7 @@ TaskAdmission TaskManager::submit(TaskRequest request, uint64_t now, uint64_t ge
   }
   if (request.generation != generation) return {false, false, 0, AdmissionError::StaleGeneration};
   if (now >= request.deadline_mono_ns) return {false, false, 0, AdmissionError::DeadlineExceeded};
+  if (!allow_new) return {false, false, 0, AdmissionError::Busy};
   if (records_.size() >= record_capacity_ || next_id_ == std::numeric_limits<uint64_t>::max())
     return {false, false, 0, AdmissionError::RecordBudget};
   if (queue_.size() >= pending_capacity_) return {false, false, 0, AdmissionError::Busy};
@@ -109,6 +110,15 @@ bool TaskManager::cancel(uint64_t id, uint64_t now) {
   record.finished_mono_ns = now;
   queue_.erase(std::remove(queue_.begin(), queue_.end(), id), queue_.end());
   return true;
+}
+bool TaskManager::fail_running(uint64_t id, std::string error, uint64_t now) {
+  std::lock_guard<std::mutex> lock(mu_);
+  if (!active_ || *active_ != id || error.empty() || error.size() > 128) return false;
+  auto& record = records_.at(id);
+  if (!terminal(record.state)) {
+    record.state = TaskState::Failed; record.error_code = std::move(error); record.finished_mono_ns = now;
+  }
+  return true; // physical ownership is retained until complete()
 }
 bool TaskManager::complete(uint64_t id, bool success, std::string result, std::string error, uint64_t now) {
   std::lock_guard<std::mutex> lock(mu_);

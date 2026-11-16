@@ -1,7 +1,7 @@
 # M2 · 运行中恢复与健康指标
 
-2026-11-16，真实 Orin Nano / L4T 36.4.3。M2 仍未整体验收：串行 DetectNet
-输入适配已另见 [m2-inference.md](m2-inference.md)，完整任务执行层仍待接入。这里记录纯采集，不含推理、CUDA 优化或内核补丁。
+2026-11-16，真实 Orin Nano / L4T 36.4.3。M2 基础验收已完成：串行 DetectNet
+输入见 [m2-inference.md](m2-inference.md)，公共执行与联合恢复见 [m2-executor.md](m2-executor.md)。这里记录纯采集，不含推理、CUDA 优化或内核补丁。
 
 ## 已验证行为
 

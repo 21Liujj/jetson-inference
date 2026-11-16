@@ -36,3 +36,9 @@ docs/m2-inference.md。保持 default stream：冻结上游同步 ONNX executeV2
 不能仅凭 ONNX SHA 或缓存文件存在。固定 journal EV-GPU-002 记录了这次配置漂移。
 模型 manifest 的 logged_workspace_request_bytes 是日志请求，TRT10 上游没有显式
 setMemoryPoolLimit；不要重新把该数字写成已生效的内存上限。
+
+公共物理执行器在 src/inference/upstream_executor.cc，控制接口见execution_backend.h；
+不能另建逻辑任务历史。默认一个GPU worker/context/job/completion，消费自有lease。
+取消/过期只失效结果，物理完成后才发布completion。R10真实GPU与联合拔插验收见
+docs/m2-executor.md。gpu_acceptance_delay.cu是显式测试注入，默认关闭；不能当CUDA优化。
+该验收target显式使用Shared runtime和SM87，nvcc走绝对路径，不改变全局环境。

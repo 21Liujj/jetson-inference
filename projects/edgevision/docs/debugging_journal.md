@@ -18,6 +18,7 @@
 | EV-TEST-001 | 人工拔插发生在测试窗口结束后 | 原始不通过保留，延长窗口与驻留观察后通过 |
 | EV-BUILD-002 | 新 target 未配置、错误 build 路径及 dmesg 参数 | 保留原始错误，显式配置/核对路径与参数后成功 |
 | EV-GPU-002 | 对照运行的 engine 配置漂移与 workspace 记录 | 原 R6/R7 保留，R8 对齐 M1；更正 manifest 的未实证内存上限 |
+| EV-CTRL-002 | 检测与启停共享任务边界、停止抢占及 GPU 在途取消 | R10 主机9/9、目标11/11、真实GPU与联合拔插通过 |
 
 新增问题记录：ID、时间/环境/源码、触发与预期/实际、复现、原始证据、已确认原因、
 假设、处理、复测、未解决项和面试追问。后续结论追加到原 ID，保留失败事实。
@@ -326,3 +327,48 @@ TRT10 分支并未调用 setMemoryPoolLimit，旧 setMaxWorkspaceSize 仅位于 
 R7 在销毁后发布 UNLOADED，控制线程 join 后再采最终状态；真实 R7 窗口最终
 capture=IDLE/model=UNLOADED。模型加载失败保留 ERROR，且不改写正常采集为故障。
 详见 [输入适配与证据](m2-inference.md)。
+
+## EV-CTRL-002 · 2026-11-16 · 单一任务记录与物理执行确认
+
+把新执行器接到已有 ControlRouter/TaskManager，不能为 CLI 检测另建一套任务编号与
+终态。执行器只维护一个物理 job/completion 槽；逻辑状态、幂等历史、deadline 和结果
+预算仍由唯一 TaskManager 维护。backend initialize/submit/query/collect/cancel_pending/
+shutdown 都在 router 锁外调用；GPU worker 独占模型与 lease，控制线程不析构在途帧。
+
+**停止优先级：** 一个 GPU 任务加一个等待检测会填满原队列。有效 stop 可取消等待项
+后受理；它不能借此回收运行中的执行槽。已经过期、非法 generation 或冲突 request_id
+的 stop 不得清掉别人的排队任务。受理停止后拒绝新工作，幂等重试仍返回原记录。
+控制 owner 先请求采集停止并使当前检测逻辑取消，等 GPU 完成、capture Stopped 和
+物理完成记录到齐，才把 stop 记录置 DONE。新的清理错误必须让 stop 失败，不被它
+“确认旧故障”的语义掩盖。shutdown 同样异步排空，物理状态确认前不报完成。
+
+**原始测试失败：** 首次新跨 generation 测试使用1万纳秒 deadline，却把虚拟时钟
+推进到10亿纳秒以后，实际应先 EXPIRED；不能期望后来覆盖成 STALE_GENERATION。
+该失败源码与日志保留，改为足够长的 deadline，另保留独立超时用例。CPU 夹具的
+cancel_pending 也需允许“物理完成已发生、取消通知稍后到达”的幂等空操作。
+
+**R9 实机：** 七项场景正常退出；6次真实上游 GPU 推理、4次显式 CUDA 测试负载。
+在 EXPIRED/CANCELED 时 cudaEventQuery 仍为 not-ready，execution_pending=true，
+结果为空；完成后逻辑终态不变、physical pending清除。停止窗口 READY 队列归零，
+唯一在途 lease 仍占pool；之后视频映射归零并可换generation再次检测。
+shutdown 结束为 IDLE/UNLOADED、pool_busy=0、video_maps=0。200ms为测试负载请求，
+不作为性能或时延改进结论；夹具不冒充这些真实 GPU 记录。
+
+**R10 收尾：** 为证据记录增加实际 GPU 提交时间与任务deadline，要求在过期前先看到
+RUNNING和真实event pending；避免只观察到“过期后才 launch”。将测试CUDA target
+显式设为 Shared runtime；R9链接命令曾同时列出cudart.so与cudart_static，虽然场景
+通过，不能把这一混合设置悄悄带入后续对照。保留原始构建与R9结果，R10单独复测通过7项；模型缺失负例也通过。
+
+真实联合拔插中，故障发生时CUDA event仍not-ready，READY队列0、在途pool1。
+原任务775等待物理完成后返回FAILED/CAPTURE_NOT_RUNNING且无结果；3次有限重开至
+gen4，两个新会话任务DONE。检测故障到首帧7.5720s，最终776次GPU提交/完成，
+IDLE/UNLOADED、pool0/maps0、正常退出。使用5次/30s恢复及4096条有界测试历史。
+
+**构建环境续记 EV-ENV-001：** 本机有nvcc但非登录SSH的PATH不含cuda/bin。
+FindCUDAToolkit找到了绝对路径，enable_language(CUDA)首次仍得到COMPILER-NOTFOUND。
+显式传入 -DCMAKE_CUDA_COMPILER=/usr/local/cuda/bin/nvcc 后成功，不重装或升级CUDA。
+原错误及修复配置日志分开保存。
+
+**未验与追问：** 不可恢复CUDA故障仍采取进程隔离，未做破坏性故障注入；任务历史
+默认256条，达到预算明确拒绝，长期服务的持久化/保留政策属于M8。为什么逻辑完成与
+物理完成不能合并？stop满队列时如何受理且保持幂等？如何证明过期之前GPU已经提交？

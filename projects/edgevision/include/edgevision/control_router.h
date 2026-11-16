@@ -1,6 +1,7 @@
 #pragma once
 #include "edgevision/frame.h"
 #include "edgevision/task_manager.h"
+#include "edgevision/execution_backend.h"
 #include <cstdint>
 #include <mutex>
 #include <optional>
@@ -31,7 +32,6 @@ struct ControlRequest {
   std::optional<CaptureConfig> capture;
 };
 enum class CaptureState { Idle, Starting, Running, Stopping, Recovering, Error };
-enum class ModelState { Unloaded, Loading, Ready, Busy, Error };
 struct CaptureEvent {
   enum class Kind { FirstFrame, Fault, Stopped };
   Kind kind = Kind::Fault;
@@ -70,6 +70,8 @@ struct RouterStatus {
   bool backend_resources_live = false;
   std::string last_error;
   std::string model_error;
+  std::optional<uint64_t> inference_task;
+  bool shutting_down = false, shutdown_complete = false;
 };
 
 // Transport threads only submit/query/cancel. Exactly one control owner calls
@@ -78,18 +80,23 @@ struct RouterStatus {
 // a stop before destroying the router; destroying this reference is not a stop.
 class ControlRouter {
  public:
-  explicit ControlRouter(CaptureBackend& backend) : backend_(backend) {}
+  explicit ControlRouter(CaptureBackend& backend, ExecutionBackend* executor = nullptr, std::size_t retained_tasks = 256)
+      : backend_(backend), executor_(executor), tasks_(1,retained_tasks) {}
+  ExecutionReply initialize(InferenceConfig);
   TaskAdmission submit(ControlRequest, uint64_t now_mono_ns);
   RouterStatus status() const;
   std::optional<TaskRecord> query(uint64_t task_id) const { return tasks_.query(task_id); }
   bool cancel(uint64_t task_id, uint64_t now_mono_ns);
+  std::optional<TaskRecord> collect(uint64_t task_id) const;
+  void cancel_pending(uint64_t now_mono_ns);
+  void shutdown(uint64_t now_mono_ns);
   void poll(uint64_t now_mono_ns);
   // The control owner publishes worker observations; capture is independent.
   void observe_model(ModelState, std::string error = {});
   static bool valid_config(const CaptureConfig&);
 
  private:
-  struct Action { enum class Kind { Start, Stop }; Kind kind; uint64_t generation, task; CaptureConfig config; };
+  struct Action { enum class Kind { Start, Stop, Detect }; Kind kind; uint64_t generation, task; CaptureConfig config; };
   static std::string canonical(const CaptureConfig&);
   static bool terminal(TaskState);
   std::optional<Action> dispatch_locked(const TaskRecord&, uint64_t now);
@@ -98,7 +105,10 @@ class ControlRouter {
   void execute(std::optional<Action>, uint64_t now);
   void finish_locked(bool success, const std::string& error, uint64_t now);
   std::optional<Action> reopen_locked(uint64_t now);
+  void poll_executor(uint64_t now);
+  void require_owner_locked();
   CaptureBackend& backend_;
+  ExecutionBackend* const executor_;
   mutable std::mutex mu_;
   TaskManager tasks_;
   RouterStatus state_;
@@ -111,6 +121,8 @@ class ControlRouter {
   uint64_t runtime_deadline_ = 0;
   uint64_t retry_at_ = 0;
   std::optional<uint64_t> pending_stop_;
+  std::optional<uint64_t> inference_task_, preempted_stop_;
+  bool execution_cancel_sent_ = false, shutting_down_ = false, executor_stopped_ = false;
   // One queued and one active command: configuration storage is bounded too.
   std::unordered_map<uint64_t, CaptureConfig> configs_;
 };

@@ -101,7 +101,7 @@ void UpstreamDetector::initialize(const std::string& onnx, const std::string& la
       impl_->net->GetOutputSize(0) != 3000 * 9 * sizeof(float) || impl_->net->GetOutputSize(1) != 3000 * 4 * sizeof(float))
     throw std::runtime_error("UNSUPPORTED_SSD_BASELINE_CONTRACT");
 }
-DetectionResult UpstreamDetector::infer(FrameLease frame) {
+DetectionResult UpstreamDetector::infer(FrameLease frame, const SubmitObserver& gpu_submitted) {
   impl_->require_owner();
   if (!impl_->net || !frame.valid() || frame.state() != SlotState::Ready) throw std::logic_error("MODEL_OR_FRAME_NOT_READY");
   const auto bytes = packed_yuyv_bytes(*frame, frame->data.size());
@@ -113,6 +113,7 @@ DetectionResult UpstreamDetector::infer(FrameLease frame) {
   try {
     check(cudaConvertColor(impl_->raw.gpu, IMAGE_YUYV, impl_->rgb.pointer, IMAGE_RGB8,
                            frame->width, frame->height, cudaStream_t(0)), "UPSTREAM_YUYV_TO_RGB");
+    if (gpu_submitted) gpu_submitted(frame);
     detectNet::Detection* boxes = nullptr;
     const auto count = impl_->net->Detect(impl_->rgb.pointer, frame->width, frame->height, IMAGE_RGB8, &boxes, detectNet::OVERLAY_NONE);
     // Includes conversion, upstream preprocessing and any downstream GPU work.

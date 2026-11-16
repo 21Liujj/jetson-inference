@@ -2,7 +2,7 @@
 
 基于 [jetson-inference](https://github.com/dusty-nv/jetson-inference) 二次开发，面向 USB 相机采集、UVC 追踪、CUDA/TensorRT 执行、ROS2 与本地视觉任务 Agent。
 
-**当前：M1 完成 30 分钟功能验证；M2 已验 30 分钟采集、100 次启停与真实拔插恢复，串行推理已验，完整任务执行层仍在开发。M3–M8 待验收。**
+**当前：M2 基础验收完成，进入 M3 模型部署与驱动准备。M4–M8 待验收。**
 未修改上游在 TensorRT 10 下的崩溃已保留；修复版结果与原版分别记录。
 
 [展示页](https://21Liujj.github.io/jetson-inference/) · [实机基线](projects/edgevision/docs/baseline.md) · [进度](projects/edgevision/docs/progress.md) · [贡献边界](UPSTREAM.md) · [上游原版说明](README.upstream.md)
@@ -19,28 +19,30 @@
 | TensorRT 兼容修复 | 修复 context 初始化、命名 I/O 绑定、显式 batch 维度及辅助输出索引 |
 | 实际推理 | 固定图输出检测框；最终版 60 秒窗口完成 1,712 次相机推理 |
 | 30 分钟基线 | 完成 53,898 次真实相机推理，正常退出，日志逐文件哈希核验 |
-| M2 核心 | 有界队列、帧租约、任务与控制路由；Windows 8/8，Jetson sanitizer 10/10 |
+| M2 核心 | 有界队列、帧租约、任务与控制路由；Windows 9/9，Jetson sanitizer 11/11 |
 | 直接 V4L2 采集 | MMAP、真实协商、eventfd 停止；慢消费者与帧池耗尽分别计数 |
 | 100 次真实启停 | 复测完成，共 3 次受限启动重试；每轮停止后 fd 恢复基线、视频映射归零 |
 | 新后端 30 分钟 | 53,999 帧，无序号缺口或应用丢弃；60s 后该窗口 RSS / fd 持平 |
 | 运行中拔插 | 5 次/30s 预算下，4 次重开后恢复；检测故障到有效首帧 12.38s |
 | 新后端推理 | 接入上游 DetectNet；复用 M1 engine，60 秒完成 1,802 次实际推理 |
+| 统一执行层 | 检测与启停共用 TaskManager；真实 GPU 超时、取消、停止与 shutdown 通过 |
+| 联合拔插 | GPU 在途帧保留到完成；3 次重开后新会话继续检测，恢复首帧 7.57s（5 次/30s预算） |
 | 停止优先级 | 断连时显式停止，插回后进程继续观察 5s，保持 IDLE、没有重开 |
 | 退出与重启 | 正常退出后再次启动完成 203 次推理；错误 tensor 名明确失败 |
 | GPU 回归 | 完整输出及辅助输出两种场景，真实 enqueueV3、形状与有限值检查通过 |
 
-以上为分版本功能验证。上游窗口含初始化与 JPEG 输出；新后端 60s 从首个结果后计时，保留 metadata 而不保存图像。**这些都不是正式性能 benchmark**；尚无本轮 2 小时或 12 小时长稳结论。新后端串行输入适配已验，完整执行层及 GPU 在途超时/取消仍待验收。30 分钟纯采集与拔插使用不同冻结源码，边界见记录。当前 SSD 水果模型仅用于上游基线，不代表最终检测模型。
+以上为分版本功能验证。上游窗口含初始化与 JPEG 输出；新后端 60s 从首个结果后计时，保留 metadata 而不保存图像。**这些都不是正式性能 benchmark**；尚无本轮 2 小时或 12 小时长稳结论。新后端输入与统一执行层基础验收已完成；不可恢复 GPU 故障隔离分支未做破坏性注入。30 分钟纯采集与拔插使用不同冻结源码，边界见记录。当前 SSD 水果模型仅用于上游基线，不代表最终检测模型。
 
 [原始日志与哈希清单](projects/edgevision/evidence/2026-11-15/manifest.json) · [完整文本证据包](projects/edgevision/evidence/2026-11-15/raw-text-evidence.zip) · [故障定位](projects/edgevision/docs/debugging_journal.md)
 
-[M2 采集与失败复测记录](projects/edgevision/docs/m2-capture.md) · [长采集、恢复与指标](projects/edgevision/docs/m2-runtime.md) · [上游推理输入适配](projects/edgevision/docs/m2-inference.md) · [Agent 开发入口与领域技能](AGENTS.md)
+[M2 采集与失败复测记录](projects/edgevision/docs/m2-capture.md) · [长采集、恢复与指标](projects/edgevision/docs/m2-runtime.md) · [上游推理输入适配](projects/edgevision/docs/m2-inference.md) · [统一执行与 M2 验收](projects/edgevision/docs/m2-executor.md) · [Agent 开发入口与领域技能](AGENTS.md)
 
 ## 系统范围
 
 | 方向 | 目标 | 状态 |
 |---|---|---|
-| 采集 | 单 owner V4L2、MMAP、有界帧池、启停与断连恢复 | 启停、30min、拔插与上游串行推理已验；任务执行集成待验 |
-| 内核 | 匹配 L4T 的 UVC 帧完成 trace，关联用户态记录 | M3–M4 待验收 |
+| 采集 | 单 owner V4L2、MMAP、有界帧池、启停与断连恢复 | M2 基础验收完成；分版本证据可追溯 |
+| 内核 | 匹配 L4T 的 UVC 帧完成 trace，关联用户态记录 | M3 已冻结源码与环境，原模块构建/验证进行中 |
 | GPU | 数值回归、缓冲复用、stream/event、Nsight 对照 | M5 待验收 |
 | 机器人 | 图像、检测、诊断、服务与 Action | M6 待验收 |
 | 多模态 | 本地 VLM、计划校验、真实工具与报告 | M7 待验收 |

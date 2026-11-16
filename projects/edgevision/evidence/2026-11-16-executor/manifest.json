@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "kernel-usb.json",
+      "bytes": 3610,
+      "sha256": "f074d2059130b70062f8c935a3257edc1f317f9d876e3b113665b2e9e9599078"
+    },
+    {
+      "path": "raw-executor-evidence.zip",
+      "bytes": 227637,
+      "sha256": "ef4366fef099f99fcd76cef310d50b892c43e7ee6e4152b99901bc61b676a5cb"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 9436,
+      "sha256": "d032a5b3fd940251f44a9cc943b37846d5cd031ca6d3a664b984b571351bd7df"
+    },
+    {
+      "path": "windows-core-and-original-failure.zip",
+      "bytes": 4841,
+      "sha256": "9ac819994925613727e703feb44b8213cc75efcec0aeaf05a940813a820ee85f"
+    }
+  ],
+  "embedded_archive_manifest": "projects/edgevision/artifacts/2026-11-16/r10-executor-manifest.json"
+}

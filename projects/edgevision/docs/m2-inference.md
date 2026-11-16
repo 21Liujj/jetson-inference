@@ -43,8 +43,9 @@ owner 发布，模型加载失败可以同时显示 capture=RUNNING、model=ERRO
   sequence缺口为0；最终IDLE/UNLOADED、pool_busy=0、视频无owner，正常退出。
   两轮画面都只有有效空结果，不是检测精度证明。
 
-完整执行层的 submit/query/collect/cancel_pending/shutdown、公共任务路由、GPU 运行中
-超时/取消的真实测试仍未接通，**M2 仍为部分完成**。M3 数值/精度回归、M5 异步流水线
+R10 已在同一公共 TaskManager 中接通 submit/query/collect/cancel_pending/shutdown，
+真实 GPU 运行中超时/取消、停止、退出与联合拔插均已验收，见 [m2-executor.md](m2-executor.md)。
+本页保留 R6–R8 串行输入基线，不能冒充 M5 异步优化。M3 数值/精度回归、M5 异步流水线
 和正式性能验收保持独立；不能把基础 event 的使用写成已优化。
 
 ## 构建与复现

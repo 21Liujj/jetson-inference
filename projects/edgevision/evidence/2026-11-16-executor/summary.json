@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "scope": "M2 common execution task lifecycle and joint real USB/GPU recovery; no M3 accuracy or M5 performance claim",
+  "cases": {
+    "executor-r9": {
+      "summary": {
+        "scope": "real camera / common task manager / upstream GPU executor lifecycle",
+        "cases_passed": 7,
+        "explicit_cuda_delay_injection_ms": 200,
+        "delay_records": 4,
+        "gpu_submissions": 6,
+        "gpu_completions": 6,
+        "generation": 2,
+        "pool_busy": 0,
+        "video_maps": 0,
+        "max_control_poll_ns_observed": 18946,
+        "shutdown_complete": true,
+        "failure": ""
+      },
+      "supervision": {
+        "schema_version": 1,
+        "simulated": false,
+        "argv": [
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_executor_probe",
+          "--device",
+          "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+          "--model",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+          "--labels",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/labels.txt",
+          "--out",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/2026-11-16/executor-r9"
+        ],
+        "cwd": "/home/nvidia/jetson-inference-edgevision",
+        "wall_time": "2026-11-16T05:48:55.738139+00:00",
+        "duration_requested_s": 0,
+        "timeout_s": 120.0,
+        "acceptance": "requires_log_review",
+        "pid": 11471,
+        "exit_code": 0,
+        "stop_reason": "process_exit",
+        "elapsed_s": 4.51119627800108
+      }
+    },
+    "executor-r10": {
+      "summary": {
+        "scope": "real camera / common task manager / upstream GPU executor lifecycle",
+        "cases_passed": 7,
+        "explicit_cuda_delay_injection_ms": 200,
+        "delay_records": 4,
+        "gpu_submissions": 6,
+        "gpu_completions": 6,
+        "generation": 2,
+        "pool_busy": 0,
+        "video_maps": 0,
+        "max_control_poll_ns_observed": 15584,
+        "shutdown_complete": true,
+        "failure": ""
+      },
+      "supervision": {
+        "schema_version": 1,
+        "simulated": false,
+        "argv": [
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_executor_probe",
+          "--device",
+          "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+          "--model",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+          "--labels",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/labels.txt",
+          "--out",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/2026-11-16/executor-r10"
+        ],
+        "cwd": "/home/nvidia/jetson-inference-edgevision",
+        "wall_time": "2026-11-16T05:59:27.251829+00:00",
+        "duration_requested_s": 0,
+        "timeout_s": 120.0,
+        "acceptance": "requires_log_review",
+        "pid": 12036,
+        "exit_code": 0,
+        "stop_reason": "process_exit",
+        "elapsed_s": 4.5111951069993665
+      }
+    },
+    "executor-missing-r10": {
+      "summary": {
+        "scope": "real camera / common task manager / upstream GPU executor lifecycle",
+        "cases_passed": 1,
+        "explicit_cuda_delay_injection_ms": 200,
+        "delay_records": 0,
+        "gpu_submissions": 0,
+        "gpu_completions": 0,
+        "generation": 1,
+        "pool_busy": 0,
+        "video_maps": 0,
+        "max_control_poll_ns_observed": 11904,
+        "shutdown_complete": true,
+        "failure": ""
+      },
+      "supervision": {
+        "schema_version": 1,
+        "simulated": false,
+        "argv": [
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_executor_probe",
+          "--device",
+          "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+          "--model",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/not-present.onnx",
+          "--labels",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/labels.txt",
+          "--out",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/2026-11-16/executor-missing-r10",
+          "--missing-model"
+        ],
+        "cwd": "/home/nvidia/jetson-inference-edgevision",
+        "wall_time": "2026-11-16T05:59:31.889628+00:00",
+        "duration_requested_s": 0,
+        "timeout_s": 120.0,
+        "acceptance": "requires_log_review",
+        "pid": 12046,
+        "exit_code": 0,
+        "stop_reason": "process_exit",
+        "elapsed_s": 1.0099931709992234
+      }
+    },
+    "executor-recovery-r10": {
+      "summary": {
+        "scope": "real USB recovery with common task/GPU executor; explicit CUDA injection, no benchmark",
+        "fault_seen": true,
+        "recovered": true,
+        "fault_observed_with_gpu_event_pending": true,
+        "fault_detected_ns": 13983629656689,
+        "recovered_ns": 13991201658756,
+        "generation": 4,
+        "runtime_retries": 3,
+        "runtime_retry_limit": 5,
+        "recovery_budget_ms": 30000,
+        "retained_task_budget": 4096,
+        "valid_tasks_after_recovery": 2,
+        "done_tasks": 774,
+        "invalid_tasks": 1,
+        "gpu_submissions": 776,
+        "gpu_completions": 776,
+        "explicit_cuda_delay_injection_ms": 200,
+        "pool_busy": 0,
+        "video_maps": 0,
+        "shutdown_complete": true,
+        "failure": "",
+        "fault_detection_to_valid_frame_s": 7.572002067
+      },
+      "supervision": {
+        "schema_version": 1,
+        "simulated": false,
+        "argv": [
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/build/inference-native/edgevision_executor_recovery_probe",
+          "--device",
+          "/dev/v4l/by-id/usb-Generic_Web_Camera_20250708V1.000-video-index0",
+          "--model",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/ssd-mobilenet.onnx",
+          "--labels",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/m1-model/labels.txt",
+          "--out",
+          "/home/nvidia/jetson-inference-edgevision/projects/edgevision/artifacts/2026-11-16/executor-recovery-r10"
+        ],
+        "cwd": "/home/nvidia/jetson-inference-edgevision",
+        "wall_time": "2026-11-16T06:01:11.779331+00:00",
+        "duration_requested_s": 0,
+        "timeout_s": 700.0,
+        "acceptance": "requires_log_review",
+        "pid": 12058,
+        "exit_code": 0,
+        "stop_reason": "process_exit",
+        "elapsed_s": 204.484981435
+      }
+    }
+  },
+  "identity": {
+    "edgevision_executor_probe": {
+      "sha256": "321f0d64d51e711d1969638a8bcab57b8de9fb7d24fe9f6be5e15b675cc6cb2b",
+      "link": "/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/edgevision_executor_probe.dir/tools/executor_probe.cpp.o -o edgevision_executor_probe   -L/usr/local/cuda/targets/aarch64-linux/lib/stubs  -L/usr/local/cuda/targets/aarch64-linux/lib  -Wl,-rpath,/home/nvidia/jetson-inference-edgevision/build-baseline/aarch64/lib:/usr/local/cuda/lib64 libedgevision_inference.a libedgevision_gpu_acceptance_delay.a libedgevision_capture.a libedgevision_core.a /home/nvidia/jetson-inference-edgevision/build-baseline/aarch64/lib/libjetson-inference.so /home/nvidia/jetson-inference-edgevision/build-baseline/aarch64/lib/libjetson-utils.so /usr/local/cuda/lib64/libcudart.so -lcudadevrt -lcudart \n"
+    },
+    "edgevision_executor_recovery_probe": {
+      "sha256": "26d13f15342fc36ebf68aab2cb7767fc1d8d21b86455f90d6391f012b897326a",
+      "link": "/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/edgevision_executor_recovery_probe.dir/tools/executor_recovery_probe.cpp.o -o edgevision_executor_recovery_probe   -L/usr/local/cuda/targets/aarch64-linux/lib/stubs  -L/usr/local/cuda/targets/aarch64-linux/lib  -Wl,-rpath,/home/nvidia/jetson-inference-edgevision/build-baseline/aarch64/lib:/usr/local/cuda/lib64 libedgevision_inference.a libedgevision_gpu_acceptance_delay.a libedgevision_capture.a libedgevision_core.a /home/nvidia/jetson-inference-edgevision/build-baseline/aarch64/lib/libjetson-inference.so /home/nvidia/jetson-inference-edgevision/build-baseline/aarch64/lib/libjetson-utils.so /usr/local/cuda/lib64/libcudart.so -lcudadevrt -lcudart \n"
+    },
+    "source_sha256": "fc23d0a30fee0c8c329608aa0c9f2f648f9d52a9bf87c167e813d2229077b5c5",
+    "engine_sha256": "3cb11235bc6338895bca58e710383dd36c7ecfded68ee3491ec20ddd7eab2fc4",
+    "libs": {
+      "build-baseline/aarch64/lib/libjetson-inference.so": "a2ea68689ac645d9962cbcdc82be31c439366d2fce559f59b41b6a4ce924025e",
+      "build-baseline/aarch64/lib/libjetson-utils.so": "307749ec3c242679d57405e782f0ad726dd7be1e04907c955a7b6baf0b1d42e7"
+    },
+    "camera_owner_after": ""
+  },
+  "host_core_tests": 9,
+  "jetson_sanitizer_tests": 11,
+  "limits": [
+    "R3 100-cycle/30min capture and R8 60s inference remain separate source versions.",
+    "GPU delay is an explicit acceptance injection; default build disables it.",
+    "Joint recovery uses 5 attempts/30s and a bounded 4096-record test history.",
+    "Irrecoverable GPU failure isolation branch not destructively injected."
+  ]
+}

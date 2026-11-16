@@ -10,8 +10,8 @@ different definitions and are not carried over as completed stages.
 | M1-A unmodified upstream | board_verified (build/camera); blocked (inference) | Build succeeds after missing dev dependency installation; original TensorRT 10 loader crashes; raw failure retained |
 | M1-B compatibility repair | board_verified, short runs only | Fixed image, 60s USB inference, restart, negative tensor-name test, two real GPU probes pass |
 | M1 longer repaired baseline | board_verified | 1800.6016s process lifetime, 53,898 inference/output calls, normal shutdown; M1-A failure remains a failure |
-| M2 capture/task framework | board_verified (capture + serial inference), partial overall | Windows core 8/8; Jetson sanitizer 10/10. Real 100 cycles with 3 startup retries; R3 30min capture 53,999 frames; R4 runtime unplug recovery and R5 stop/replug pass. Bounded HealthMonitor implemented. R8 direct-input/upstream DetectNet 60s: 1,802 inferences using the same M1 engine; real missing-model failure stays independent of capture. Full execution task API and real GPU timeout/cancellation integration remain |
-| M3 model and kernel preparation | planned | 20-image regression, frozen annotated set, native module baseline |
+| M2 capture/task framework | board_verified (baseline gates complete) | Windows 9/9; Jetson sanitizer 11/11. R3 capture 100 cycles/30min, R8 direct-input 60s, R10 shared task API, real GPU timeout/cancel/stop/shutdown, model failure and joint USB recovery all verified. Component source versions remain separate; no final-stack endurance claim |
+| M3 model and kernel preparation | host_verified (source freeze), partial overall | Official R36.4.3 source archive frozen (5.15.148); board config/headers/Module.symvers inventoried; existing YOLO weights/ONNX/engine hashes audited. 20-image regression, annotated set and unmodified-module runtime baseline remain |
 | M4 UVC extension | planned | Source patch, original/disabled/enabled trace comparisons, install and actual rollback |
 | M5 CUDA and async optimization | planned | Numerical regression, two memory paths, event pipeline, Nsight timeline |
 | M6 ROS2 | planned | Topics, diagnostics, service, Action, QoS/cancellation tests, real bag |
@@ -31,6 +31,7 @@ execution but is not a model-accuracy or optimization benchmark.
 - Existing work preserved: [repo-audit.md](repo-audit.md).
 - M2 core implementation and limits: [m2-core.md](m2-core.md).
 - M2 real capture and original failure/retest: [m2-capture.md](m2-capture.md).
+- Shared execution lifecycle and M2 acceptance: [m2-executor.md](m2-executor.md).
 - Serial upstream GPU input adapter: [m2-inference.md](m2-inference.md).
 - Runtime recovery/health and R3 capture endurance: [m2-runtime.md](m2-runtime.md).
 - 30-minute repaired baseline: [summary and raw evidence](../evidence/2026-11-15-30min/summary.json).
@@ -38,12 +39,12 @@ execution but is not a model-accuracy or optimization benchmark.
 
 ## Next three engineering steps
 
-1. Complete initialize/submit/query/collect/cancel_pending/shutdown through the
-   common task boundary; keep the verified serial adapter and GStreamer comparison.
-2. Verify real GPU in-flight timeout/cancellation, shutdown and combined camera
-   recovery, preserving memory until actual completion and independent model state.
-3. Close the remaining M2 gates, then begin
-   M3 fixed-image numerical regression and matching kernel source preparation.
+1. Freeze and inspect the existing YOLO model, its reference preprocessing and
+   fixed-image dataset; keep old engines/results as donors rather than acceptance.
+2. Build and verify the unchanged UVC module from the matched official source,
+   preserving the original module and a tested recovery path.
+3. Complete M3 model/reference checks and source call-chain analysis, then begin
+   the M4 tracepoint patch. Later Nsight/ROS2/Agent/system endurance gates remain.
 
 2026-11-16: user explicitly resumed development after powering the board back on.
 The prior stop request is revoked. Recheck hardware/source identity, then close

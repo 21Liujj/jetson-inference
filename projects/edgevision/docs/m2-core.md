@@ -43,8 +43,8 @@ uncommitted donor changes from the older published Git HEAD.
 
 The completion interface deliberately does not declare GPU completion based on
 a timer. The CPU latch/fence fixtures test ownership contracts only. A CUDA event
-adapter is now verified in [m2-inference.md](m2-inference.md). Full task execution
-and real cancellation/timeout tests remain; asynchronous optimization belongs to M5.
+adapter is now verified in [m2-inference.md](m2-inference.md). Full shared task execution and real GPU cancellation/timeout tests are verified in
+[m2-executor.md](m2-executor.md); asynchronous optimization belongs to M5.
 
 ## Build and verification
 
@@ -65,9 +65,10 @@ ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 \
 
 Windows uses GCC 15.2.0/UCRT64 with CMake and Ninja selected explicitly; only the
 build process PATH is changed. Tests retain assertions even for a release build.
-Current result (R7 core, Nov 16): Windows **8/8** core tests; Jetson **10/10** with ASan/UBSan and
+Current result (R10 core, Nov 16): Windows **9/9** core tests; Jetson **11/11** with ASan/UBSan and
 LeakSanitizer, including two Linux capture-worker/syscall-fixture tests.
-[Latest input-adapter/core evidence](../evidence/2026-11-16-inference-adapter/),
+[Latest executor/core evidence](../evidence/2026-11-16-executor/),
+[input-adapter evidence](../evidence/2026-11-16-inference-adapter/),
 [recovery/health evidence](../evidence/2026-11-16-runtime-recovery/),
 [capture evidence](../evidence/2026-11-15-m2-capture/),
 [earlier core evidence](../evidence/2026-11-15-m2-core/) and
@@ -88,7 +89,7 @@ status reentry without a held router lock and rejection of a second control owne
 - Linux V4L2/eventfd worker and real first-frame/100-cycle tests are implemented.
   Enable with EDGEVISION_ENABLE_V4L2=ON on Linux. Runtime disconnect/reconnect,
   HealthMonitor and R3 30min capture now have separate evidence in m2-runtime.md; the serial upstream DetectNet adapter is verified in m2-inference.md. Full
-  execution-task routing and GPU timeout/cancellation remain.
+  execution-task routing and GPU timeout/cancellation are verified in m2-executor.md.
 - FramePool raw index APIs are retained from the donor. Only the producer may use
   `slot_ref` before handoff; fabricating multiple leases for one slot or accessing
   a handed-off raw slot violates the owner contract. A fenced in-flight slot
@@ -96,8 +97,8 @@ status reentry without a held router lock and rejection of a second control owne
 - Only READY frames enter FrameQueue. Completion-fence waiting can block its
   owning executor; capture and control threads must never own an in-flight lease
   whose destruction would wait for a GPU event.
-- Router currently accepts typed start/stop only. Other commands return
-  UnsupportedCommand; JSON/ROS/Agent transports and named configuration IDs
+- Router accepts typed start/stop and DetectSnapshot when a real executor is
+  attached. Other commands return UnsupportedCommand; JSON/ROS/Agent transports and named configuration IDs
   are not connected. TaskManager does not execute text.
 - The backend is a mandatory non-owning interface with no production mock.
   Real hardware calls belong to its worker, outside the router mutex. The
@@ -109,6 +110,6 @@ status reentry without a held router lock and rejection of a second control owne
 - `query` is a snapshot. The control owner calls `tick` with current monotonic
   time/generation to advance expiration before publishing status.
 
-Next: complete the remaining M2 capture/inference gates in m2-capture.md before
-declaring the stage complete. CLI probe already calls the real common router;
+M2 baseline gates are complete; see m2-executor.md for source versions and real
+GPU/USB evidence. CLI probes call the real common router;
 JSON/ROS/Agent transports remain separate required integrations.
